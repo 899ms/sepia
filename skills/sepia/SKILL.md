@@ -59,7 +59,7 @@ The two-stage protocol is not optional for refactor/recreate: paraphrasing witho
 |---|---|
 | Aim at the band, not the opposite pole | Human values are moderate (chronological discontinuity 2.4/5, not 5). Inverting every AI tell creates a new fingerprint. In professional prose the equivalent: match the venue's register, don't overshoot into forced casualness — informality alone fools no trained reader. |
 | Select, don't accumulate | Human writing is diverse. Fiction: 3–5 moves per story, chosen for the premise, varied across works. Professional: fix what the checklist actually flags, nothing more. |
-| Leave slack | Ordinary sentences, an underdeveloped thought, a plain paragraph. Do not sand every surface. |
+| Leave slack | Ordinary sentences, an underdeveloped thought, a plain paragraph. Do not sand every surface. Corpus-level context, not a per-draft test: when GPT-3.5, Llama 3 70B and Gemini Pro rewrote 1,000 human Reddit stories and 1,000 arXiv abstracts under neutral prompts, the spread of a writing-complexity score across the texts shrank by 21–50% (Sourati et al. 2026, ledger `SOURATI-2026`). The study says where a population of polished drafts ends up and nothing about any one draft; whether this draft has been sanded is a reading judgment. |
 
 ## Hard guardrails
 
