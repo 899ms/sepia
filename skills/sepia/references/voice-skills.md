@@ -20,11 +20,11 @@ For **recreate**, the canonical preflight still comes before everything: extract
 
 For **review**, the canonical contract is unchanged: diagnose without editing. Under a declared voice the adjustment is interpretive only — score with the expectation table below.
 
-For **refactor**, stage 1 is unchanged: the complete defect list first, scored with the expectation table, and the voice's expected costs are not listed as defects. In stage 2 the declared voice supplies the fix vocabulary: a voice move may be applied only as the fix for an item on the stage-1 list, chosen from the 3–5 selected for the piece, and a passage with no listed defect is not touched. The voice does not license edits the defect list did not call for; that is what keeps refactor minimal under a voice.
+For **refactor**, stage 1 is unchanged: the complete defect list first, scored with the expectation table, and the voice's expected costs are not listed as defects. In stage 2 the declared voice supplies the fix vocabulary: a voice move may be applied only as the fix for an item on the stage-1 list, chosen from the moves selected for the piece (3–5, or fewer where the profile's sparse-shape rule applies), and a passage with no listed defect is not touched. The voice does not license edits the defect list did not call for; that is what keeps refactor minimal under a voice.
 
 ## Selection applies to voice moves too
 
-A voice skill applied wholesale produces a house style, and a house style is a fingerprint. Extend sepia's selection rule to the voice: at most 3–5 of its signature moves per piece, varied across pieces. A signature ending formula ("return to the recurring object, shortest sentence last") fails the echo test once it appears every time — break it deliberately in some pieces. Leave slack: a human writing in a strict style still slips out of it somewhere; a piece where no paragraph is allowed to fail reads as a metronome.
+A voice skill applied wholesale produces a house style, and a house style is a fingerprint. Extend sepia's selection rule to the voice: at most 3–5 of its signature moves per piece, varied across pieces; fewer when the piece's facts support fewer, and a profile may say so for its sparse shapes. A move is never added to reach the count. A signature ending formula ("return to the recurring object, shortest sentence last") fails the echo test once it appears every time — break it deliberately in some pieces. Leave slack: a human writing in a strict style still slips out of it somewhere; a piece where no paragraph is allowed to fail reads as a metronome.
 
 ## Reviewing voice-composed text
 

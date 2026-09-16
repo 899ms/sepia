@@ -130,7 +130,7 @@ None on professional routes in this version (#227). The registry entry in `refer
 
 Synthetic facts (approved 2026-09-16; nothing else may be used, and any fact missing from this list is a TODO): 2026-03-04, 14:02 to 14:47 (UTC+8); an unnamed regional hospital emergency department in northern Taiwan; the retry queue had no jitter, 412 resends landed inside one 200 ms window, downstream services rate-limited each other; the cause was found at 14:41 and `RETRY_JITTER=full` was set at 14:47; the triage nurse (role only) clipped three paper triage slips to the whiteboard at 14:05 and kept triaging on paper; one synthetic quotation from the nurse, written for this example: 「電腦轉圈，我就先用紙。」; baseline about 3 resends per minute in a normal hour; the on-call platform engineer (role only) said the queue's default had never been reviewed; the default was changed for all queues on 2026-03-06.
 
-The three Afters below are **write** outputs from the approved fact list, not refactors or recreates of the Before. The Before is shown only to name the register departures each After avoids; its quotation 「系統一直轉圈圈，我們完全沒辦法作業。」 is itself synthetic and is not a source's words. On a real refactor or recreate, an existing quotation is never replaced or reworded (SKILL.md quoted-material guardrail); the Afters replace it here only because they are written fresh from a fact list that contains a different approved quotation.
+The three Afters below are **write** outputs from the approved fact list, not refactors or recreates of the Before; the tables under each After list the Before's departures and what the written After does instead, not edits applied to the Before. The example is framed as published on 2026-03-06, the day of the last approved fact, so the inverted pyramid's "this week" condition is met by the frame, which is a stated assumption of the exercise and not a reported fact. The Before is shown only to name the register departures each After avoids; its quotation 「系統一直轉圈圈，我們完全沒辦法作業。」 is itself synthetic and is not a source's words. On a real refactor or recreate, an existing quotation is never replaced or reworded (SKILL.md quoted-material guardrail); the Afters replace it here only because they are written fresh from a fact list that contains a different approved quotation.
 
 Before (synthetic, written to carry the register's departures):
 
@@ -148,7 +148,7 @@ After A — 場景導入 (moves: open on a person; no summary ending). Only two 
 >
 > Voice applied: tw-journalism/場景導入 — moves: open on a person, no summary ending
 
-| Change | Move | Check |
+| Departure in the Before | What the After (a write) does instead; move | Check |
 |---|---|---|
 | 「本文將探討…」 deleted; a time, a place, a person and a recorded action open the piece. The separate "hold the first number" move is not claimed: 三張 sits in the first paragraph because it is part of the recorded action | Open on a person | `discourse-pass.md` §4; `journalism.md` tells row 1 |
 | 「無奈地表示：“…”」 → the recorded action, then the approved quotation in 「」, no attribution verb, no adverb (a write from the fact list; on refactor the Before's quotation would stay as written) | (register default; `journalism.md` rule 3) | zh.md §2 manner adverb; §1b attribution rows |
@@ -158,7 +158,7 @@ After A — 場景導入 (moves: open on a person; no summary ending). Only two 
 
 Known cost and what the blind review taught: the shape's fourth move, return to the opening person or object at a later moment, is not used, because the approved fact list has no later whiteboard fact; an earlier draft returned to the same 2 點 05 分 moment and the declared-voice review correctly reported it as density, not as the move. Two drafts before that added a gesture and a closing count that were in no fact list, and a review caught both under check 5; one draft wrote 「他」 for an engineer the facts give only by role, and one wrote that the engineer found the cause when the facts only say the cause was found at 14:41 and, separately, what the engineer said; both caught the same way. The precondition section exists for exactly these.
 
-After B — 倒金字塔 (moves: the first sentence holds who, when, what, how many; updates in a dated block; no summary ending). "Write each provision in full" is not claimed: the facts hold incident measurements and a setting, not provisions. A data-led After was drafted first and withdrawn: the fact list has a baseline but no source or method for the count, the decision table says a shape whose precondition is not met is not chosen, and a worked example that chooses it anyway would teach the opposite. The facts do hold the inverted pyramid's precondition (date, actor, outcome, count).
+After B — 倒金字塔 (moves: the first sentence holds who, when, what, how many; updates in a dated block; no summary ending). "Write each provision in full" is not claimed: the facts hold incident measurements and a setting, not provisions. A data-led After was drafted first and withdrawn: the fact list has a baseline but no source or method for the count, the decision table says a shape whose precondition is not met is not chosen, and a worked example that chooses it anyway would teach the opposite. The facts do hold the inverted pyramid's precondition (date, actor, outcome, count), and the stated publication frame (2026-03-06) puts the events inside the shape's "this week" window.
 
 > 3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求在 200 毫秒內重送了 412 次，下游服務對彼此限流；2 點 47 分設上 `RETRY_JITTER=full`。〔TODO：何時恢復、是否因此恢復，事實清單未給。〕
 >
@@ -172,7 +172,7 @@ After B — 倒金字塔 (moves: the first sentence holds who, when, what, how m
 >
 > Voice applied: tw-journalism/倒金字塔 — moves: first sentence holds who when what how many, update block, no summary ending
 
-| Change | Move | Check |
+| Departure in the Before | What the After (a write) does instead; move | Check |
 |---|---|---|
 | 「本文將探討…」 → one sentence with date, actor, count and the setting time; recovery is a TODO because the facts stop at the setting | First sentence holds who, when, what, how many | `journalism.md` rule 1 (standfirst register); check 5 |
 | 412, 200 ms, the 3-per-minute baseline and the derived "two hours" (412 ÷ 3 ≈ 137 minutes) each written out | (register default under `journalism.md` rule 4; not the provisions move) | check 5 |
@@ -195,7 +195,7 @@ After C — 論證式 spine with a timeline component (moves: question answered 
 >
 > Voice applied: tw-journalism/論證式 — moves: question answered by the next speaker, update block, no summary ending
 
-| Change | Move | Check |
+| Departure in the Before | What the After (a write) does instead; move | Check |
 |---|---|---|
 | 「本文將探討」 → two timestamps and a question that the nurse, not the reporter, answers in the next paragraph | Question answered by the next speaker | `discourse-pass.md` §1; `journalism.md` tells (self-answered question) |
 | 412 in 200 ms set against the 3-per-minute baseline; 三張 and the clock times stand alone, so the "every number carries a comparison" move is not claimed | (register default; `journalism.md` rule 4 satisfied where a comparison exists) | check 5 |
