@@ -55,7 +55,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 |---|---|---|---|
 | Build character from several concrete episodes; no character adjectives | C: 9 pure, 14 component | `style-pass.md` §1 row 5 specificity; §3 inflation adjectives | None |
 | After a quotation, one gesture or expression, not an emotion adverb | C: about half of 169 notes record this; T: manner adverb near zero (zh.md §1b) | `narrative-pass.md` §5 emotion mode (named → behavioural); zh.md §2 row | A gesture after every quotation is a metronome; three or four per piece |
-| At the emotional peak let the quotation stand whole; do not cut it into fragments | C | rubric Group E dialogue proportion (calibration, not a target) | Long quotations raise the quotation share; keep the count low elsewhere |
+| At the emotional peak let the quotation stand whole; do not cut it into fragments | C | rubric Group E dialogue proportion (calibration, not a target) | Long quotations raise the quotation share; keep the count low elsewhere. On write from a supplied transcript only: an existing quotation that is already split is never recombined on refactor or recreate (SKILL.md quoted-material guardrail) |
 | End on the person's own words or an everyday action, without comment | C: endings quotation 47 / return to person 20 of 169 | check 7 | Same as the scene-lead ending cost |
 
 ### 論證式 (argument)
