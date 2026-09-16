@@ -56,7 +56,7 @@ The contract in short: sepia's architecture decisions come first. The voice's mo
 
 ## Sentence rhythm and Chinese calibration
 
-The style pass checks the *spread* of sentence lengths, the one syntactic measure on which every study that measured it agrees (human text varies more within a passage, in English and in Chinese); mean sentence length, punctuation counts, and paragraph length are not treated as signals because the measured directions contradict each other. Chinese text loads `references/languages/zh.md`, a calibration built on the one measured Chinese corpus (HC3, 2023) with its limits stated in the file; evidence and numbers are in `research/rhythm-syntax.md`.
+The style pass checks the *spread* of sentence lengths, the one syntactic measure on which every study that measured it agrees (human text varies more within a passage, in English and in Chinese); mean sentence length, punctuation counts, and paragraph length are not treated as signals because the measured directions contradict each other. Chinese text loads `references/languages/zh.md`, a calibration built on the one human-vs-machine Chinese corpus (HC3, 2023) plus a private human-side measurement of Traditional Chinese journalism (about two thousand articles from one unnamed Taiwanese publication over about ten years; corpus not distributed), with the limits of both stated in the file; evidence and numbers are in `research/rhythm-syntax.md`, and the journalism digest is `research/zh-news-corpus.md`.
 
 ## Install
 
