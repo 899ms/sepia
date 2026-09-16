@@ -97,7 +97,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
-| Quote the original notice or message and stamp its time; let the reader compute the gap | C: 22 as a component | check 5; `domains/postmortems.md` rule 1 | Quoting documents risks long verbatim runs; cut to what the reader needs |
+| Quote the original notice or message and stamp its time; let the reader compute the gap | C: 22 as a component | check 5; `domains/postmortems.md` rule 1 | On write from supplied source material, select the excerpt the reader needs before quoting it; on refactor or recreate an existing quoted notice is never shortened or reflowed (SKILL.md quoted-material guardrail) |
 | Record throughout, judge only in the last section | C | check 4, check 7 | Rarely carries a whole piece (C: 1 pure) |
 
 ### 懸念揭露 (reveal)
@@ -161,7 +161,7 @@ After B — 數據驟動 (moves: figure with comparison; method in the body; rea
 >
 > 這個數字來自事故記錄的重試計數。沒有設 jitter 的重試佇列會把所有重送壓進同一個時間窗；下游服務對彼此啟動限流，2 點 41 分才找到原因。
 >
-> 急診端的值班護理師說：「電腦轉圈，我就先用紙。」2 點 05 分起，她把三張紙本檢傷單夾上白板。
+> 急診端的值班護理師說：「電腦轉圈，我就先用紙。」2 點 05 分起，三張紙本檢傷單夾上了白板。
 >
 > 2 點 47 分 `RETRY_JITTER=full` 設上，事故歷時 45 分鐘。值班平台工程師說，這個佇列的預設值從來沒有人檢視過；3 月 6 日，所有佇列的預設值都改了。
 >
@@ -184,7 +184,7 @@ After C — 調查追蹤 (argument spine with a timeline component; moves: quest
 >
 > 急診端的值班護理師 14:05 就把三張紙本檢傷單夾上白板。「電腦轉圈，我就先用紙。」
 >
-> 值班平台工程師的說法是另一面：這個佇列的預設值從來沒有人檢視過。14:47，他把 `RETRY_JITTER=full` 設上。
+> 值班平台工程師的說法是另一面：這個佇列的預設值從來沒有人檢視過。14:47，`RETRY_JITTER=full` 設上。
 >
 > 更新（3 月 6 日）：所有佇列的預設值已改。
 >
@@ -206,4 +206,4 @@ Blind review of After A (the version printed above, prose only, without its `Voi
 - Declared: `Passed: 1–10`; `Failed:` only `discourse-pass.md` §1 (QUD sequence "what happened → why → who fixed it when → afterwards" read as a linear interview; the first sentences of the four paragraphs form a clean outline). Style scan: one hedged candidate for connective stacking inside one sentence, counted as register-normal. Rhythm: sentence lengths 55/11/70/32/24/17 characters, no run of three near-equal sentences, the uniformity row did not fire. `Verdict: isolated hits → ship`. The voice's documented cost (scene detail under check 2) was not listed as a defect.
 - Undeclared: the same discourse §1 finding, plus `#5 Specificity` (the causal bridge from the emergency department to the retry storm is stated in the reporter's voice before the engineer appears; no year; the 14:02 start is missing) and `#2 Density` in the reverse direction (about 210 characters against a 400-character brief, with the missing facts silently omitted instead of left as TODOs). `Verdict: isolated hits → refactor`.
 
-What the pair shows: with the voice declared the review stops treating the venue's scene detail as filler and reports the shape's real weakness, a linear question order; without it the same text collects specificity and density findings that are about missing facts, which is the correct reading for a text with no declared shape. Three earlier drafts of After A were reviewed the same way and failed check 5 for a gesture, a closing count and a pronoun that were in no fact list; those drafts are gone and the lesson is recorded under the worked example. The write arm (`/sepia:sepia-write` on the approved fact list with the phrase) loaded this body, produced a four-paragraph piece with every fact traceable to the list, listed four TODOs for facts it did not have, and ended with `Voice applied: tw-journalism/場景導入 — moves: open on a person, sections cut by situation, scene in institution out, return to the object`. One worked example and one write, not measured evidence.
+What the pair shows: with the voice declared the review stops treating the venue's scene detail as filler and reports the shape's real weakness, a linear question order; without it the same text collects specificity and density findings that are about missing facts, which is the correct reading for a text with no declared shape. Three earlier drafts of After A were reviewed the same way and failed check 5 for a gesture, a closing count and a pronoun that were in no fact list; those drafts are gone and the lesson is recorded under the worked example. The write arm (`/sepia:sepia-write` on the approved fact list with the phrase) loaded this body, produced a four-paragraph piece with every fact traceable to the list, listed four TODOs for facts it did not have, and ended with `Voice applied: tw-journalism/場景導入 — moves: open on a person, sections cut by situation, scene in institution out, return to the object`. The last name on that line is a deviation the line makes visible: the move requires returning at a later moment, the fact list has no later whiteboard fact, and the piece returned to the 14:05 slips through a derived time gap. The closing line exists so that a reader can check the selection against the shape table; here it shows one move claimed that the facts did not support, which is the audit the line is for. One worked example and one write, not measured evidence.
