@@ -1,6 +1,6 @@
 # Voice profile — Taiwan long-form journalism (built-in, experimental, professional routes only)
 
-Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入型」). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. When a shape is named, moves come from that shape's table plus the cross-shape table; when none is named, sepia picks the shape from the decision table and says which.
+Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入型」). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. When a shape is named, moves come from that shape's table plus the cross-shape table; when none is named, sepia picks the shape from the decision table and says which. When the request is on another professional route (a ticket, a PR reply, a release note) or no shape's precondition holds, no shape is selected: sepia says so in one line, applies at most the cross-shape moves whose facts exist, and the closing line reads `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>`. The venue's own domain file still governs the text; this profile never overrides it.
 
 **Closing line (this body's own rule).** A write or recreate under this voice ends with one line, outside the prose: `Voice applied: tw-journalism/<shape> — moves: <3–5 move names>`. Review and refactor stage 1 print their normal report and add nothing; this line exists so a reader can check the selection rule without re-deriving it.
 
@@ -139,7 +139,7 @@ After A — 場景導入 (moves: open on a person; scene in, institution out; no
 >
 > 電腦轉圈的原因在急診之外：院內系統的重試佇列沒有設 jitter，一批失敗的請求在 200 毫秒內重送了 412 次，而平時每分鐘大約只有 3 次；下游服務於是互相限流。
 >
-> 值班平台工程師在 2 點 41 分找到原因，說這個佇列的預設值從來沒有人檢視過。2 點 47 分，`RETRY_JITTER=full` 設上。
+> 2 點 41 分找到原因。值班平台工程師說，這個佇列的預設值從來沒有人檢視過。2 點 47 分，`RETRY_JITTER=full` 設上。
 >
 > 3 月 6 日，所有佇列的預設值都改了。
 >
@@ -153,28 +153,30 @@ After A — 場景導入 (moves: open on a person; scene in, institution out; no
 | 「非常」「迅速地」「成功地」 deleted | (register default) | zh.md §1b, §2 |
 | 「總而言之…重要性…謹慎」 → the last dated fact | No summary ending | check 7 |
 
-Known cost and what the blind review taught: the shape's fourth move, return to the opening person or object at a later moment, is not used, because the approved fact list has no later whiteboard fact; an earlier draft returned to the same 2 點 05 分 moment and the declared-voice review correctly reported it as density, not as the move. Two drafts before that added a gesture and a closing count that were in no fact list, and a review caught both under check 5; one draft wrote 「他」 for an engineer the facts give only by role, caught the same way. The precondition section exists for exactly these.
+Known cost and what the blind review taught: the shape's fourth move, return to the opening person or object at a later moment, is not used, because the approved fact list has no later whiteboard fact; an earlier draft returned to the same 2 點 05 分 moment and the declared-voice review correctly reported it as density, not as the move. Two drafts before that added a gesture and a closing count that were in no fact list, and a review caught both under check 5; one draft wrote 「他」 for an engineer the facts give only by role, and one wrote that the engineer found the cause when the facts only say the cause was found at 14:41 and, separately, what the engineer said; both caught the same way. The precondition section exists for exactly these.
 
-After B — 數據驟動 (moves: figure with comparison; reading from someone on the ground; no summary ending). The shape's precondition is only partly met: the fact list has a baseline but no source or method for the count, so the "method in the body" move is not performed and its slot is a TODO.
+After B — 倒金字塔 (moves: the first sentence holds who, when, what, how many; write each provision in full; updates in a dated block). A data-led After was drafted first and withdrawn: the fact list has a baseline but no source or method for the count, the decision table says a shape whose precondition is not met is not chosen, and a worked example that chooses it anyway would teach the opposite. The facts do hold the inverted pyramid's precondition (date, actor, outcome, count).
 
-> 200 毫秒內 412 次重送。3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求連續重送；平時每分鐘大約 3 次，這 200 毫秒裡的量相當於平時兩個多小時的總和。
+> 3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求在 200 毫秒內重送了 412 次，下游服務對彼此限流；2 點 47 分設上 `RETRY_JITTER=full` 後恢復。
 >
-> 〔TODO：412 次與 200 毫秒這組數字的來源與口徑（哪份記錄、誰計的、含不含重試成功的請求），事實清單未給，不能補。〕沒有設 jitter 的重試佇列會把所有重送壓進同一個時間窗；下游服務對彼此啟動限流，2 點 41 分才找到原因。
+> 重試佇列沒有設 jitter。平時每分鐘大約 3 次重送；這 200 毫秒裡的量相當於平時兩個多小時的總和。2 點 41 分找到原因。
 >
-> 急診端的值班護理師說：「電腦轉圈，我就先用紙。」2 點 05 分起，三張紙本檢傷單夾上了白板。
+> 急診端，值班護理師 2 點 05 分起把三張紙本檢傷單夾上白板。「電腦轉圈，我就先用紙。」
 >
-> 2 點 47 分 `RETRY_JITTER=full` 設上，事故歷時 45 分鐘。值班平台工程師說，這個佇列的預設值從來沒有人檢視過；3 月 6 日，所有佇列的預設值都改了。
+> 值班平台工程師說，這個佇列的預設值從來沒有人檢視過。
 >
-> Voice applied: tw-journalism/數據驟動 — moves: figure with comparison, reading from the ground, no summary ending
+> 更新（3 月 6 日）：所有佇列的預設值已改。
+>
+> Voice applied: tw-journalism/倒金字塔 — moves: first sentence holds who when what how many, provisions in full, update block
 
 | Change | Move | Check |
 |---|---|---|
-| 412 and 200 ms lead, with the 3-per-minute baseline and the "two hours" conversion (412 ÷ 3 ≈ 137 minutes, arithmetic on approved facts) | Figure with comparison | check 5; `journalism.md` rule 4 |
-| The method slot is a TODO naming what is missing, not a sentence | (precondition not met; no move) | check 5; SKILL.md "Never invent specifics" |
-| The nurse's words after the figures, not a reporter verdict | Reading from the ground | check 7 |
-| 45 minutes computed from 14:02–14:47; ending on the 03-06 change | No summary ending | check 7 |
+| 「本文將探討…」 → one sentence with date, actor, outcome, count and the fix time | First sentence holds who, when, what, how many | `journalism.md` rule 1 (standfirst register) |
+| 412, 200 ms, the 3-per-minute baseline and the derived "two hours" (412 ÷ 3 ≈ 137 minutes) each written out | Provisions in full | check 5; `journalism.md` rule 4 |
+| The nurse's action and words, then the engineer's statement, each in its own paragraph without a verdict | (register default) | check 7 |
+| 「總而言之…」 → a dated update line | Update block | check 7; `journalism.md` rule 6 |
 
-Known cost of After B: the conversion sentence is derived, and check 5 accepts a derived figure only when both inputs are sourced; here both are in the approved list. An earlier draft wrote 「這個數字來自事故記錄的重試計數」, a provenance the fact list never gave; the review caught it. A data-led piece whose count has no stated source is a piece with a TODO in its second paragraph, and the shape should usually not be chosen for it.
+Known cost of After B: the first sentence runs long with several commas, which is this shape's norm and will read as a rhythm candidate if the rest of the piece is uniform; here the following sentences are short. The derived figure is accepted under check 5 because both inputs are in the approved list.
 
 After C — 論證式 spine with a timeline component (moves: question answered by the next speaker; every number carries a comparison; update block; no summary ending). Two parties appear, but they do not disagree on the record, so the argument shape's "two experts, one disagreeing" move is not claimed.
 
@@ -203,7 +205,7 @@ Known cost of After C: the nurse and the engineer describe different sides of th
 
 Blind review of After A (the version printed above, prose only, without its `Voice applied:` line) by a fresh executor (Claude Opus 5) on the professional route, 2026-09-16, once with the voice declared by the exact phrase and once without. Both runs loaded `domains/journalism.md`; only the declared run loaded `voice-skills.md` and this body. Neither run printed a `Voice fit:` line (professional route, #227), as specified.
 
-- Declared: `Passed: 1–10`; `Failed:` only `discourse-pass.md` §1 (QUD sequence "what happened → why → who fixed it when → afterwards" read as a linear interview; the first sentences of the four paragraphs form a clean outline). Style scan: one hedged candidate for connective stacking inside one sentence, counted as register-normal. Rhythm: sentence lengths 55/11/70/32/24/17 characters, no run of three near-equal sentences, the uniformity row did not fire. `Verdict: isolated hits → ship`. The voice's documented cost (scene detail under check 2) was not listed as a defect.
-- Undeclared: the same discourse §1 finding, plus `#5 Specificity` (the causal bridge from the emergency department to the retry storm is stated in the reporter's voice before the engineer appears; no year; the 14:02 start is missing) and `#2 Density` in the reverse direction (about 210 characters against a 400-character brief, with the missing facts silently omitted instead of left as TODOs). `Verdict: isolated hits → refactor`.
+- Declared: `Passed: 2, 3, 4, 6, 7, 8, 9, 10`. Failed: `discourse-pass.md` §1 (the four paragraphs' implied questions run "what happened → why → who fixed it when → afterwards", a linear interview; the first sentences form a clean outline) and `#5 Specificity` (the scene the opening sets, paper triage, is never closed: when the department went back to the system is neither a fact nor a TODO). Style scan: 「而」 and 「於是」 in one sentence noted as register-normal under zh.md §1b, not a hit. Rhythm: 53/11/70/10/32/24/17 characters, no run of three near-equal sentences, the uniformity row did not fire. `Verdict: isolated hits → refactor`. The voice's documented cost (scene detail under check 2) was not listed as a defect.
+- Undeclared: the same discourse §1 finding, `#5 Specificity` in a different form (the load-bearing figures and the 03-06 change carry no source or method; the two rates are in different units), and `#2 Density` in the reverse direction (the 14:02–14:47 span never appears, so the reader cannot tell how long paper triage lasted). `Verdict: isolated hits → refactor`.
 
-What the pair shows: with the voice declared the review stops treating the venue's scene detail as filler and reports the shape's real weakness, a linear question order; without it the same text collects specificity and density findings that are about missing facts, which is the correct reading for a text with no declared shape. Three earlier drafts of After A were reviewed the same way and failed check 5 for a gesture, a closing count and a pronoun that were in no fact list; those drafts are gone and the lesson is recorded under the worked example. The write arm (`/sepia:sepia-write` on the approved fact list with the phrase) loaded this body, produced a four-paragraph piece with every fact traceable to the list, listed four TODOs for facts it did not have, and ended with `Voice applied: tw-journalism/場景導入 — moves: open on a person, sections cut by situation, scene in institution out, return to the object`. The last name on that line is a deviation the line makes visible: the move requires returning at a later moment, the fact list has no later whiteboard fact, and the piece returned to the 14:05 slips through a derived time gap. The closing line exists so that a reader can check the selection against the shape table; here it shows one move claimed that the facts did not support, which is the audit the line is for. One worked example and one write, not measured evidence.
+What the pair shows: with the voice declared the review stops treating the venue's scene detail as filler and reports the shape's real weaknesses, a linear question order and an opened scene left open; without it the same text collects source and span findings that are about missing facts. Both readings are correct for their frame, and neither is passable on these facts alone: the approved list has no fact that closes the scene and no provenance for the count, which is why the worked example carries TODO-shaped gaps rather than sentences. Four earlier drafts of After A were reviewed the same way and failed check 5 for a gesture, a closing count, a pronoun and an attribution of the discovery that were in no fact list; those are gone and the lessons are recorded under the worked example. The write arm (`/sepia:sepia-write` on the approved fact list with the phrase) loaded this body, produced a four-paragraph piece with every fact traceable to the list, listed four TODOs for facts it did not have, and ended with `Voice applied: tw-journalism/場景導入 — moves: open on a person, sections cut by situation, scene in institution out, return to the object`. The last name on that line is a deviation the line makes visible: the move requires returning at a later moment, the fact list has no later whiteboard fact, and the piece returned to the 14:05 slips through a derived time gap. The closing line exists so that a reader can check the selection against the shape table; here it shows one move claimed that the facts did not support, which is the audit the line is for. One worked example and one write, not measured evidence.
