@@ -25,9 +25,9 @@ Rates in human prose. A near-zero rate means the form departs from this register
 
 | Form | Presence (T) and kind of quantity | How to read |
 |---|---|---|
-| Manner adverb 「X地」 before a verb | 1.9 per 100k chars | Departs from this register when it appears; §2 row (T), journalism and expository prose only |
+| Manner adverb 「X地」 before a verb | 1.9 per 100k chars | Departs from this register when it appears; §2 row (T), journalism only |
 | 「很」 : 「非常」 | occurrence ratio ≈ 11:1 | 「非常／十分／極為」 stacking is the departure; one instance is not |
-| Paired dash 「──…──」 | per-article median 0 per 1k chars | The paired insertion is the departure, not the dash |
+| Paired dash 「──…──」 | 15% of articles contain one; 4 per 100k chars (per-article median 0) | Rarer than the single dash by an order of magnitude, but present; not a departure on its own, and no hunt row |
 | Single 「──」 | 61% of articles contain it; 40 per 100k chars | Not a signal |
 | Single-glyph 「—」 | 7% of articles contain it | Glyph choice; a register mismatch at most |
 | 「……」 | 2% of articles contain it; 0.9 per 100k chars | Departs in narration; inside a quotation it is speech |
@@ -36,7 +36,8 @@ Rates in human prose. A near-zero rate means the form departs from this register
 | Three-item 頓號 list (A、B、C) | 59% of articles contain one | Register-normal; see §4 |
 | Sentence-initial 「其實」 | 15% of articles contain it | Register-normal; see §4 |
 | 「此外」 / 「然而」 | 37% / 53% of articles contain it | Single connectives are register-normal; chaining across clauses is still §2 |
-| Quote-bearing sentence with no attribution verb; colon lead-in before a quotation | per-article median share 61%; 6% | 「某某表示：『…』」 as the only pattern departs; §3 restore |
+| Sentence bearing any 「」 with no attribution verb (terminology and scare quotes included) | per-article median share 61% | Most 「」 in this register mark terms, not speech; this row says nothing about attribution of speech |
+| Sentence bearing a speech-length quotation (15 characters or more) with no attribution verb; colon lead-in before a quotation | per-article median share 33% (q1 20%, q3 50%); 6% | About a third of speech quotations ride on context for their speaker; 「某某表示：『…』」 as the only pattern departs; §3 restore. Position of 「說」 is not measured |
 | Sentence length | per-article median of the mean 59 chars; of the within-article SD 34 | Dispersion is the human trait; length itself is not (consistent with §1 and §5) |
 | Runs of three near-equal sentences | per-article median 2 per 100 sentences | §5 as written |
 | Nominalization 「○○性／○○化／○○感」 | 77 per 100k chars, mostly fixed legal-policy terms | Not a signal in this register; §4 row |
@@ -50,22 +51,22 @@ Rates in human prose. A near-zero rate means the form departs from this register
 | Second-person address outside dialogue or instructions | 「你會發現」「您可以」 in expository prose | Delete or recast as a statement |
 | Disyllabic padding where a monosyllable is idiomatic | 「進行討論」「加以說明」「予以處理」「做出決定」 | 「討論」「說明」「處理」「決定」 — the verb alone |
 | Flat sentence length (SD 6.729 vs 9.248 words) | Runs of adjacent sentences of about the same length | Apply the §5 check as written (runs of three or more adjacent near-equal sentences): split one long sentence, merge two short ones, delete a clause. §5 sets no length cutoff in any language; no Chinese short- or long-sentence share is measured, and none is invented here. Count in whichever unit you use consistently — the SD gap holds in both 詞 and 字. T reports a per-article median mean of 59 characters with within-article SD 34 for journalism, again as dispersion, not a length target |
-| Manner adverb 「X地」 before a speech or action verb — journalism and expository prose only (T: 1.9 per 100k chars in human journalism) | 「緩緩地說」「堅定地表示」「無奈地說」 | In journalistic or expository Chinese, delete the adverb and let the verb, or a following gesture, carry it. In fiction and dialogue tags leave it: the rate is from one journalism register and says nothing about narrative prose. Human-side presence, not a measured machine excess |
+| Manner adverb 「X地」 before a speech or action verb — journalism only (T: 1.9 per 100k chars in human journalism) | 「緩緩地說」「堅定地表示」「無奈地說」 | In journalistic Chinese, delete the adverb and let the verb, or a following gesture, carry it. Elsewhere (fiction, dialogue tags, technical and incident writing) leave it: the rate is from one journalism register and T says nothing about other registers. Human-side presence, not a measured machine excess |
 
 ## 3 What to restore (Sepia inferences; shape of `style-pass.md` §4)
 
-Sprinkled, never poured, and only where the register allows: sentence-final and mid-sentence 語氣詞 (啊、吧、呢、嘛、喔、啦、耶) — the largest measured gap in §1; monosyllabic verbs and adjectives; a spread of sentence lengths; subject ellipsis and colloquial contraction where a native writer would drop the subject, the Chinese counterpart of §4's contractions. Formal venues keep their register: a legal notice does not get 「嘛」. In journalism (T), quotations without an attribution verb, and 「說」 placed after the quotation, are the human pattern and may be restored.
+Sprinkled, never poured, and only where the register allows: sentence-final and mid-sentence 語氣詞 (啊、吧、呢、嘛、喔、啦、耶) — the largest measured gap in §1; monosyllabic verbs and adjectives; a spread of sentence lengths; subject ellipsis and colloquial contraction where a native writer would drop the subject, the Chinese counterpart of §4's contractions. Formal venues keep their register: a legal notice does not get 「嘛」. In journalism (T), about a third of speech-length quotation sentences carry no attribution verb (per-article median 33%); where the context already names the speaker, leaving a quotation unattributed is register-normal and may be restored. Where 「說」 sits is not measured.
 
 ## 4 Editorial heuristics — presence measured on the human side only (T), no machine side
 
-Reported by Taiwan editors and readers in 2026 (自由時報 2026-07-12; 數位時代 2026-04-22; ledger "Consulted" table). T gives each a presence rate in human journalism; none has a machine-side number. A single instance is register-normal; a cluster in narration is what the §2 template is for. Each is a Chinese form of a template already in `style-pass.md` §2:
+Reported by Taiwan editors and readers in 2026 (自由時報 2026-07-12; 數位時代 2026-04-22; ledger "Consulted" table). T gives a presence rate in human journalism for the exact form it counted, named in the last column; forms it did not count stay unmeasured. None has a machine-side number. A single instance of a counted form is register-normal; a cluster in narration is what the §2 template is for. Each is a Chinese form of a template already in `style-pass.md` §2:
 
 | Reported tell | Maps to | Presence in human journalism (T) |
 |---|---|---|
-| 「不是…而是…」「這不是 X，而是 Y」 | §2 "it's not X, it's Y" | 30% of articles contain it |
+| 「不是…而是…」「這不是 X，而是 Y」 | §2 "it's not X, it's Y" | 30% of articles contain 「不是…而是」 (this form only) |
 | Nominalized subjects 「○○性／○○感／○○化」 (「自我的探索」 for 「找自己」) | §2 nominalization | 77 per 100k chars, mostly fixed legal-policy terms; not a signal, see §1b |
-| Three parallel clauses or images, everywhere | §2 rule of three | 59% of articles contain a three-item 頓號 list |
-| Paragraph openers 「其實…」「事實上…」; abstractions in quotation marks (「趨勢」「關鍵」「必然」) | §3 formula phrases | 15% of articles contain a sentence-initial 「其實」 |
+| Three parallel clauses or images, everywhere | §2 rule of three | Only the three-item 頓號 list (A、B、C) was counted: 59% of articles contain one. Parallel clauses and images were not counted and stay unmeasured |
+| Paragraph openers 「其實…」「事實上…」; abstractions in quotation marks (「趨勢」「關鍵」「必然」) | §3 formula phrases | Only sentence-initial 「其實」 was counted: 15% of articles contain one. 「事實上」 and quoted abstractions were not counted and stay unmeasured |
 
 ## 5 Not signals in Chinese
 
