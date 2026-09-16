@@ -34,7 +34,8 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
-| Open on one person doing one small thing in one place; the first number arrives in the third paragraph or later | C: scene or person lead in the majority of 169; T: first-paragraph digit share (zh.md §1b) | `discourse-pass.md` §4 machine opening; `journalism.md` rule 1 | Answer-first domains (postmortems, release notes) win by venue precedence; this move is not used there |
+| Open on one person doing one small thing in one place, with no explanation of why the piece exists | C: scene or person lead in the majority of 169 | `discourse-pass.md` §4 machine opening; `journalism.md` rule 1 | Answer-first domains (postmortems, release notes) win by venue precedence; this move is not used there |
+| Hold the first number until the third paragraph or later; a time of day in the opening is a scene fact, not a number | C: scene pieces; T: first-paragraph digit share (zh.md §1b) | `discourse-pass.md` §4 | Data-led and inverted-pyramid material cannot use it; a count the reader needs at once is a fact before it is a move |
 | Cut sections by situation (a room, a shift, a road), not by numbered problems | C: 7 of the 9 pure scene pieces | `professional-pass.md` check 3; `journalism.md` rule 2 | Argument-heavy material scatters when cut by situation; use only on the scene sections of a mixed piece |
 | Each section enters through the scene and exits through the institution; the institutional sentences do not outnumber the scene sentences | C: scene pieces | `discourse-pass.md` §1 QUD | Density (check 2) will report scene detail; `journalism.md` rule 8 says which detail is information |
 | End by returning to the opening person or object at a later moment; the last sentence does not comment | C: endings return to person 20 / suspended 19 of 169; summary 7 of 169 | `professional-pass.md` check 7 | When the reader needs the outcome, an open ending is a missing fact, not a style choice |
@@ -147,7 +148,7 @@ After A — 場景導入 (moves: open on a person; scene in, institution out; no
 
 | Change | Move | Check |
 |---|---|---|
-| 「本文將探討…」 deleted; a time, a place, a person and a recorded action open the piece | Open on a person | `discourse-pass.md` §4; `journalism.md` tells row 1 |
+| 「本文將探討…」 deleted; a time, a place, a person and a recorded action open the piece. The separate "hold the first number" move is not claimed: 三張 sits in the first paragraph because it is part of the recorded action | Open on a person | `discourse-pass.md` §4; `journalism.md` tells row 1 |
 | 「無奈地表示：“…”」 → the recorded action, then the approved quotation in 「」, no attribution verb, no adverb | (register default; `journalism.md` rule 3) | zh.md §2 manner adverb; §1b attribution rows |
 | 「——…——」 paired insertion → one plain sentence carrying 412, 200 ms and the 3-per-minute baseline | Scene in, institution out | check 5; zh.md §1b paired-dash row |
 | 「非常」「迅速地」「成功地」 deleted | (register default) | zh.md §1b, §2 |
@@ -171,7 +172,7 @@ After B — 倒金字塔 (moves: the first sentence holds who, when, what, how m
 
 | Change | Move | Check |
 |---|---|---|
-| 「本文將探討…」 → one sentence with date, actor, count and the fix time; recovery is a TODO because the facts stop at the setting | First sentence holds who, when, what, how many | `journalism.md` rule 1 (standfirst register); check 5 |
+| 「本文將探討…」 → one sentence with date, actor, count and the setting time; recovery is a TODO because the facts stop at the setting | First sentence holds who, when, what, how many | `journalism.md` rule 1 (standfirst register); check 5 |
 | 412, 200 ms, the 3-per-minute baseline and the derived "two hours" (412 ÷ 3 ≈ 137 minutes) each written out | Provisions in full | check 5; `journalism.md` rule 4 |
 | The nurse's action and words, then the engineer's statement, each in its own paragraph without a verdict | (register default) | check 7 |
 | 「總而言之…」 → a dated update line | Update block | check 7; `journalism.md` rule 6 |
