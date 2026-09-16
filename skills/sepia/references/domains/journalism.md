@@ -4,7 +4,7 @@ Covers features, investigative and data stories, explanatory news, interviews, a
 
 ## Human baseline
 
-Lead and body are two registers: the standfirst gives the result, the first paragraph of the body puts a person, a place or a number in front of the reader before any definition. Subheads carry the transitions, so paragraphs rarely open on a connective. Quotations keep the speaker's spoken texture and are often attributed by context or a post-posed 「說」; most 「」 in the text mark terms, not speech. The reporter appears in three fixed roles: stating method, steering a source back, recording a silence. Pieces end on a quotation, a fact, a return to the opening person, or an open question; a summary or a moral is rare (7 of 169 close-read articles). Follow-ups arrive as a dated update block, not as edits to the body.
+Lead and body are two registers: the standfirst gives the result, the first paragraph of the body puts a person, a place or a number in front of the reader before any definition. Subheads carry the transitions, so paragraphs rarely open on a connective. Quotations keep the speaker's spoken texture and are often attributed by context or a post-posed 「說」; most 「」 in the text mark terms, not speech. The reporter appears in a few fixed roles: stating method, steering a source back, recording a silence, and, in a first-person account, narrating what the reporter went to see and observed; not delivering a verdict the reporting did not establish. Pieces end on a quotation, a fact, a return to the opening person, or an open question; a summary or a moral is rare (7 of 169 close-read articles). Follow-ups arrive as a dated update block, not as edits to the body.
 
 ## AI tells in this domain
 
