@@ -60,7 +60,7 @@ Robust across the three models (direction the same in all three, difference larg
 | Quotations: median length chars / multi-sentence share, per-article medians (prompt fixed length and asked for three quotations, which constrains these) | 8 / 6% | 46 / 38% | 27 / 25% | 30 / 41% | Machine quotations are three to six times longer and four to seven times more often multi-sentence; most human 「」 mark terms (§1b). Length is a proxy, not a speech classification |
 | 「不是…而是」: share of articles; per 100k chars | §1b (30%; 6.3) | 46%; 47.0 | 25%; 18.5 | 35%; 37.1 | Per 100k, 2.9–7.5× the human rate; the share of articles is similar. One instance stays register-normal; the machine side is the cluster |
 | 「坦言」, per 100k chars | 4.6 | 30.2 | 20.4 | 10.6 | 2–7× per 100k in all three; the share of articles is mixed (weak table) |
-| Exclamation marks: share of articles; per 100k | 54%; 28 | 0; 0 | 0; 0 | 0; 0 | Human exclamation marks sit almost entirely inside quotations (§1b); machines produce none |
+| Exclamation marks: share of articles; per 100k | 54%; 28 | 0; 0 | 0; 0 | 0; 0 | Machines produce none. The close reading notes that the human ones sit mostly inside quotations; placement is not measured |
 | Dashes: 「──」 share of articles / paired insertion share | §1b (61%) / §1b (15%) | 0 / 0 | 0 / 0 | 0 / 2% | The belief that a paired em-dash insertion marks machine Chinese is not supported here: the machines barely use the two-cell dash at all. `MOE-PUNCT-2008` specifies the two-cell 「──」 |
 
 Model-specific or weak (report, do not generalise):
