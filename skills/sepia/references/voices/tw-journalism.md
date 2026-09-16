@@ -134,7 +134,7 @@ Before (synthetic, written to carry the register's departures):
 
 > 本文將探討一起發生在北部某區域醫院急診的系統事故。2026年3月4日下午，該院的掛號與檢傷系統突然變得非常緩慢，值班護理師無奈地表示：“系統一直轉圈圈，我們完全沒辦法作業。”值得注意的是，事故的根本原因——重試佇列缺乏抖動機制——導致在極短時間內產生了大量重複請求，進而引發下游服務相互限流的連鎖反應。技術團隊隨後迅速地進行了排查，並在當天下午成功地修復了問題。總而言之，這起事故凸顯了系統韌性的重要性，也提醒我們在設計重試機制時必須更加謹慎。
 
-After A — 場景導入 (moves: open on a person; scene in, institution out; no summary ending):
+After A — 場景導入 (moves: open on a person; no summary ending). Only two moves have facts behind them: there are no sections to cut by situation, no later moment to return to, and one scene paragraph followed by three institutional ones does not perform "scene in, institution out". The closing line declares two, which the count rule allows when fewer than three moves have facts.
 
 > 3 月 4 日下午 2 點 05 分，北部一間區域醫院的急診，值班護理師把三張紙本檢傷單夾到白板上，之後的分級改用手寫。「電腦轉圈，我就先用紙。」
 >
@@ -144,19 +144,19 @@ After A — 場景導入 (moves: open on a person; scene in, institution out; no
 >
 > 3 月 6 日，所有佇列的預設值都改了。
 >
-> Voice applied: tw-journalism/場景導入 — moves: open on a person, scene in institution out, no summary ending
+> Voice applied: tw-journalism/場景導入 — moves: open on a person, no summary ending
 
 | Change | Move | Check |
 |---|---|---|
 | 「本文將探討…」 deleted; a time, a place, a person and a recorded action open the piece. The separate "hold the first number" move is not claimed: 三張 sits in the first paragraph because it is part of the recorded action | Open on a person | `discourse-pass.md` §4; `journalism.md` tells row 1 |
 | 「無奈地表示：“…”」 → the recorded action, then the approved quotation in 「」, no attribution verb, no adverb | (register default; `journalism.md` rule 3) | zh.md §2 manner adverb; §1b attribution rows |
-| 「——…——」 paired insertion → one plain sentence carrying 412, 200 ms and the 3-per-minute baseline | Scene in, institution out | check 5; zh.md §1b paired-dash row |
+| 「——…——」 paired insertion → one plain sentence carrying 412, 200 ms and the 3-per-minute baseline | (register default; not the "scene in, institution out" move, which needs sections) | check 5; zh.md §1b paired-dash row |
 | 「非常」「迅速地」「成功地」 deleted | (register default) | zh.md §1b, §2 |
 | 「總而言之…重要性…謹慎」 → the last dated fact | No summary ending | check 7 |
 
 Known cost and what the blind review taught: the shape's fourth move, return to the opening person or object at a later moment, is not used, because the approved fact list has no later whiteboard fact; an earlier draft returned to the same 2 點 05 分 moment and the declared-voice review correctly reported it as density, not as the move. Two drafts before that added a gesture and a closing count that were in no fact list, and a review caught both under check 5; one draft wrote 「他」 for an engineer the facts give only by role, and one wrote that the engineer found the cause when the facts only say the cause was found at 14:41 and, separately, what the engineer said; both caught the same way. The precondition section exists for exactly these.
 
-After B — 倒金字塔 (moves: the first sentence holds who, when, what, how many; write each provision in full; updates in a dated block). A data-led After was drafted first and withdrawn: the fact list has a baseline but no source or method for the count, the decision table says a shape whose precondition is not met is not chosen, and a worked example that chooses it anyway would teach the opposite. The facts do hold the inverted pyramid's precondition (date, actor, outcome, count).
+After B — 倒金字塔 (moves: the first sentence holds who, when, what, how many; updates in a dated block; no summary ending). "Write each provision in full" is not claimed: the facts hold incident measurements and a setting, not provisions. A data-led After was drafted first and withdrawn: the fact list has a baseline but no source or method for the count, the decision table says a shape whose precondition is not met is not chosen, and a worked example that chooses it anyway would teach the opposite. The facts do hold the inverted pyramid's precondition (date, actor, outcome, count).
 
 > 3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求在 200 毫秒內重送了 412 次，下游服務對彼此限流；2 點 47 分設上 `RETRY_JITTER=full`。〔TODO：何時恢復、是否因此恢復，事實清單未給。〕
 >
@@ -168,14 +168,14 @@ After B — 倒金字塔 (moves: the first sentence holds who, when, what, how m
 >
 > 更新（3 月 6 日）：所有佇列的預設值已改。
 >
-> Voice applied: tw-journalism/倒金字塔 — moves: first sentence holds who when what how many, provisions in full, update block
+> Voice applied: tw-journalism/倒金字塔 — moves: first sentence holds who when what how many, update block, no summary ending
 
 | Change | Move | Check |
 |---|---|---|
 | 「本文將探討…」 → one sentence with date, actor, count and the setting time; recovery is a TODO because the facts stop at the setting | First sentence holds who, when, what, how many | `journalism.md` rule 1 (standfirst register); check 5 |
-| 412, 200 ms, the 3-per-minute baseline and the derived "two hours" (412 ÷ 3 ≈ 137 minutes) each written out | Provisions in full | check 5; `journalism.md` rule 4 |
+| 412, 200 ms, the 3-per-minute baseline and the derived "two hours" (412 ÷ 3 ≈ 137 minutes) each written out | (register default under `journalism.md` rule 4; not the provisions move) | check 5 |
 | The nurse's action and words, then the engineer's statement, each in its own paragraph without a verdict | (register default) | check 7 |
-| 「總而言之…」 → a dated update line | Update block | check 7; `journalism.md` rule 6 |
+| 「總而言之…」 → a dated update line, and the piece stops there | Update block; no summary ending | check 7; `journalism.md` rule 6 |
 
 Known cost of After B: the first sentence runs long with several commas, which is this shape's norm and will read as a rhythm candidate if the rest of the piece is uniform; here the following sentences are short. The derived figure is accepted under check 5 because both inputs are in the approved list.
 
