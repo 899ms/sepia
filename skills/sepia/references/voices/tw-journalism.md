@@ -155,49 +155,49 @@ After A — 場景導入 (moves: open on a person; scene in, institution out; no
 
 Known cost and what the blind review taught: the shape's fourth move, return to the opening person or object at a later moment, is not used, because the approved fact list has no later whiteboard fact; an earlier draft returned to the same 2 點 05 分 moment and the declared-voice review correctly reported it as density, not as the move. Two drafts before that added a gesture and a closing count that were in no fact list, and a review caught both under check 5; one draft wrote 「他」 for an engineer the facts give only by role, caught the same way. The precondition section exists for exactly these.
 
-After B — 數據驟動 (moves: figure with comparison; method in the body; reading from someone on the ground; no summary ending):
+After B — 數據驟動 (moves: figure with comparison; reading from someone on the ground; no summary ending). The shape's precondition is only partly met: the fact list has a baseline but no source or method for the count, so the "method in the body" move is not performed and its slot is a TODO.
 
-> 200 毫秒內 412 次重送。3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求連續重送；平時一小時裡每分鐘大約 3 次，這 200 毫秒裡的量相當於平時兩個多小時的總和。
+> 200 毫秒內 412 次重送。3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求連續重送；平時每分鐘大約 3 次，這 200 毫秒裡的量相當於平時兩個多小時的總和。
 >
-> 這個數字來自事故記錄的重試計數。沒有設 jitter 的重試佇列會把所有重送壓進同一個時間窗；下游服務對彼此啟動限流，2 點 41 分才找到原因。
+> 〔TODO：412 次與 200 毫秒這組數字的來源與口徑（哪份記錄、誰計的、含不含重試成功的請求），事實清單未給，不能補。〕沒有設 jitter 的重試佇列會把所有重送壓進同一個時間窗；下游服務對彼此啟動限流，2 點 41 分才找到原因。
 >
 > 急診端的值班護理師說：「電腦轉圈，我就先用紙。」2 點 05 分起，三張紙本檢傷單夾上了白板。
 >
 > 2 點 47 分 `RETRY_JITTER=full` 設上，事故歷時 45 分鐘。值班平台工程師說，這個佇列的預設值從來沒有人檢視過；3 月 6 日，所有佇列的預設值都改了。
 >
-> Voice applied: tw-journalism/數據驟動 — moves: figure with comparison, method in the body, reading from the ground, no summary ending
+> Voice applied: tw-journalism/數據驟動 — moves: figure with comparison, reading from the ground, no summary ending
 
 | Change | Move | Check |
 |---|---|---|
 | 412 and 200 ms lead, with the 3-per-minute baseline and the "two hours" conversion (412 ÷ 3 ≈ 137 minutes, arithmetic on approved facts) | Figure with comparison | check 5; `journalism.md` rule 4 |
-| 「這個數字來自…」 as its own paragraph | Method in the body | check 5 |
+| The method slot is a TODO naming what is missing, not a sentence | (precondition not met; no move) | check 5; SKILL.md "Never invent specifics" |
 | The nurse's words after the figures, not a reporter verdict | Reading from the ground | check 7 |
 | 45 minutes computed from 14:02–14:47; ending on the 03-06 change | No summary ending | check 7 |
 
-Known cost of After B: the conversion sentence is derived, and check 5 accepts a derived figure only when both inputs are sourced; here both are in the approved list.
+Known cost of After B: the conversion sentence is derived, and check 5 accepts a derived figure only when both inputs are sourced; here both are in the approved list. An earlier draft wrote 「這個數字來自事故記錄的重試計數」, a provenance the fact list never gave; the review caught it. A data-led piece whose count has no stated source is a piece with a TODO in its second paragraph, and the shape should usually not be chosen for it.
 
-After C — 調查追蹤 (argument spine with a timeline component; moves: question answered by the next speaker; two parties on the record; timestamps from the record; update block):
+After C — 論證式 spine with a timeline component (moves: question answered by the next speaker; every number carries a comparison; update block; no summary ending). Two parties appear, but they do not disagree on the record, so the argument shape's "two experts, one disagreeing" move is not claimed.
 
-> 3 月 4 日 14:02，北部一間區域醫院急診背後的系統開始把失敗的請求重送。14:41 才找到原因。中間的 39 分鐘，誰知道發生了什麼？
+> 3 月 4 日 14:02，北部一間區域醫院急診背後的系統開始把失敗的請求重送。14:41 才找到原因。中間的 39 分鐘，急診那邊怎麼過的？
 >
-> 事故記錄先回答：重試佇列沒有設 jitter；200 毫秒內同一批請求重送 412 次，平時每分鐘大約 3 次；下游服務對彼此限流。
+> 值班護理師 14:05 就把三張紙本檢傷單夾上白板。「電腦轉圈，我就先用紙。」
 >
-> 急診端的值班護理師 14:05 就把三張紙本檢傷單夾上白板。「電腦轉圈，我就先用紙。」
+> 系統這邊的狀況是：重試佇列沒有設 jitter，200 毫秒內同一批請求重送 412 次，而平時每分鐘大約 3 次；下游服務對彼此限流。
 >
-> 值班平台工程師的說法是另一面：這個佇列的預設值從來沒有人檢視過。14:47，`RETRY_JITTER=full` 設上。
+> 值班平台工程師說，這個佇列的預設值從來沒有人檢視過。14:47，`RETRY_JITTER=full` 設上。
 >
 > 更新（3 月 6 日）：所有佇列的預設值已改。
 >
-> Voice applied: tw-journalism/論證式 — moves: question answered by the next speaker, two parties on the record, timestamps from the record, update block
+> Voice applied: tw-journalism/論證式 — moves: question answered by the next speaker, every number carries a comparison, update block, no summary ending
 
 | Change | Move | Check |
 |---|---|---|
-| 「本文將探討」 → two timestamps and a question the record answers in the next paragraph | Question answered by the next speaker | `discourse-pass.md` §1; `journalism.md` tells (self-answered question) |
-| The nurse and the engineer each get their own paragraph and their own words | Two parties on the record | check 4 as `journalism.md` rule 7 reads it |
-| 14:02 / 14:05 / 14:41 / 14:47 stamped from the record | Timestamps from the record | check 5; `domains/postmortems.md` rule 1 |
-| 「總而言之…」 → a dated update line | Update block | check 7; `journalism.md` rule 6 |
+| 「本文將探討」 → two timestamps and a question that the nurse, not the reporter, answers in the next paragraph | Question answered by the next speaker | `discourse-pass.md` §1; `journalism.md` tells (self-answered question) |
+| 412 in 200 ms set against the 3-per-minute baseline | Every number carries a comparison | check 5; `journalism.md` rule 4 |
+| 「總而言之…」 → a dated update line | Update block (cross-shape) | check 7; `journalism.md` rule 6 |
+| The piece stops on the update, no verdict | No summary ending (cross-shape) | check 7 |
 
-Known cost of After C: the opening question is answered by the record rather than by a person; the shape's fuller form has a source answer it.
+Known cost of After C: the nurse and the engineer describe different sides of the same event and do not contradict each other, so the argument shape's central move (a disagreement on the record) is absent; with only these facts the piece is a timeline wearing an argument's opening question. An earlier draft's closing line claimed that move and a "timestamps from the record" move that is in no table; both are gone.
 
 ## Grounding
 
