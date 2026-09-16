@@ -101,6 +101,7 @@
 3. **推論**：引語收段不補評論是可 restore 的新聞寫法（細讀 47／169 引語收尾）；說話引語的 attribution 未量測（引語列只有長度代理），不從 T 推 restore。
 4. **推論**：句長、逗號連綴、破折號單用、分號、「此外／然而」單用，都不是訊號，應寫進 §5。
 5. **推論**：總結式收尾在這個語域接近零，與 `professional-pass.md` check 7 的方向一致。
+6. **推論**：以上五點的 venue 版本寫進 `skills/sepia/references/domains/journalism.md`（長篇新聞 domain），每列 Evidence 欄標明是人類側量測、細讀計數，或尚未量測。
 
 ## 不進 skill 的東西與原因
 
