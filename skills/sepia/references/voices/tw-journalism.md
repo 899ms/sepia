@@ -1,8 +1,8 @@
 # Voice profile — Taiwan long-form journalism (built-in, experimental, professional routes only)
 
-Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入型」). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. When a shape is named, moves come from that shape's table plus the cross-shape table; when none is named, sepia picks the shape from the decision table and says which. When the request is on another professional route (a ticket, a PR reply, a release note) or no shape's precondition holds, no shape is selected: sepia says so in one line, applies at most the cross-shape moves whose facts exist, and the closing line reads `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>`. The venue's own domain file still governs the text; this profile never overrides it.
+Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入型」). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. When a shape is named and its precondition holds, moves come from that shape's table plus the cross-shape table. When a shape is named but its precondition fails while another shape's holds, sepia does not use the named shape: it says in one line which precondition failed, picks the viable shape from the decision table, and names it in the closing line. When none is named, sepia picks the shape from the decision table and says which. When the request is on another professional route (a ticket, a PR reply, a release note) or no shape's precondition holds, no shape is selected: sepia says so in one line, applies at most the cross-shape moves whose facts exist, and the closing line reads `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>`. The venue's own domain file still governs the text; this profile never overrides it.
 
-**Closing line (this body's own rule).** A write or recreate under this voice ends with one line, outside the prose: `Voice applied: tw-journalism/<shape> — moves: <3–5 move names>`. Review and refactor stage 1 print their normal report and add nothing; this line exists so a reader can check the selection rule without re-deriving it.
+**Closing line (this body's own rule).** A write or recreate under this voice ends with one line, outside the prose: `Voice applied: tw-journalism/<shape> — moves: <3–5 move names>`, or, on the no-shape path defined above, `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>` with zero to five names. The 3–5 rule binds only when a shape is selected; a move is never added to satisfy the count. Review and refactor stage 1 print their normal report and add nothing; this line exists so a reader can check the selection rule without re-deriving it.
 
 Evidence tiers, kept apart: (T) one private human-side measurement of Traditional Chinese long-form journalism, ledger `ZH-NEWS-CORPUS-2026`, whose numbers live only in `languages/zh.md` §1b; (C) a close reading of 169 articles from the same corpus, cited as counts of 169 (a sample size, not a corpus size); (I) Sepia inference. There is no author-testimony tier and no machine-side measurement: nothing here says what a machine does, only what this register does. The corpus is about two thousand articles from one unnamed Taiwanese publication, spanning about ten years, human text only, not distributed. No sentence of any article appears in this file; every example is synthetic.
 
@@ -178,7 +178,7 @@ After B — 倒金字塔 (moves: the first sentence holds who, when, what, how m
 
 Known cost of After B: the first sentence runs long with several commas, which is this shape's norm and will read as a rhythm candidate if the rest of the piece is uniform; here the following sentences are short. The derived figure is accepted under check 5 because both inputs are in the approved list.
 
-After C — 論證式 spine with a timeline component (moves: question answered by the next speaker; every number carries a comparison; update block; no summary ending). Two parties appear, but they do not disagree on the record, so the argument shape's "two experts, one disagreeing" move is not claimed.
+After C — 論證式 spine with a timeline component (moves: question answered by the next speaker; update block; no summary ending). Two parties appear, but they do not disagree on the record, so the argument shape's "two experts, one disagreeing" move is not claimed.
 
 > 3 月 4 日 14:02，北部一間區域醫院急診背後的系統開始把失敗的請求重送。14:41 才找到原因。中間的 39 分鐘，急診那邊怎麼過的？
 >
@@ -190,12 +190,12 @@ After C — 論證式 spine with a timeline component (moves: question answered 
 >
 > 更新（3 月 6 日）：所有佇列的預設值已改。
 >
-> Voice applied: tw-journalism/論證式 — moves: question answered by the next speaker, every number carries a comparison, update block, no summary ending
+> Voice applied: tw-journalism/論證式 — moves: question answered by the next speaker, update block, no summary ending
 
 | Change | Move | Check |
 |---|---|---|
 | 「本文將探討」 → two timestamps and a question that the nurse, not the reporter, answers in the next paragraph | Question answered by the next speaker | `discourse-pass.md` §1; `journalism.md` tells (self-answered question) |
-| 412 in 200 ms set against the 3-per-minute baseline | Every number carries a comparison | check 5; `journalism.md` rule 4 |
+| 412 in 200 ms set against the 3-per-minute baseline; 三張 and the clock times stand alone, so the "every number carries a comparison" move is not claimed | (register default; `journalism.md` rule 4 satisfied where a comparison exists) | check 5 |
 | 「總而言之…」 → a dated update line | Update block (cross-shape) | check 7; `journalism.md` rule 6 |
 | The piece stops on the update, no verdict | No summary ending (cross-shape) | check 7 |
 
