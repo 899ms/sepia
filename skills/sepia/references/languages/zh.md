@@ -57,17 +57,20 @@ Robust across the three models (direction the same in all three, difference larg
 | Share of sentences of 60+ chars, per-article median | 42% | 23% | 5% | 8% | Same reading |
 | Arabic numerals / Chinese numerals, per 1k tokens | 18.7 / 5.1 | 0 / 16 | 0 / 16 | 0 / 24 | All three spell numbers out; human journalism uses Arabic digits for counts, dates and measures, the direction `EY-NUMERALS-2004` prescribes for those, with Chinese numerals kept for idioms and names |
 | First-sentence length, per-article median chars; first paragraph contains a digit, median | 60; yes | 37; no | 31; no | 37; no | Machines open shorter and without a figure |
-| Quotations: median length chars / share 50+ chars / multi-sentence share / quotation-first share, per-article medians (prompt fixed length and asked for three quotations, which constrains these) | 8 / 10% / 6% / 9% | 46 / 46% / 38% / 50% | 27 / 0% / 25% / 58% | 30 / 19% / 41% / 23% | Machine quotations are three to six times longer and far more often multi-sentence; most human 「」 mark terms (§1b). Length is a proxy, not a speech classification |
+| Quotations: median length chars / multi-sentence share, per-article medians (prompt fixed length and asked for three quotations, which constrains these) | 8 / 6% | 46 / 38% | 27 / 25% | 30 / 41% | Machine quotations are three to six times longer and four to seven times more often multi-sentence; most human 「」 mark terms (§1b). Length is a proxy, not a speech classification |
 | 「不是…而是」: share of articles; per 100k chars | §1b (30%; 6.3) | 46%; 47.0 | 25%; 18.5 | 35%; 37.1 | Per 100k, 2.9–7.5× the human rate; the share of articles is similar. One instance stays register-normal; the machine side is the cluster |
-| 「坦言」: share; per 100k | 21%; 4.6 | 41%; 30.2 | 28%; 20.4 | 15%; 10.6 | 2–7× per 100k; the verb the register uses sparingly, machines use freely |
+| 「坦言」, per 100k chars | 4.6 | 30.2 | 20.4 | 10.6 | 2–7× per 100k in all three; the share of articles is mixed (weak table) |
 | Exclamation marks: share of articles; per 100k | 54%; 28 | 0; 0 | 0; 0 | 0; 0 | Human exclamation marks sit almost entirely inside quotations (§1b); machines produce none |
-| Dashes: 「──」 share / 「——」 share / paired insertion share | §1b (61%) / 5% / §1b (15%) | 0 / 5% / 0 | 0 / 0 / 0 | 0 / 10% / 2% | The belief that a paired em-dash insertion marks machine Chinese is not supported here: the machines barely use dashes at all. `MOE-PUNCT-2008` specifies the two-cell 「──」 |
+| Dashes: 「──」 share of articles / paired insertion share | §1b (61%) / §1b (15%) | 0 / 0 | 0 / 0 | 0 / 2% | The belief that a paired em-dash insertion marks machine Chinese is not supported here: the machines barely use the two-cell dash at all. `MOE-PUNCT-2008` specifies the two-cell 「──」 |
 
 Model-specific or weak (report, do not generalise):
 
 | Form (kind of quantity) | Human (T) | Gemini 3.8 Flash | GPT-6 | Grok 4.6 | Read as |
 |---|---|---|---|---|---|
 | 「此外」 / 「然而」, share of articles | §1b (37% / 53%) | 0% / 56% | 2% / 35% | 0% / 0% | Model-specific |
+| Quotations of 50+ chars, share; quotation-first sentences, share (per-article medians; same prompt constraint) | 10%; 9% | 46%; 50% | 0%; 58% | 19%; 23% | Mixed: GPT-6 has no long quotations yet the most quotation-first sentences |
+| 「坦言」, share of articles | 21% | 41% | 28% | 15% | Mixed direction (Grok below human) while the per-100k rate is above in all three (robust table) |
+| 「——」 (two em dashes), share of articles | 5% | 5% | 0% | 10% | Equal, lower, higher: no direction |
 | `：「` colon lead-in, per-article median share of quotations (same prompt constraint) | §1b (6%) | 14% | 0% | 24% | Mixed direction: two models above the human minority pattern, one at zero |
 | 「說」 as attribution (jieba), per 1k tokens | 1.7 | 1.1 | 6.0 | 7.4 | Mixed direction: GPT-6 and Grok lean on 「說」, Gemini below human and leaning on 「表示」「坦言」 instead |
 | 「表示」: share; per 100k | 68%; 44 | 49%; 45 | 65%; 109 | 52%; 53 | Marked 相近 in the report; GPT-6 alone doubles the rate |
