@@ -53,10 +53,10 @@ Robust across the three models (direction the same in all three, difference larg
 | Form (kind of quantity) | Human (T) | Gemini 3.8 Flash | GPT-6 | Grok 4.6 | Read as |
 |---|---|---|---|---|---|
 | Sentence length: per-article median of the mean / of the within-article SD, chars | §1b (59 / 34) | 48 / 19 | 34 / 15 | 36 / 16 | All three write shorter, flatter sentences in this register; Gemini is closest and still a fifth shorter with half the dispersion. On dispersion the direction agrees with HC3 (§1, SD 15.150 vs 12.842 字); on mean length it does not (HC3 found ChatGPT slightly longer in 字, 42.4 vs 40.9). Neither number is a length target |
-| Clauses per sentence / max commas before a period, per-article medians | 4.5 / 9 | 3.4 / 5 | 3.1 / 4 | 3.1 / 4 | Comma-linked clauses are the human shape here; a run of short, comma-poor sentences is on the machine side |
+| Clauses per sentence, per-article median | 4.5 | 3.4 | 3.1 | 3.1 | Comma-linked clauses are the human shape here; a run of short, comma-poor sentences is on the machine side. (The per-article maximum of commas before a period is length-sensitive and sits in the weak table) |
 | Share of sentences of 60+ chars, per-article median | 42% | 23% | 5% | 8% | Same reading |
 | Arabic numerals / Chinese numerals, per 1k tokens | 18.7 / 5.1 | 0 / 16 | 0 / 16 | 0 / 24 | All three spell numbers out; human journalism uses Arabic digits for counts, dates and measures, the direction `EY-NUMERALS-2004` prescribes for those, with Chinese numerals kept for idioms and names |
-| First-sentence length, per-article median chars; first paragraph contains a digit, median | 60; yes | 37; no | 31; no | 37; no | Machines open shorter and without a figure |
+| First-sentence length, per-article median chars; first 80 characters contain an Arabic digit, median | 60; yes | 37; no | 31; no | 37; no | Machines open shorter and without an Arabic digit. Chinese numerals were not counted in this check, and the numerals row shows the machines write figures in Chinese, so this says nothing about whether the lead carries a figure |
 | Quotations: median length chars / multi-sentence share, per-article medians (prompt fixed length and asked for three quotations, which constrains these) | 8 / 6% | 46 / 38% | 27 / 25% | 30 / 41% | Machine quotations are three to six times longer and four to seven times more often multi-sentence; most human 「」 mark terms (§1b). Length is a proxy, not a speech classification |
 | 「不是…而是」, per 100k chars | §1b (6.3) | 47.0 | 18.5 | 37.1 | 2.9–7.5× the human rate in all three; the share of articles is mixed (weak table). One instance stays register-normal; the machine side is the cluster |
 | 「坦言」, per 100k chars | 4.6 | 30.2 | 20.4 | 10.6 | 2–7× per 100k in all three; the share of articles is mixed (weak table) |
@@ -68,6 +68,7 @@ Model-specific or weak (report, do not generalise):
 | Form (kind of quantity) | Human (T) | Gemini 3.8 Flash | GPT-6 | Grok 4.6 | Read as |
 |---|---|---|---|---|---|
 | 「此外」 / 「然而」, share of articles | §1b (37% / 53%) | 0% / 56% | 2% / 35% | 0% / 0% | Model-specific |
+| Max commas before a period, per-article median of the per-article maximum | 9 | 5 | 4 | 4 | A maximum over a piece grows with piece length, and the human pieces are several times longer (§6); not length-matched, so the direction is not established. Clauses per sentence (robust table) carries the comma reading |
 | Quotations of 50+ chars, share; quotation-first sentences, share (per-article medians; same prompt constraint) | 10%; 9% | 46%; 50% | 0%; 58% | 19%; 23% | Mixed: GPT-6 has no long quotations yet the most quotation-first sentences |
 | 「不是…而是」, share of articles | §1b (30%) | 46% | 25% | 35% | Mixed direction (GPT-6 below human) while the per-100k rate is above in all three (robust table) |
 | 「坦言」, share of articles | 21% | 41% | 28% | 15% | Mixed direction (Grok below human) while the per-100k rate is above in all three (robust table) |

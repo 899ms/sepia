@@ -2,7 +2,7 @@
 
 > 目的：把新聞寫作與敘事性非虛構的教科書、通訊社與公共媒體手冊、台灣官方語文規範，整理成「哪一條主張、誰說的、什麼等級」，給 `references/languages/zh.md`（標點與數字的規範側）與 `references/domains/journalism.md`（venue 規則的出處）對照用。這份不是量測，是規範；量測在 `zh-news-corpus.md`。
 >
-> 來源與方法：2026-09-17 以 Grok 4.6 headless 做一次網頁調查（提示在快取，不進 repo），要求每條主張附出處與等級、找不到就寫「未查到」；調查列出 19 個來源、106 處「未查到」。本文只收其中兩類：(1) 我逐頁核對過原文的（標 **核對**）；(2) 調查有給頁碼、URL 或 ISBN 且多份一級來源同向的（標 **調查**）。調查給不出原文頁碼的主張不收。等級：**一級**＝教科書、官方或準官方手冊、政府語文規範；**二級**＝教學網站、講義、書評、轉述。
+> 來源與方法：2026-09-17 以 Grok 4.6 headless 做一次網頁調查（提示在快取，不進 repo），要求每條主張附出處與等級、找不到就寫「未查到」；調查列出 19 個來源、106 處「未查到」。本文只收其中兩類：(1) 我逐頁核對過原文的（標 **核對**）；(2) 調查有給頁碼、URL 或 ISBN 且多份一級來源同向的（標 **調查**）。調查給不出原文頁碼的主張不收。調查所報的 URL 與 ISBN 列在文末〈附：調查所報出處〉，除 §一 兩份台灣規範外未逐一核對。等級：**一級**＝教科書、官方或準官方手冊、政府語文規範；**二級**＝教學網站、講義、書評、轉述。
 
 ## 一、台灣官方規範（核對，一級）
 
@@ -55,7 +55,7 @@
 1. **引語可不可以清理**：AP、Reuters 幾乎照錄；BBC 多一層「保護說話者免於出糗」；經濯學人把改寫當預設；Zinsser 用原話。sepia 的立場已在 SKILL.md（引語是 load-bearing，refactor 不動），與通訊社一側。
 2. **歸因位置**：美國報紙「先話後人」（Smith said），BBC 廣播「先人後話」。中文新聞量測到的是：含任何「」的句子 61% 無歸因動詞，但那個計數含術語與反諷引號，不能推論說話引語的歸因（`zh.md` §1b 的讀法）；「說」多放在引語之後是 169 篇細讀的觀察，不是量測。
 3. **第一人稱**：Reuters、聯合報通則不准或高度限制；Zinsser、Hart、《Telling True Stories》在敘事非虛構鼓勵。`journalism.md` rule 5 走中間：方法、拉回、記錄沉默、第一人稱紀實的觀察。
-4. **句長**：「一段一句」是美國報紙入門訓練（LibreTexts 等講義），不是 Clark、Zinsser 或敘事非虛構的規則；Reuters 要短但要變化；Clark 不怕長句。台灣人類新聞量到的是長句多逗號（句均 59 字、一句號前中位 9 個逗號），三個對照模型都短五分之一到四成（`zh.md` §1c）。任何「短句＝人味」的規則在這個語域都站不住。
+4. **句長**：「一段一句」是美國報紙入門訓練（LibreTexts 等講義），不是 Clark、Zinsser 或敘事非虛構的規則；Reuters 要短但要變化；Clark 不怕長句。台灣人類新聞量到的是長句多子句（句均 59 字、每句 4.5 個子句），三個對照模型都短五分之一到四成（`zh.md` §1c）。任何「短句＝人味」的規則在這個語域都站不住。
 5. **數字 1–10**：AP、BBC 1–9 用文字；經濟學人 1–10；環境資訊中心一至十；行政院公文以「意義」分工而不以大小分工。
 6. **nut graf**：Rich、Hart、Nieman 多數課要有；Nieman 2019 專輯承認極強敘事可以沒有；經濟學人不清喉嚨。
 7. **結尾**：倒金字塔傳統結尾最不重要、可刪；敘事非虛構結尾是結構的一部分。台灣人類長篇新聞量到總結式收尾 7／169，是敘事那一側的做法（引語、資訊、回到人物、懸置），不是「可刪」那一側。
@@ -81,3 +81,30 @@
 - 第 4 點「短句不是人味」與第 7 點「總結式收尾在敘事側是結構的一部分」是教科書與量測互相支持的兩處，也是目前執行模型最常寫反的兩處。
 - 第 3 點「歸因動詞預設說」：語料裡「表示／指出／強調」十年間上升是站方漂移，教科書其實反對；sepia 不把漂移當人味 restore。
 - 不收進規則的：引語清理（分歧）、第一人稱（分歧，venue 決定）、數字 1–10 的門檻（三套不同）。
+
+## 附：調查所報出處（Grok 4.6 調查 2026-09-17 回報；除 §一 兩份台灣規範外未逐一核對，僅供讀者追查）
+
+| 來源 | 調查所報 URL／ISBN |
+|---|---|
+| AP Stylebook | https://www.apstylebook.com/ |
+| Reuters Handbook of Journalism | 調查未給 URL |
+| BBC News Style Guide | https://www.bbc.com/newsstyleguide/ ；A–Z https://www.bbc.com/newsstyleguide/all/ ；numbers https://www.bbc.com/newsstyleguide/numbers/ ；早期 PDF https://www.peteburns.com/downloads/BBC%20news%20styleguide.pdf |
+| The Economist Style Guide | 存檔 PDF https://web.archive.org/web/20160914130123if_/http://www.frzee.com/Education/The%20Economist%20Style%20Guide.pdf |
+| Roy Peter Clark, *Writing Tools* | ISBN 978-0-316-02840-0（十週年版）；Poynter 早期 30 tools http://www.poynter.org/uncategorized/716/thirty-tools-for-writers/ |
+| William Zinsser, *On Writing Well* | ISBN 978-0-06-089154-1（30 週年版） |
+| Jack Hart, *Storycraft* | ISBN 978-0-226-73692-1（2e）；https://press.uchicago.edu/ucp/books/book/chicago/S/bo71028154.html ；Nieman 訪談 https://niemanstoryboard.org/2011/10/20/jack-hart-storycraft-narrative-nonfiction-interview/ |
+| *Telling True Stories*（Nieman） | ISBN 978-0-452-28755-6；https://niemanstoryboard.org/about/telling-true-stories/ |
+| Carole Rich, *Writing and Reporting News*（第 8 版） | ISBN 978-1-305-07733-1；https://www.cengageasia.com/TitleDetails/isbn/9781305077331 |
+| Melvin Mencher, *News Reporting and Writing*（第 12 版） | ISBN 978-0-07-351199-3 |
+| Missouri Group, *News Reporting and Writing*（第 13 版） | ISBN 978-1-319-20816-5；https://www.macmillanlearning.com/college/us/product/News-Reporting-and-Writing/p/1319208169 |
+| 美國國務院 IIP《Telling the Story》中譯 | https://usinfo.org/zhtw/PUBS/Handbook_Journalism/telling.htm |
+| 聯合報《新聞寫作通則》（行政院《文書處理手冊》附錄） | https://www.dgpa.gov.tw/uploads/public/Data/8111417263071.pdf（約 p. 96–108） |
+| 彭家發《進階新聞寫作》 | ISBN 978-957-11-5106-9；https://www.wunan.com.tw/bookdetail?NO=9109 |
+| 牛隆光《新聞採訪與寫作》 | 博客來 0010471383 |
+| 莊克仁《圖解新聞學》（2024 第 2 版） | ISBN 978-626-343-319-9 |
+| 劉明華等《新聞寫作教程》 | ISBN 978-7-300-03981-7 |
+| 中央社投稿流程 | https://www.cna.com.tw/postwrite/process |
+| 公視 PeoPo 使用規範 | https://www.peopo.org/events/about/P2-2.htm |
+| 環境資訊中心編輯原則 | 調查未給 URL |
+| 教育部《重訂標點符號手冊》、行政院數字原則 | 見 `sources.md`（已核對） |
+
