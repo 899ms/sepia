@@ -157,7 +157,7 @@ Known cost and what the blind review taught: the shape's fourth move, return to 
 
 After B — 倒金字塔 (moves: the first sentence holds who, when, what, how many; write each provision in full; updates in a dated block). A data-led After was drafted first and withdrawn: the fact list has a baseline but no source or method for the count, the decision table says a shape whose precondition is not met is not chosen, and a worked example that chooses it anyway would teach the opposite. The facts do hold the inverted pyramid's precondition (date, actor, outcome, count).
 
-> 3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求在 200 毫秒內重送了 412 次，下游服務對彼此限流；2 點 47 分設上 `RETRY_JITTER=full` 後恢復。
+> 3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求在 200 毫秒內重送了 412 次，下游服務對彼此限流；2 點 47 分設上 `RETRY_JITTER=full`。〔TODO：何時恢復、是否因此恢復，事實清單未給。〕
 >
 > 重試佇列沒有設 jitter。平時每分鐘大約 3 次重送；這 200 毫秒裡的量相當於平時兩個多小時的總和。2 點 41 分找到原因。
 >
@@ -171,7 +171,7 @@ After B — 倒金字塔 (moves: the first sentence holds who, when, what, how m
 
 | Change | Move | Check |
 |---|---|---|
-| 「本文將探討…」 → one sentence with date, actor, outcome, count and the fix time | First sentence holds who, when, what, how many | `journalism.md` rule 1 (standfirst register) |
+| 「本文將探討…」 → one sentence with date, actor, count and the fix time; recovery is a TODO because the facts stop at the setting | First sentence holds who, when, what, how many | `journalism.md` rule 1 (standfirst register); check 5 |
 | 412, 200 ms, the 3-per-minute baseline and the derived "two hours" (412 ÷ 3 ≈ 137 minutes) each written out | Provisions in full | check 5; `journalism.md` rule 4 |
 | The nurse's action and words, then the engineer's statement, each in its own paragraph without a verdict | (register default) | check 7 |
 | 「總而言之…」 → a dated update line | Update block | check 7; `journalism.md` rule 6 |
