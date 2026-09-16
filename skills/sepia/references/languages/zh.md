@@ -37,10 +37,11 @@ Rates in human prose. A near-zero rate means the form departs from this register
 | Sentence-initial 「其實」 | 15% of articles contain it | Register-normal; see §4 |
 | 「此外」 / 「然而」 | 37% / 53% of articles contain it | Single connectives are register-normal; chaining across clauses is still §2 |
 | Sentence bearing any 「」 with no attribution verb (terminology and scare quotes included) | per-article median share 61% | Most 「」 in this register mark terms, not speech; this row says nothing about attribution of speech |
-| Sentence bearing a speech-length quotation (15 characters or more) with no attribution verb; colon lead-in before a quotation | per-article median share 33% (q1 20%, q3 50%); 6% | About a third of speech quotations ride on context for their speaker; 「某某表示：『…』」 as the only pattern departs; §3 restore. Position of 「說」 is not measured |
+| Sentence bearing a 「」 quotation of 15 characters or more with no attribution verb | per-article median share 33% (q1 20%, q3 50%) | Length is a proxy, not a speech classification: titles, slogans and written statements stay in the pool. Speech quotations as such are unmeasured; this row licenses no restore rule |
+| `：「` colon lead-in | 6% of all 「」 quotations; 10% (q1 0%, q3 22%) of quotations of 15 characters or more, per-article medians | Measured on the ordinary quote mark. The colon lead-in exists in this register but is a minority pattern; 「某某表示：「…」」 as the only pattern departs from it |
 | Sentence length | per-article median of the mean 59 chars; of the within-article SD 34 | Dispersion is the human trait; length itself is not (consistent with §1 and §5) |
 | Runs of three near-equal sentences | per-article median 2 per 100 sentences | §5 as written |
-| Nominalization 「○○性／○○化／○○感」 | 77 per 100k chars, mostly fixed legal-policy terms | Not a signal in this register; §4 row |
+| Suffix-bearing vocabulary 「○○性／○○化／○○感」 | 77 per 100k chars, mostly fixed legal-policy terms | A lexical count only; whether such nouns serve as subjects or wrap a verb (「自我的探索」) was not counted. Nominalized subjects stay unmeasured; §4 row |
 | Summary endings | 7 of 169 close-read articles (close-reading sample count) | Conclusion residue (`professional-pass.md` check 7) is the departure in this register |
 
 ## 2 What to hunt (Sepia inferences from §1 and §1b; shapes of `style-pass.md` §2)
@@ -55,7 +56,7 @@ Rates in human prose. A near-zero rate means the form departs from this register
 
 ## 3 What to restore (Sepia inferences; shape of `style-pass.md` §4)
 
-Sprinkled, never poured, and only where the register allows: sentence-final and mid-sentence 語氣詞 (啊、吧、呢、嘛、喔、啦、耶) — the largest measured gap in §1; monosyllabic verbs and adjectives; a spread of sentence lengths; subject ellipsis and colloquial contraction where a native writer would drop the subject, the Chinese counterpart of §4's contractions. Formal venues keep their register: a legal notice does not get 「嘛」. In journalism (T), about a third of speech-length quotation sentences carry no attribution verb (per-article median 33%); where the context already names the speaker, leaving a quotation unattributed is register-normal and may be restored. Where 「說」 sits is not measured.
+Sprinkled, never poured, and only where the register allows: sentence-final and mid-sentence 語氣詞 (啊、吧、呢、嘛、喔、啦、耶) — the largest measured gap in §1; monosyllabic verbs and adjectives; a spread of sentence lengths; subject ellipsis and colloquial contraction where a native writer would drop the subject, the Chinese counterpart of §4's contractions. Formal venues keep their register: a legal notice does not get 「嘛」. Attribution of speech quotations in journalism is not measured by T (its quotation rows use a length proxy); nothing about attribution is restored on T's account.
 
 ## 4 Editorial heuristics — presence measured on the human side only (T), no machine side
 
@@ -64,7 +65,7 @@ Reported by Taiwan editors and readers in 2026 (自由時報 2026-07-12; 數位�
 | Reported tell | Maps to | Presence in human journalism (T) |
 |---|---|---|
 | 「不是…而是…」「這不是 X，而是 Y」 | §2 "it's not X, it's Y" | 30% of articles contain 「不是…而是」 (this form only) |
-| Nominalized subjects 「○○性／○○感／○○化」 (「自我的探索」 for 「找自己」) | §2 nominalization | 77 per 100k chars, mostly fixed legal-policy terms; not a signal, see §1b |
+| Nominalized subjects 「○○性／○○感／○○化」 (「自我的探索」 for 「找自己」) | §2 nominalization | Only suffix-bearing vocabulary was counted (77 per 100k chars, mostly fixed legal-policy terms). The subject position and the 「的＋noun」 wrapper were not counted and stay unmeasured; see §1b |
 | Three parallel clauses or images, everywhere | §2 rule of three | Only the three-item 頓號 list (A、B、C) was counted: 59% of articles contain one. Parallel clauses and images were not counted and stay unmeasured |
 | Paragraph openers 「其實…」「事實上…」; abstractions in quotation marks (「趨勢」「關鍵」「必然」) | §3 formula phrases | Only sentence-initial 「其實」 was counted: 15% of articles contain one. 「事實上」 and quoted abstractions were not counted and stay unmeasured |
 
