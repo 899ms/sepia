@@ -63,17 +63,17 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 |---|---|---|---|
 | End a paragraph on a question; the next paragraph answers it with a source's data or words, never the reporter's | C: paragraph-end questions are the norm; T: question-ending paragraphs common (zh.md §1b) | `discourse-pass.md` §1 QUD; `journalism.md` tells (self-answered question) | One question per section; more reads as rhetoric |
 | Put two or more experts in one section and let one disagree on the record | C: 9 of 11 pure argument pieces | check 4 stance as `journalism.md` rule 7 reads it | Needs two parties on the record; otherwise not available |
-| Every number carries a comparison or a conversion; no figure stands alone | C; `journalism.md` rule 4 | check 5, check 6 | None |
+| Every number carries a comparison or a conversion; no figure stands alone | C; `journalism.md` rule 4 | check 5; `journalism.md` rule 4 | None |
 | One collecting sentence per section at most, and it names the disagreement rather than settling it | C | check 7 | Two per section is a template |
 
 ### 數據驟動 (data-led)
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
-| After each absolute figure, a bracket or clause with the rate, the change, or the prior period | C: 17 of 20 pure data pieces | check 6 | Bracket density in non-data venues reads as over-annotation; one conversion per paragraph |
+| After each absolute figure, a bracket or clause with the rate, the change, or the prior period | C: 17 of 20 pure data pieces | check 5; `journalism.md` rule 4 | Bracket density in non-data venues reads as over-annotation; one conversion per paragraph |
 | Convert unfamiliar units into a referent the reader already knows | C | check 5; `style-pass.md` §1 row 5 | The referent is itself a fact with a source |
 | State the method in the body (source, definition, limits) in the first person plural or the outlet's third person | C: about half of data notes | check 5; `journalism.md` rule 4 | Reads as a paper outside data pieces; only when the reporter built the dataset |
-| After each figure, one plain-language reading from someone on the ground, not a reporter verdict | C; T: attribution-free quotation share (zh.md §1b, a length proxy) | check 7; `narrative-pass.md` §5 (judgment given to a person) | A quotation after every figure is a metronome; one per section |
+| After each section's figures, one plain-language reading from someone on the ground, not a reporter verdict | C; T: attribution-free quotation share (zh.md §1b, a length proxy) | check 7; `narrative-pass.md` §5 (judgment given to a person) | One reading per section or figure cluster; a quotation after every single figure is the metronome this profile forbids |
 | Sections by indicator or region, same skeleton, different content; no connective between them | C: data notes | `style-pass.md` §4 (connectives, here used less); check 9 | Identical skeletons are a uniformity risk; the difference must be in content |
 
 ### 問答 (Q&A)
@@ -82,7 +82,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 |---|---|---|---|
 | The preamble carries all background; the exchange repeats none of it | C: 8 pure, 10 component | check 3 | None |
 | Keep the speaker's repetition, hesitation, code-switching, self-answering | C: Q&A pieces; `journalism.md` rule 3 | `style-pass.md` §1 row 1 (will flag as awkward; the quotation is load-bearing) | Spoken texture will be reported by the style scan; report it as the voice's cost |
-| The reporter's checks or additions go in brackets or an editor's note inside the quotation; the words are not rewritten | C | SKILL.md quoted-material guardrail | None |
+| The reporter's checks or additions go in an editor's note outside the quotation (after it, or as a separate bracketed line); on write from a supplied transcript a bracketed gloss may sit inside the quotation as the transcript shows it, but on refactor or recreate an existing quotation is never entered | C | SKILL.md quoted-material guardrail; `journalism.md` rule 3 | None |
 | One question per turn; no bundled sub-questions | C | check 8 templatedness | None |
 
 ### 多線並置 (parallel threads)
@@ -113,7 +113,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 | Two registers: the standfirst gives the result, the first body paragraph places the reader | C: 20+ notes record the split; `journalism.md` rule 1 | `discourse-pass.md` §4 | None |
 | Subheads switch; paragraphs do not open on connectives | C; T: 「此外」「然而」 single use register-normal, chains are §2 (zh.md §1b, §5) | zh.md §2; `journalism.md` rule 2 | None |
 | A paragraph-end question answered by the next speaker | C: the norm; T (zh.md §1b) | QUD; `journalism.md` tells | One per section |
-| The reporter's first person only for method, steering a source, or recording a silence | C: three fixed uses; T: first-person rate falling across eras (direction only) | `journalism.md` rule 5 | Any other first person is stance without reporting |
+| The reporter's first person for method, steering a source, recording a silence, or, in a first-person account, narrating what the reporter went to see and observed | C: fixed uses; T: first-person rate falling across eras (direction only) | `journalism.md` rule 5 | A first person that delivers a verdict the reporting did not establish is stance without reporting |
 | A dated update block instead of edits to the body | C; `journalism.md` rule 6 | check 7 | Only new facts |
 | No summary ending: stop on the last fact, quotation, person, or open question | C: 7 of 169 summary endings; T: 「總而言之」 0 per 100k (zh.md §1b) | check 7 | When the venue needs the outcome, end on the outcome as a fact |
 
@@ -169,12 +169,12 @@ After B — 數據驟動 (moves: figure with comparison; method in the body; rea
 
 | Change | Move | Check |
 |---|---|---|
-| 412 and 200 ms lead, with the 3-per-minute baseline and the "two hours" conversion (412 ÷ 3 ≈ 137 minutes, arithmetic on approved facts) | Figure with comparison | check 6 |
+| 412 and 200 ms lead, with the 3-per-minute baseline and the "two hours" conversion (412 ÷ 3 ≈ 137 minutes, arithmetic on approved facts) | Figure with comparison | check 5; `journalism.md` rule 4 |
 | 「這個數字來自…」 as its own paragraph | Method in the body | check 5 |
 | The nurse's words after the figures, not a reporter verdict | Reading from the ground | check 7 |
 | 45 minutes computed from 14:02–14:47; ending on the 03-06 change | No summary ending | check 7 |
 
-Known cost of After B: the conversion sentence is the kind of arithmetic that check 6 accepts only when both inputs are sourced; here both are in the approved list.
+Known cost of After B: the conversion sentence is derived, and check 5 accepts a derived figure only when both inputs are sourced; here both are in the approved list.
 
 After C — 調查追蹤 (argument spine with a timeline component; moves: question answered by the next speaker; two parties on the record; timestamps from the record; update block):
 
