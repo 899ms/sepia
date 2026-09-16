@@ -1,0 +1,36 @@
+# Domain — long-form journalism
+
+Covers features, investigative and data stories, explanatory news, interviews, and a reporter's first-person account of reported events. Reported, sourced narrative belongs here even when it opens on a scene; personal and literary essays, fiction, press releases, wire copy and opinion columns do not. Run with `professional-pass.md` (article-like weighting) plus the outline and QUD checks in `discourse-pass.md` §1–3. Evidence base: one human-side corpus of Traditional Chinese long-form journalism (`languages/zh.md` §1b, ledger `ZH-NEWS-CORPUS-2026`) and its 169-article close reading; no machine side has been measured for this venue, and English journalism is not measured at all, so every row below is a venue baseline or a Sepia inference, never a measured machine excess.
+
+## Human baseline
+
+Lead and body are two registers: the standfirst gives the result, the first paragraph of the body puts a person, a place or a number in front of the reader before any definition. Subheads carry the transitions, so paragraphs rarely open on a connective. Quotations keep the speaker's spoken texture and are often attributed by context or a post-posed 「說」; most 「」 in the text mark terms, not speech. The reporter appears in three fixed roles: stating method, steering a source back, recording a silence. Pieces end on a quotation, a fact, a return to the opening person, or an open question; a summary or a moral is rare (7 of 169 close-read articles). Follow-ups arrive as a dated update block, not as edits to the body.
+
+## AI tells in this domain
+
+| Tell | Fix | Evidence |
+|---|---|---|
+| Preview opening: 「本文將探討…」, "This article examines…" | Open on the person, the place or the number | close reading 1/169 |
+| Definition-first lead that explains the topic before anything happens | Concrete before abstract; the definition comes after the reader has a reason to want it | close reading: scene, person or number lead in most of 169 |
+| 「某某表示：『書面句』」 as the only quotation pattern: name, colon, a complete written sentence | Vary the frame; attribute by context or post-posed 「說」; let the sentence sound spoken | T human side: colon lead-in is a minority pattern (zh.md §1b) |
+| No spoken texture anywhere: every quotation is complete, tidy, particle-free | Keep the speaker's repetition, particles, code-switching, self-correction; never rewrite their words | unmeasured (contrast group pending); close reading counts spoken texture as the norm |
+| A manner adverb on every speech verb (「緩緩地說」「無奈地表示」) | Delete the adverb; the verb, or a gesture after the quotation, carries it | T human side: near zero (zh.md §1b, §2 row) |
+| Summary or moral ending: 「總而言之」, "凸顯了…的重要性", "提醒我們…" | End on the last fact, the last quotation, or the person | T human side: 0 per 100k (zh.md §1b); close reading 7/169 summary endings |
+| Every paragraph closing on the reporter's verdict sentence | Let the paragraph end on the source's words or the fact; one collecting sentence per section at most | close reading: paragraph-end verdicts are the exception |
+| Sections of equal length with the same inner order (context, quotation, verdict) | Depth follows what the reporting found; a section may be one paragraph | professional-pass check 9; close reading: mixed shapes in 98/169 |
+| Connectives opening consecutive paragraphs (「此外」「另一方面」「然而」) | Let the subhead or the juxtaposition do the switching | T human side: single connectives are register-normal, paragraph-initial chains are not counted (zh.md §1b, §5); Sepia inference |
+| Numbers without a comparison or a local referent | Each figure carries its baseline, its change, or a referent the reader knows; method stated in the body when the reporter built the dataset | close reading: data pieces pair every figure with a comparison |
+| Question asked and answered by the reporter in the same paragraph | The paragraph-end question is answered by the next speaker's data or words | close reading: question-as-transition is the norm; unmeasured on the machine side |
+
+## Rules
+
+1. **Two registers.** The standfirst may give the result; the first body paragraph must put a person, a place or a number in front of the reader. No scene is written without scene facts from the reporting (SKILL.md "Never invent specifics"): a missing detail is a TODO or a question, never prose.
+2. **Subheads switch, paragraphs do not announce.** Transitions live in the subhead; a paragraph does not open on 「另一方面」 or a numbered "first, second".
+3. **Quotations.** Keep spoken texture; attribute by context or a post-posed 「說」; terminology in 「」 is not speech and is not counted as a quotation; the speaker's words are never rewritten (SKILL.md: quoted material is load-bearing).
+4. **Numbers.** A figure carries a comparison (baseline, prior period, or a referent the reader knows) and, when the reporter built the dataset, the method stated in the body. Round, sourceless numbers fail check 5.
+5. **The reporter's first person** appears only to state method, to steer a source, or to record a silence or a refusal.
+6. **Endings.** No summary, no moral, no outlook paragraph (check 7). Follow-ups go in a dated update block after the body, in plain informational register, and the body is not rewritten.
+7. **Stance (check 4), read for this venue.** The judgment a report commits to is what the reporting established and where the parties disagree, named as such. A piece that asserts nothing it verified, or blurs a documented disagreement into "both sides", fails check 4 exactly as written; committing to the verified facts is the stance.
+8. **Density and relevance (checks 2 and 3), read for this venue.** The reader's task includes being placed in the scene, so a concrete detail that builds the picture is information and passes; a generic statement true in any context still fails. This narrows nothing in `professional-pass.md`; it says what counts as information for this reader.
+
+Weighting: article-like (relevance, density, stance), then rules 7 and 8 as the venue's reading of those checks.
