@@ -119,6 +119,18 @@ Grok also auto-discovers a Claude Code install of sepia if you have one; either 
 agy plugin install https://github.com/Nanako0129/sepia
 ```
 
+### QwenPaw
+
+```bash
+# install
+qwenpaw plugin install Nanako0129/sepia
+
+# uninstall
+qwenpaw plugin uninstall sepia
+```
+
+Verified on QwenPaw 2.2.1: the install completes and `/sepia` is routed, with the packaged `skills` symlink followed into a real tree by `shutil.copytree`.
+
 ### Project scope (alternative)
 
 When one repo should pin its own copy, commit `skills/sepia/` into that repo as `.agents/skills/sepia` (Codex + Antigravity) or `.claude/skills/sepia` (Claude Code).
