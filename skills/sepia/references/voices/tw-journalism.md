@@ -18,7 +18,7 @@ Every shape below needs facts the writer actually has. A scene needs scene facts
 | A result that happened today or this week | 倒金字塔 (inverted pyramid) | date, actor, outcome, count |
 | One person whose time span carries the piece | 人物弧線 (person arc) | at least three dated episodes |
 | A policy or number gap to take apart | 論證式 (argument) | two parties on the record |
-| A dataset the reporter built or obtained | 數據驟動 (data-led) | source, method, a baseline |
+| A dataset the reporter built or obtained | 數據驅動 (data-led) | source, method, a baseline |
 | One speaker whose words are the content | 問答 (Q&A) | a transcript |
 | Three or more standpoints or sites | 多線並置 (parallel threads) | comparable material per thread |
 | A reconstructable sequence of moments | 時間軸 (timeline) | timestamps from documents |
@@ -67,7 +67,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 | Every number carries a comparison or a conversion; no figure stands alone | C; `journalism.md` rule 4 | check 5; `journalism.md` rule 4 | None |
 | One collecting sentence per section at most, and it names the disagreement rather than settling it | C | check 7 | Two per section is a template |
 
-### 數據驟動 (data-led)
+### 數據驅動 (data-led)
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
@@ -120,7 +120,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 
 ## Register defaults
 
-Sentence length, punctuation, quotation marks and connective rates for this register are in `languages/zh.md` §1b, the single canonical table; this body repeats none of them. One direction is worth naming here because a write under this voice measured against it on 2026-09-16 and landed far outside: this register runs long (per-article median sentence 59 characters, within-article SD 34, four in ten sentences over 60 characters, §1b), and an executor's default Chinese sentence is much shorter. After a write, compare the piece's sentence shape with §1b before adding the closing line, and where the piece reads as a run of short, comma-poor sentences, merge two or let a clause carry a subordinate fact (the `style-pass.md` §5 fix). No length target: dispersion is the trait. In English journalism none of this is measured; the moves still apply as inference, the numbers do not.
+Sentence length, punctuation, quotation marks and connective rates for this register are in `languages/zh.md` §1b, the single canonical table; this body repeats none of them. One direction is worth naming here because a write under this voice measured against it on 2026-09-16 and landed far outside: this register runs long (per-article median sentence 59 characters, within-article SD 34, §1b), and an executor's default Chinese sentence is much shorter. After a write, compare the piece's sentence shape with §1b before adding the closing line, and where the piece reads as a run of short, comma-poor sentences, merge two or let a clause carry a subordinate fact (the `style-pass.md` §5 fix). No length target: dispersion is the trait. In English journalism none of this is measured; the moves still apply as inference, the numbers do not.
 
 ## Voice fit
 
