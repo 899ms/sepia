@@ -25,10 +25,10 @@ Lead and body are two registers: the standfirst gives the result, the first para
 ## Rules
 
 1. **Two registers.** The standfirst may give the result; the first body paragraph must put a person, a place or a number in front of the reader. No scene is written without scene facts from the reporting (SKILL.md "Never invent specifics"): a missing detail is a TODO or a question, never prose.
-2. **Subheads switch, paragraphs do not announce.** Transitions live in the subhead; a paragraph does not open on 「另一方面」 or a numbered "first, second".
+2. **Subheads switch, paragraphs do not announce.** Transitions live in the subhead. A single paragraph-initial 「此外」 or 「然而」 is register-normal (zh.md §1b); what fails is the chain: consecutive paragraphs opening on connectives, or a numbered "first, second, third" walk.
 3. **Quotations.** Keep spoken texture; attribute by context or a post-posed 「說」; terminology in 「」 is not speech and is not counted as a quotation; the speaker's words are never rewritten (SKILL.md: quoted material is load-bearing).
 4. **Numbers.** A figure carries a comparison (baseline, prior period, or a referent the reader knows) and, when the reporter built the dataset, the method stated in the body. Round, sourceless numbers fail check 5.
-5. **The reporter's first person** appears only to state method, to steer a source, or to record a silence or a refusal.
+5. **The reporter's first person** appears to state method, to steer a source, to record a silence or a refusal, and, in a first-person account of reported events, to narrate what the reporter went to see and observed; it does not appear to deliver a verdict the reporting did not establish.
 6. **Endings.** No summary, no moral, no outlook paragraph (check 7). Follow-ups go in a dated update block after the body, in plain informational register, and the body is not rewritten.
 7. **Stance (check 4), read for this venue.** The judgment a report commits to is what the reporting established and where the parties disagree, named as such. A piece that asserts nothing it verified, or blurs a documented disagreement into "both sides", fails check 4 exactly as written; committing to the verified facts is the stance.
 8. **Density and relevance (checks 2 and 3), read for this venue.** The reader's task includes being placed in the scene, so a concrete detail that builds the picture is information and passes; a generic statement true in any context still fails. This narrows nothing in `professional-pass.md`; it says what counts as information for this reader.
