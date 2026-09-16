@@ -130,6 +130,8 @@ None on professional routes in this version (#227). The registry entry in `refer
 
 Synthetic facts (approved 2026-09-16; nothing else may be used, and any fact missing from this list is a TODO): 2026-03-04, 14:02 to 14:47 (UTC+8); an unnamed regional hospital emergency department in northern Taiwan; the retry queue had no jitter, 412 resends landed inside one 200 ms window, downstream services rate-limited each other; the cause was found at 14:41 and `RETRY_JITTER=full` was set at 14:47; the triage nurse (role only) clipped three paper triage slips to the whiteboard at 14:05 and kept triaging on paper; one synthetic quotation from the nurse, written for this example: 「電腦轉圈，我就先用紙。」; baseline about 3 resends per minute in a normal hour; the on-call platform engineer (role only) said the queue's default had never been reviewed; the default was changed for all queues on 2026-03-06.
 
+The three Afters below are **write** outputs from the approved fact list, not refactors or recreates of the Before. The Before is shown only to name the register departures each After avoids; its quotation 「系統一直轉圈圈，我們完全沒辦法作業。」 is itself synthetic and is not a source's words. On a real refactor or recreate, an existing quotation is never replaced or reworded (SKILL.md quoted-material guardrail); the Afters replace it here only because they are written fresh from a fact list that contains a different approved quotation.
+
 Before (synthetic, written to carry the register's departures):
 
 > 本文將探討一起發生在北部某區域醫院急診的系統事故。2026年3月4日下午，該院的掛號與檢傷系統突然變得非常緩慢，值班護理師無奈地表示：“系統一直轉圈圈，我們完全沒辦法作業。”值得注意的是，事故的根本原因——重試佇列缺乏抖動機制——導致在極短時間內產生了大量重複請求，進而引發下游服務相互限流的連鎖反應。技術團隊隨後迅速地進行了排查，並在當天下午成功地修復了問題。總而言之，這起事故凸顯了系統韌性的重要性，也提醒我們在設計重試機制時必須更加謹慎。
@@ -149,7 +151,7 @@ After A — 場景導入 (moves: open on a person; no summary ending). Only two 
 | Change | Move | Check |
 |---|---|---|
 | 「本文將探討…」 deleted; a time, a place, a person and a recorded action open the piece. The separate "hold the first number" move is not claimed: 三張 sits in the first paragraph because it is part of the recorded action | Open on a person | `discourse-pass.md` §4; `journalism.md` tells row 1 |
-| 「無奈地表示：“…”」 → the recorded action, then the approved quotation in 「」, no attribution verb, no adverb | (register default; `journalism.md` rule 3) | zh.md §2 manner adverb; §1b attribution rows |
+| 「無奈地表示：“…”」 → the recorded action, then the approved quotation in 「」, no attribution verb, no adverb (a write from the fact list; on refactor the Before's quotation would stay as written) | (register default; `journalism.md` rule 3) | zh.md §2 manner adverb; §1b attribution rows |
 | 「——…——」 paired insertion → one plain sentence carrying 412, 200 ms and the 3-per-minute baseline | (register default; not the "scene in, institution out" move, which needs sections) | check 5; zh.md §1b paired-dash row |
 | 「非常」「迅速地」「成功地」 deleted | (register default) | zh.md §1b, §2 |
 | 「總而言之…重要性…謹慎」 → the last dated fact | No summary ending | check 7 |
