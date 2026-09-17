@@ -12,6 +12,7 @@ granted by this command.
 """
 from __future__ import annotations
 
+import json
 import logging
 import re
 from pathlib import Path
@@ -163,6 +164,17 @@ async def _slash_sepia(ctx, args: str):
     )
 
 
+def _manifest_version() -> str:
+    """Read ``version`` from the sibling plugin.json.
+
+    The manifest is the single version declaration that
+    ``scripts/check_versions.py`` scans; the slash-command metadata reads
+    it rather than carrying a second, unscanned copy.
+    """
+    manifest = json.loads((PLUGIN_DIR / "plugin.json").read_text("utf-8"))
+    return str(manifest["version"])
+
+
 class SepiaPlugin:
     """Installs the packaged sepia skills into every QwenPaw workspace."""
 
@@ -184,7 +196,7 @@ class SepiaPlugin:
                 "[--op write|review|refactor|recreate|hemingway] "
                 "[--lang en|zh]"
             ),
-            metadata={"source": "sepia", "version": "0.10.0"},
+            metadata={"source": "sepia", "version": _manifest_version()},
         )
 
 

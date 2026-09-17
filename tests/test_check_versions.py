@@ -94,7 +94,7 @@ class CheckVersionsCase(unittest.TestCase):
     def test_removing_the_qwenpaw_manifest_fails(self):
         # Review case: .qwenpaw-plugin/plugin.json is part of the required set,
         # so deleting it must go red rather than shrinking the agreeing set to
-        # "3 declarations, all 0.10.0" and letting the package vanish silently.
+        # "3 declarations, all 0.4.0" and letting the package vanish silently.
         files = dict(BASELINE)
         del files[".qwenpaw-plugin/plugin.json"]
         self.write(files)
