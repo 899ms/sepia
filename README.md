@@ -122,8 +122,10 @@ agy plugin install https://github.com/Nanako0129/sepia
 ### QwenPaw
 
 ```bash
-# install
-qwenpaw plugin install Nanako0129/sepia
+# install: qwenpaw takes a local directory (or a zip URL), so clone first;
+# the package's skills symlink resolves inside the clone
+git clone https://github.com/Nanako0129/sepia
+qwenpaw plugin install ./sepia/.qwenpaw-plugin
 
 # uninstall
 qwenpaw plugin uninstall sepia

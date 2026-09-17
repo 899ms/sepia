@@ -21,6 +21,7 @@ logger = logging.getLogger("qwenpaw.plugins.sepia")
 PLUGIN_DIR = Path(__file__).resolve().parent
 
 OPERATIONS = ("write", "review", "refactor", "recreate", "hemingway")
+LANGUAGES = ("en", "zh")
 
 USAGE = (
     "Usage: /sepia <text> [--op write|review|refactor|recreate|hemingway] "
@@ -117,6 +118,16 @@ async def _slash_sepia(ctx, args: str):
         "type-to-operation mapping to pick exactly one."
     )
     lang = flags.get("lang")
+    if lang is not None and lang not in LANGUAGES:
+        return Msg(
+            name="sepia",
+            role="assistant",
+            content=[TextBlock(type="text", text=(
+                f"Unknown --lang '{lang}'. Valid values: "
+                f"{', '.join(LANGUAGES)} (or omit --lang to match the "
+                "target text)."
+            ))],
+        )
     lang_line = (
         f"The user requested output language: {lang}."
         if lang

@@ -122,8 +122,10 @@ agy plugin install https://github.com/Nanako0129/sepia
 ### QwenPaw
 
 ```bash
-# install
-qwenpaw plugin install Nanako0129/sepia
+# install：qwenpaw 只吃本機目錄（或 zip URL），先 clone；
+# package 裡的 skills 符號連結在 clone 內就能解析
+git clone https://github.com/Nanako0129/sepia
+qwenpaw plugin install ./sepia/.qwenpaw-plugin
 
 # uninstall
 qwenpaw plugin uninstall sepia
