@@ -1,6 +1,6 @@
 # Voice profile — Taiwan long-form journalism (built-in, experimental, professional routes only)
 
-Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入」, the exact token from the shape table). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. Shape selection happens in this order. First the route: when the request is on another professional route (a ticket, a PR reply, a release note), no shape is selected whatever the facts allow; sepia says so in one line, applies at most the cross-shape moves that fit that venue, and the closing line reads `Voice applied: tw-journalism/none — not a journalism route; cross-shape moves: <names or none>`. On the journalism route: when a shape is named and its precondition holds, moves come from that shape's table plus the cross-shape table; when a shape is named but its precondition fails while another shape's holds, sepia does not use the named shape, says in one line which precondition failed, picks the viable shape from the decision table, and names it in the closing line; when none is named, sepia picks the shape from the decision table and says which; when no shape's precondition holds, the closing line reads `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>`. The venue's own domain file still governs the text; this profile never overrides it.
+Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入」, the exact token from the shape table). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. Shape selection happens in this order. First the route: when the request is on another professional route (a ticket, a PR reply, a release note), no shape is selected whatever the facts allow; sepia says so in one line, applies at most the cross-shape moves that fit that venue, and the closing line reads `Voice applied: tw-journalism/none — not a journalism route; cross-shape moves: <names or none>`. On the journalism route: when a shape is named and its precondition holds, moves come from that shape's table plus the cross-shape table; when a shape is named but its precondition fails, sepia does not use the named shape, says in one line which precondition failed, and then applies the same table-order rule as the unnamed case (the first row whose precondition holds is the spine; the line names it and the runner-up), or, when no other precondition holds, takes the no-shape path below; when none is named, sepia picks the shape from the decision table and says which; when no shape's precondition holds, the closing line reads `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>`. The venue's own domain file still governs the text; this profile never overrides it.
 
 **Closing line (this body's own rule).** A write or recreate under this voice ends with one line, outside the prose: `Voice applied: tw-journalism/<shape> — moves: <3–5 move names>`, or, on either no-shape path defined above, the `tw-journalism/none` form with zero to five names. The 3–5 count binds when a selected shape's table plus the cross-shape table offer at least three moves whose facts exist; 時間軸 (two moves) and 懸念揭露 (one move) may declare fewer, and so may any shape whose precondition holds but whose facts support only one or two moves: the line then names the moves that have facts and adds `fewer: facts`. A move is never added to satisfy the count; the 3–5 range is a ceiling and a target, not a floor enforced by invention. Review and refactor stage 1 print their normal report and add nothing; this line exists so a reader can check the selection rule without re-deriving it.
 
@@ -53,9 +53,9 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
-| Build character from several concrete episodes; no character adjectives | C: 9 pure, 14 component | `style-pass.md` §1 row 5 specificity; §3 inflation adjectives | None |
-| After a quotation, one gesture or expression, not an emotion adverb | C: about half of 169 notes record this; T: manner adverb near zero (zh.md §1b) | zh.md §2 manner-adverb row; `style-pass.md` §3 inflation adverbs | A gesture after every quotation is a metronome; three or four per piece |
-| At the emotional peak let the quotation stand whole; do not cut it into fragments | C | rubric Group E dialogue proportion (calibration, not a target) | Long quotations raise the quotation share; keep the count low elsewhere. On write from a supplied transcript only: an existing quotation that is already split is never recombined on refactor or recreate (SKILL.md quoted-material guardrail) |
+| Build character from several concrete episodes; no character adjectives | C: 9 pure, 14 component | `professional-pass.md` check 5 specificity; `style-pass.md` §3 inflation adjectives (the §2–3 scan runs on every non-fiction route, SKILL.md) | None |
+| After a quotation, one gesture or expression, not an emotion adverb | C: about half of 169 notes record this; T: manner adverb near zero (zh.md §1b) | zh.md §2 manner-adverb row (loaded with the Chinese calibration on every route) | A gesture after every quotation is a metronome; three or four per piece |
+| At the emotional peak let the quotation stand whole; do not cut it into fragments | C | SKILL.md quoted-material guardrail; `journalism.md` rule 3 | Long quotations raise the quotation share; keep the count low elsewhere. On write from a supplied transcript only: an existing quotation that is already split is never recombined on refactor or recreate (SKILL.md quoted-material guardrail) |
 | End on the person's own words or an everyday action, without comment | C: endings quotation 47 / return to person 20 of 169 | check 7 | Same as the scene-lead ending cost |
 
 ### 論證式 (argument)
@@ -72,17 +72,17 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
 | After each absolute figure, a bracket or clause with the rate, the change, or the prior period | C: 17 of 20 pure data pieces | check 5; `journalism.md` rule 4 | Bracket density in non-data venues reads as over-annotation; one conversion per paragraph |
-| Convert unfamiliar units into a referent the reader already knows | C | check 5; `style-pass.md` §1 row 5 | The referent is itself a fact with a source |
+| Convert unfamiliar units into a referent the reader already knows | C | check 5 | The referent is itself a fact with a source |
 | State the method in the body (source, definition, limits) in the first person plural or the outlet's third person | C: about half of data notes | check 5; `journalism.md` rule 4 | Reads as a paper outside data pieces; only when the reporter built the dataset |
 | After each section's figures, one plain-language reading from someone on the ground, not a reporter verdict | C (the §1b quotation row is a length proxy and licenses no attribution rule, so it is not cited here) | check 7; check 4 stance as `journalism.md` rule 7 reads it | One reading per section or figure cluster; a quotation after every single figure is the metronome this profile forbids |
-| Sections by indicator or region, same skeleton, different content; no connective between them | C: data notes | `style-pass.md` §4 (connectives, here used less); check 9 | Identical skeletons are a uniformity risk; the difference must be in content |
+| Sections by indicator or region, same skeleton, different content; no connective between them | C: data notes | `journalism.md` rule 2 (no connective between sections); check 8 templatedness | Identical skeletons are a uniformity risk; the difference must be in content |
 
 ### 問答 (Q&A)
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
 | The preamble carries all background; the exchange repeats none of it | C: 8 pure, 10 component | check 3 | None |
-| Keep the speaker's repetition, hesitation, code-switching, self-answering | C: Q&A pieces; `journalism.md` rule 3 | `style-pass.md` §1 row 1 (will flag as awkward; the quotation is load-bearing) | Spoken texture will be reported by the style scan; report it as the voice's cost |
+| Keep the speaker's repetition, hesitation, code-switching, self-answering | C: Q&A pieces; `journalism.md` rule 3 | `journalism.md` rule 3 (spoken texture kept); the `style-pass.md` §2–3 scan that every non-fiction route runs will still report it | Spoken texture will be reported by the style scan; report it as the voice's cost |
 | The reporter's checks or additions go in an editor's note outside the quotation (after it, or as a separate bracketed line); on write from a supplied transcript a bracketed gloss may sit inside the quotation as the transcript shows it, but on refactor or recreate no bracketed gloss is inserted into an existing quotation | C | SKILL.md quoted-material guardrail; `journalism.md` rule 3 | None |
 | One question per turn; no bundled sub-questions | C | check 8 templatedness | None |
 
@@ -98,7 +98,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
-| Quote the original notice or message and stamp its time; let the reader compute the gap | C: 22 as a component | check 5; `domains/postmortems.md` rule 1 | On write from supplied source material, select the excerpt the reader needs before quoting it; on refactor or recreate an existing quoted notice is never shortened or reflowed (SKILL.md quoted-material guardrail) |
+| Quote the original notice or message and stamp its time; let the reader compute the gap | C: 22 as a component | check 5; SKILL.md quoted-material guardrail | On write from supplied source material, select the excerpt the reader needs before quoting it; on refactor or recreate an existing quoted notice is never shortened or reflowed (SKILL.md quoted-material guardrail) |
 | Record throughout, judge only in the last section | C | check 4, check 7 | Rarely carries a whole piece (C: 1 pure) |
 
 ### 懸念揭露 (reveal)
@@ -112,7 +112,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
 | Two registers: the standfirst gives the result, the first body paragraph places the reader | C: 20+ notes record the split; `journalism.md` rule 1 | `journalism.md` rule 1; `discourse-pass.md` §1 QUD | None |
-| Subheads switch; paragraphs do not open on connectives | C; T: 「此外」「然而」 single use register-normal, chains are §2 (zh.md §1b, §5) | zh.md §2; `journalism.md` rule 2 | None |
+| Subheads switch; paragraphs do not open on connectives | C; T: 「此外」「然而」 single use is register-normal (zh.md §1b); chains are the zh.md §2 row | zh.md §2; `journalism.md` rule 2 | None |
 | A paragraph-end question answered by the next speaker | C: the norm | QUD; `journalism.md` tells | One per section |
 | The reporter's first person for method, steering a source, recording a silence, or, in a first-person account, narrating what the reporter went to see and observed | C: fixed uses | `journalism.md` rule 5 | A first person that delivers a verdict the reporting did not establish is stance without reporting |
 | A dated update block instead of edits to the body | C; `journalism.md` rule 6 | check 7 | Only new facts |
@@ -120,7 +120,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 
 ## Register defaults
 
-Sentence length, punctuation, quotation marks and connective rates for this register are in `languages/zh.md` §1b, the single canonical table; this body repeats only the two values in the next sentence. One direction is worth naming here because a write under this voice measured against it on 2026-09-16 and landed far outside: this register runs long (per-article median sentence 59 characters, within-article SD 34, §1b), and an executor's default Chinese sentence is much shorter. After a write, compare the piece's sentence shape with §1b before adding the closing line, and where the piece reads as a run of short, comma-poor sentences, merge two or let a clause carry a subordinate fact (the `style-pass.md` §5 fix). No length target: dispersion is the trait. In English journalism none of this is measured; the moves still apply as inference, the numbers do not.
+Sentence length, punctuation, quotation marks and connective rates for this register are in `languages/zh.md` §1b, the single canonical table; this body repeats only the two values in the next sentence. One direction is worth naming here because a write under this voice measured against it on 2026-09-16 and landed far outside: this register runs long (per-article median of the mean sentence length 59 characters, median within-article SD 34, §1b), and that one write came out much shorter (mean 22.8, SD 10.7; one observation, not an executor-wide measurement). After a write, compare the piece's sentence shape with §1b before adding the closing line, and where the piece reads as a run of short, comma-poor sentences, merge two or let a clause carry a subordinate fact (the `style-pass.md` §5 fix). No length target: dispersion is the trait. In English journalism none of this is measured; the moves still apply as inference, the numbers do not.
 
 ## Voice fit
 
@@ -140,7 +140,7 @@ After A — 場景導入 (moves: open on a person; hold the first number until t
 
 > 3 月 4 日下午 2 點 05 分，北部一間區域醫院的急診，值班護理師把紙本檢傷單夾到白板上，之後的分級改用手寫。「電腦轉圈，我就先用紙。」
 >
-> 電腦轉圈的原因在急診之外：院內系統的重試佇列沒有設 jitter，失敗的請求在同一個時間窗裡反覆重送，下游服務於是互相限流。
+> 電腦轉圈的原因：重試佇列沒有設 jitter，失敗的請求在同一個時間窗裡反覆重送，下游服務於是互相限流。
 >
 > 夾上白板的紙本檢傷單有三張；夾上去的時候，重送已經進行了三分鐘：200 毫秒內 412 次，而平時每分鐘大約只有 3 次。2 點 41 分找到原因；值班平台工程師說，這個佇列的預設值從來沒有人檢視過。2 點 47 分，`RETRY_JITTER=full` 設上。
 >
@@ -152,7 +152,7 @@ After A — 場景導入 (moves: open on a person; hold the first number until t
 |---|---|---|
 | 「本文將探討…」 | A date, a place, a person and a recorded action open the piece; open on a person | `journalism.md` tells row 1 |
 | Numbers in the first sentence of a scene piece | The count of slips and every figure wait for paragraph three; the opening keeps only the date and time of day, which the move treats as scene facts; hold the first number | `journalism.md` rule 1 |
-| 「無奈地表示：“…”」 | The recorded action, then the approved quotation in 「」, no attribution verb, no adverb (a write from the fact list; on refactor the Before's quotation would stay as written) | zh.md §2 manner adverb; §1b attribution rows |
+| 「無奈地表示：“…”」 | The recorded action, then the approved quotation in 「」, no attribution verb, no adverb (a write from the fact list; on refactor the Before's quotation would stay as written) | zh.md §2 manner adverb; `journalism.md` rule 3 (attribution by context or a post-posed 說) |
 | 「——…——」 paired insertion | One plain sentence carries 412, 200 ms and the 3-per-minute baseline, in paragraph three | check 5; zh.md §1b paired-dash row |
 | 「非常」「迅速地」「成功地」 | Absent (register default) | zh.md §1b, §2 |
 | 「總而言之…重要性…謹慎」 | The piece stops on the dated update; no summary ending. The update block itself is a cross-shape move and is not counted, because the frame that makes it post-publication is an assumption of the exercise | check 7 |
@@ -161,7 +161,7 @@ Known cost and what the blind review taught: the shape's "return to the opening 
 
 After B — 倒金字塔 (moves: the first sentence holds who, when, what, how many; updates in a dated block; no summary ending). "Write each provision in full" is not claimed: the facts hold incident measurements and a setting, not provisions. A data-led After was drafted first and withdrawn: the fact list has a baseline but no source or method for the count, the decision table says a shape whose precondition is not met is not chosen, and a worked example that chooses it anyway would teach the opposite. The facts do hold the inverted pyramid's precondition (date, actor, outcome, count), and the stated publication frame (2026-03-05) puts the events inside the shape's "this week" window and the 03-06 change after publication.
 
-> 3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把同一批失敗請求在 200 毫秒內重送了 412 次，下游服務對彼此限流；2 點 47 分設上 `RETRY_JITTER=full`。〔TODO：何時恢復、是否因此恢復，事實清單未給。〕
+> 3 月 4 日下午 2 點 02 分起，北部一間區域醫院急診背後的系統把失敗請求在 200 毫秒內重送了 412 次，下游服務對彼此限流；2 點 47 分設上 `RETRY_JITTER=full`。〔TODO：何時恢復、是否因此恢復，事實清單未給。〕
 >
 > 重試佇列沒有設 jitter。平時每分鐘大約 3 次重送；這 200 毫秒裡的量相當於平時兩個多小時的總和。2 點 41 分找到原因。
 >
@@ -188,7 +188,7 @@ After C — 論證式 spine (moves: question answered by the next speaker; updat
 >
 > 值班護理師 14:05 就把三張紙本檢傷單夾上白板。「電腦轉圈，我就先用紙。」
 >
-> 系統這邊的狀況是：重試佇列沒有設 jitter，200 毫秒內同一批請求重送 412 次，而平時每分鐘大約 3 次；下游服務對彼此限流。
+> 系統這邊的狀況是：重試佇列沒有設 jitter，200 毫秒內重送 412 次，而平時每分鐘大約 3 次；下游服務對彼此限流。
 >
 > 值班平台工程師說，這個佇列的預設值從來沒有人檢視過。14:47，`RETRY_JITTER=full` 設上。
 >
