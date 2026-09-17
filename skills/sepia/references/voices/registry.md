@@ -42,7 +42,7 @@ Dialogue share is not an anti-signal here; the profile's own dialogue row carrie
 ## tw-journalism
 
 - Body: `references/voices/tw-journalism.md`
-- Opt-in phrase: `apply the Taiwan journalism voice` / 「套用台灣深度報導 voice」, optionally followed by a shape name from the body's tables (「，場景導入型」 and so on).
+- Opt-in phrase: `apply the Taiwan journalism voice` / 「套用台灣深度報導 voice」, optionally followed by a shape name from the body's tables (「，場景導入」 and so on).
 - Intent triggers: none. The exact phrase is the only way in; no announcement is owed for it (the announcement rule above applies to triggers other than the exact phrase).
 - Entry: none.
 - Routes: professional only; never loaded on the fiction route.

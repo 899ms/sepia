@@ -4,7 +4,7 @@ Status: experimental and opt-in. Load this file only when the user says a voice 
 
 Precedence on professional routes: the venue corpus still sets the register (`professional-pass.md`), and the voice operates inside it. Where a declared voice and the venue's register directly conflict, surface the conflict and let the user pick — never silently override either. The same applies on every route when a voice move directly contradicts a `style-pass.md` §4 restore item (a voice that forbids negation against §4's "restore negation", for instance): name both rules in the report and leave the choice to the user.
 
-Built-in profile bodies: `voices/hemingway.md` (opt-in phrase: "apply the Hemingway voice") and `voices/tw-journalism.md` (professional routes only; opt-in phrase: "apply the Taiwan journalism voice" or 「套用台灣深度報導 voice」, optionally followed by a shape name such as 「，場景導入型」). A built-in profile may also declare intent triggers in `voices/registry.md` — user requests that count as opting in; sepia announces the profile it is applying and how to decline, so nothing is ever applied silently.
+Built-in profile bodies: `voices/hemingway.md` (opt-in phrase: "apply the Hemingway voice") and `voices/tw-journalism.md` (professional routes only; opt-in phrase: "apply the Taiwan journalism voice" or 「套用台灣深度報導 voice」, optionally followed by a shape name such as 「，場景導入」). A built-in profile may also declare intent triggers in `voices/registry.md` — user requests that count as opting in; sepia announces the profile it is applying and how to decline, so nothing is ever applied silently.
 
 ## Why the two need an interface
 
