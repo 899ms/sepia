@@ -30,9 +30,11 @@ USAGE = (
     "`--`: /sepia please preserve --op recreate --"
 )
 
-# A flag token at the very end of the argument string: "--op <word>" or
-# "--lang <word>". Only these trailing tokens are command control data.
-_FLAG = re.compile(r"\s*--(op|lang)\s+([A-Za-z-]+)\s*$")
+# A flag token at the very end of the argument string: "--op <value>" or
+# "--lang <value>". Only these trailing tokens are command control data. The
+# value captures any non-whitespace run so a malformed value ("de2", "zh_TW")
+# reaches the validation below instead of staying inside the target text.
+_FLAG = re.compile(r"\s*--(op|lang)\s+(\S+)\s*$")
 
 
 def _split_flags(raw: str) -> tuple[str, dict[str, str]]:
