@@ -1,10 +1,10 @@
 # Voice profile — Taiwan long-form journalism (built-in, experimental, professional routes only)
 
-Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入」, the exact token from the shape table). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. Shape selection happens in this order. First the route: when the request is on another professional route (a ticket, a PR reply, a release note), no shape is selected whatever the facts allow; sepia says so in one line, applies at most the cross-shape moves that fit that venue, and the closing line reads `Voice applied: tw-journalism/none — not a journalism route; cross-shape moves: <names or none>`. On the journalism route: when a shape is named and its precondition holds, moves come from that shape's table plus the cross-shape table; when a shape is named but its precondition fails, sepia does not use the named shape, says in one line which precondition failed, and then applies the same table-order rule as the unnamed case (the first row whose precondition holds is the spine; the line names it and the runner-up), or, when no other precondition holds, takes the no-shape path below; when none is named, sepia picks the shape from the decision table and says which; when no shape's precondition holds, the closing line reads `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>`. The venue's own domain file still governs the text; this profile never overrides it.
+Status: a built-in voice profile for the experimental interface in `voice-skills.md`. It loads only when the user opts in with the exact phrase `apply the Taiwan journalism voice` or 「套用台灣深度報導 voice」, optionally followed by a shape name from the tables below (for example 「，場景導入」, the exact token from the shape table). It never loads on the fiction route, declares no intent triggers, and produces no `Voice fit:` line (professional-route Voice fit is tracked in issue #227). Everything in `voice-skills.md` governs: sepia's architecture decisions first (here, `domains/journalism.md`), 3–5 voice moves per piece, uniformity findings at full strength, venue precedence, never invent. Shape selection happens in this order. First the route: when the request is on another professional route (a ticket, a PR reply, a release note), no shape is selected whatever the facts allow; sepia says so in one line, applies at most the cross-shape moves that fit that venue, and the closing line reads `Voice applied: tw-journalism/none — not a journalism route; cross-shape moves: <names or none>`. On the journalism route: when a shape is named and its precondition holds, moves come from that shape's table plus the cross-shape table; when a shape is named but its precondition fails, sepia does not use the named shape, says in one line which precondition failed, and then applies the same table-order rule as the unnamed case (the first row whose precondition holds is the spine; the line names it and the runner-up, or `runner-up: none` when only one precondition holds), or, when no other precondition holds, takes the no-shape path below; when none is named, sepia picks the shape from the decision table and says which; when no shape's precondition holds, the closing line reads `Voice applied: tw-journalism/none — no shape precondition met; cross-shape moves: <names or none>`. The venue's own domain file still governs the text; this profile never overrides it.
 
 **Closing line (this body's own rule).** A write or recreate under this voice ends with one line, outside the prose: `Voice applied: tw-journalism/<shape> — moves: <3–5 move names>`, or, on either no-shape path defined above, the `tw-journalism/none` form with zero to five names. The 3–5 count binds when a selected shape's table plus the cross-shape table offer at least three moves whose facts exist; 時間軸 (two moves) and 懸念揭露 (one move) may declare fewer, and so may any shape whose precondition holds but whose facts support only one or two moves: the line then names the moves that have facts and adds `fewer: facts`. A move is never added to satisfy the count; the 3–5 range is a ceiling and a target, not a floor enforced by invention. Review and refactor stage 1 (the diagnosis) print their normal report and add nothing; refactor stage 2 (the edits) ends with the same line naming the shape and the moves its edits applied, so voice-driven edits can be checked against the selection and precondition rules; this line exists so a reader can check the selection rule without re-deriving it.
 
-Evidence tiers, kept apart: (T) one private human-side measurement of Traditional Chinese long-form journalism, ledger `ZH-NEWS-CORPUS-2026`, whose numbers live only in `languages/zh.md` §1b; (C) a close reading of 169 articles from the same corpus, cited as counts of 169 (a sample size, not a corpus size); (I) Sepia inference. There is no author-testimony tier and no machine-side measurement or generalization: nothing here says what machines do as a class, only what this register does. The Grounding section records one executor's one-off review and write behaviour on one example as validation of this body, not as evidence about machines. The corpus is about two thousand articles from one unnamed Taiwanese publication, spanning about ten years, human text only, not distributed. No sentence of any article appears in this file; every example is synthetic.
+Evidence tiers, kept apart: (T) one private human-side measurement of Traditional Chinese long-form journalism, ledger `ZH-NEWS-CORPUS-2026`, whose numbers live only in `languages/zh.md` §1b; (C) a close reading of 169 articles from the same corpus, cited as counts of 169 or of a shape subgroup within those 169 (sample sizes, not corpus sizes; the subgroup counts come from the same private close-reading notes as the digest and are published here at the same granularity); (I) Sepia inference. There is no author-testimony tier and no machine-side measurement or generalization: nothing here says what machines do as a class, only what this register does. The Grounding section records one executor's one-off review and write behaviour on one example as validation of this body, not as evidence about machines. The corpus is about two thousand articles from one unnamed Taiwanese publication, spanning about ten years, human text only, not distributed. No sentence of any article appears in this file; every example is synthetic.
 
 ## The precondition is reporting
 
@@ -24,7 +24,7 @@ Every shape below needs facts the writer actually has. A scene needs scene facts
 | A reconstructable sequence of moments | 時間軸 (timeline) | timestamps from documents |
 | An image that can hold two paragraphs unnamed | 懸念揭露 (reveal) | rare (C: 1 of 169 pure); use once |
 
-Mixed pieces (C: 98 of 169) pick one spine and borrow at most one move from a second shape: the second shape is the decision table's runner-up (its precondition must hold too), the borrowed move counts toward the 3–5 and is named on the closing line as `<shape>: <move>`. When no shape is named and more than one precondition holds, the table's order is the priority: the first row whose precondition holds is the spine, and sepia's one line names it and the runner-up so the user can override by naming a shape.
+Mixed pieces (C: 98 of 169) pick one spine and borrow at most one move from a second shape: the second shape is the decision table's runner-up (its precondition must hold too), the borrowed move counts toward the 3–5 and is named on the closing line as `<shape>: <move>`. When no shape is named and more than one precondition holds, the table's order is the priority: the first row whose precondition holds is the spine, and sepia's one line names it and the runner-up (`runner-up: none` when only one precondition holds) so the user can override by naming a shape.
 
 ## Shape tables
 
@@ -47,14 +47,14 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 | The first sentence holds who, when, what, how many; only then walk the clock | C: 6 pure, 22 as a component | `journalism.md` rule 1 (standfirst register); domains answer-first | Long first sentences with many commas trip `style-pass.md` §5 if the rest of the piece is uniform |
 | Write each provision in full every time (date, amount, deadline); never "as above" | C: inverted-pyramid pieces | check 5 specificity | check 2 will count repeated full names; use in provision-dense sections only |
 | Bridge from the main scene to the outside with a run of captions or times, then re-enter with a count and a clock time | C | check 3 | None beyond the general slack rule |
-| Updates go in a dated block after the body; the body is not rewritten | C; `journalism.md` rule 6 | check 7 | An update that restates the body is residue; only new facts go there |
+| Non-corrective follow-ups go in a dated block after the body; a correction revises the body with a dated note instead (`journalism.md` rule 6) | C; `journalism.md` rule 6 | check 7 | An update that restates the body is residue; only new facts go there |
 
 ### 人物弧線 (person arc)
 
 | Move | Source | Sepia check | Known cost |
 |---|---|---|---|
 | Build character from several concrete episodes; no character adjectives | C: 9 pure, 14 component | `professional-pass.md` check 5 specificity; `style-pass.md` §3 inflation adjectives (the §2–3 scan runs on every non-fiction route, SKILL.md) | None |
-| After a quotation, one gesture or expression, not an emotion adverb | C: about half of 169 notes record this; T: manner adverb near zero (zh.md §1b) | zh.md §2 manner-adverb row (loaded with the Chinese calibration on every route) | A gesture after every quotation is a metronome; three or four per piece |
+| After a quotation, one gesture or expression, not an emotion adverb | C: about half of 169 notes record this; T: manner adverb near zero (zh.md §1b) | `journalism.md` tells row 5 (manner adverb on speech verbs); on Chinese targets also the zh.md §2 manner-adverb row | A gesture after every quotation is a metronome; three or four per piece |
 | At the emotional peak let the quotation stand whole; do not cut it into fragments | C | SKILL.md quoted-material guardrail; `journalism.md` rule 3 | Long quotations raise the quotation share; keep the count low elsewhere. On write from a supplied transcript only: an existing quotation that is already split is never recombined on refactor or recreate (SKILL.md quoted-material guardrail) |
 | End on the person's own words or an everyday action, without comment | C: endings quotation 47 / return to person 20 of 169 | check 7 | Same as the scene-lead ending cost |
 
@@ -92,7 +92,7 @@ Columns: Move / Source / Sepia check it maps to (I unless marked) / Known cost.
 |---|---|---|---|
 | State the format once ("the following is in each person's own words"); no per-thread reporter lead-in | C: 6 pure, 11 component | check 8 | None |
 | Equal room per thread; no thread pre-declared the main one | C | check 4 as `journalism.md` rule 7 reads it | Equal length is a uniformity risk; vary inner shape |
-| Switch threads with a subhead, never with 「另一方面」 | C; `journalism.md` rule 2 | zh.md §2 connective stacking | None |
+| Switch threads with a subhead, never with 「另一方面」 | C; `journalism.md` rule 2 | `journalism.md` rule 2 and tells row 9; on Chinese targets also the zh.md §2 connective row | None |
 
 ### 時間軸 (timeline)
 
@@ -136,7 +136,7 @@ Before (synthetic, written to carry the register's departures):
 
 > 本文將探討一起發生在北部某區域醫院急診的系統事故。2026年3月4日下午，該院的掛號與檢傷系統突然變得非常緩慢，值班護理師無奈地表示：“系統一直轉圈圈，我們完全沒辦法作業。”值得注意的是，事故的根本原因——重試佇列缺乏抖動機制——導致在極短時間內產生了大量重複請求，進而引發下游服務相互限流的連鎖反應。技術團隊隨後迅速地進行了排查，並在當天下午成功地修復了問題。總而言之，這起事故凸顯了系統韌性的重要性，也提醒我們在設計重試機制時必須更加謹慎。
 
-After A — 場景導入 (moves: open on a person; hold the first number until the third paragraph; no summary ending):
+After A — 場景導入 (moves: open on a person; hold the first number until the third paragraph; update block; no summary ending):
 
 > 3 月 4 日下午 2 點 05 分，北部一間區域醫院的急診，值班護理師把紙本檢傷單夾到白板上，之後的分級改用手寫。「電腦轉圈，我就先用紙。」
 >
@@ -146,7 +146,7 @@ After A — 場景導入 (moves: open on a person; hold the first number until t
 >
 > 更新（3 月 6 日）：所有佇列的預設值已改。
 >
-> Voice applied: tw-journalism/場景導入 — moves: open on a person, hold the first number, no summary ending
+> Voice applied: tw-journalism/場景導入 — moves: open on a person, hold the first number, update block, no summary ending
 
 | Departure in the Before | What the After (a write) does instead; move | Check |
 |---|---|---|
@@ -156,7 +156,7 @@ After A — 場景導入 (moves: open on a person; hold the first number until t
 | 「——…——」 insertion with single-glyph dashes carrying figures without their baseline | One plain sentence carries 412, 200 ms and the 3-per-minute baseline, in paragraph three; the two-cell paired 「──…──」 would itself be register-normal (zh.md §1b), the single-glyph 「—」 is the glyph slip | check 5; zh.md §1b single-glyph 「—」 row |
 | 「迅速地」「成功地」 | Absent (manner adverbs; register default) | zh.md §2 manner-adverb row |
 | 「非常」 | Absent because no approved fact supports an intensifier, not because one 「非常」 departs from the register (§1b: stacking against 「很」 is the departure) | check 5 |
-| 「總而言之…重要性…謹慎」 | The piece stops on the dated update; no summary ending. The update block itself is a cross-shape move and is not counted, because the frame that makes it post-publication is an assumption of the exercise | check 7 |
+| 「總而言之…重要性…謹慎」 | The piece stops on the dated update; no summary ending. The update block is the cross-shape move and is counted, as in After B and After C; the frame that makes it post-publication is a stated assumption of the exercise | check 7 |
 
 Known cost and what the blind review taught: the shape's "return to the opening person or object at a later moment" move is not used, because the approved fact list has no later whiteboard fact; an earlier draft returned to the same 2 點 05 分 moment and the declared-voice review correctly reported it as density, not as the move. Four drafts before that added a gesture, a closing count, a pronoun and an attribution of the discovery that were in no fact list, and reviews caught each under check 5; one more claimed "scene in, institution out" for a piece with no sections. The precondition section and the audited closing line exist for exactly these. 「三分鐘」 is arithmetic on two approved times (14:02, 14:05).
 
