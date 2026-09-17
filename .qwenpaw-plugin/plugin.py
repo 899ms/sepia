@@ -24,8 +24,53 @@ OPERATIONS = ("write", "review", "refactor", "recreate", "hemingway")
 
 USAGE = (
     "Usage: /sepia <text> [--op write|review|refactor|recreate|hemingway] "
-    "[--lang en|zh]"
+    "[--lang en|zh]\n"
+    "To end the text with an option-looking fragment, separate it with "
+    "`--`: /sepia please preserve --op recreate --"
 )
+
+# A flag token at the very end of the argument string: "--op <word>" or
+# "--lang <word>". Only these trailing tokens are command control data.
+_FLAG = re.compile(r"\s*--(op|lang)\s+([A-Za-z-]+)\s*$")
+
+
+def _split_flags(raw: str) -> tuple[str, dict[str, str]]:
+    """Split ``raw`` into (target text, flags), peeling flags off the tail.
+
+    Flags are recognised **only** in a trailing section, so an option-looking
+    fragment inside the target itself stays in the target. Peeling right-to-left
+    until the tail stops matching means the first non-flag token ends the
+    section::
+
+        "fix this prose --op recreate"   -> ("fix this prose", {"op": "recreate"})
+        "text --op write --op review"    -> ("text", {"op": "review"})
+
+    Trailing flags are lexically indistinguishable from a target that simply
+    *ends* with an option-looking fragment ("please preserve --op recreate").
+    A literal ``--`` on its own ends the flag section and everything before it
+    is taken verbatim as the target, which resolves that ambiguity explicitly::
+
+        "please preserve --op recreate --"  -> ("please preserve --op recreate", {})
+
+    The target text is untrusted data, so it is never rewritten — it is only
+    trimmed at the boundary where a genuine trailing flag was removed.
+    """
+    text = raw
+    # An explicit "--" terminator pins the boundary: nothing after it is a flag.
+    terminator = re.search(r"\s*--\s*$", text)
+    if terminator is not None:
+        return text[: terminator.start()], {}
+
+    flags: dict[str, str] = {}
+    while True:
+        m = _FLAG.search(text)
+        if m is None:
+            break
+        key, value = m.group(1), m.group(2).lower()
+        # A repeated flag keeps the right-most (last) occurrence.
+        flags.setdefault(key, value)
+        text = text[: m.start()]
+    return text, flags
 
 
 async def _slash_sepia(ctx, args: str):
@@ -40,10 +85,10 @@ async def _slash_sepia(ctx, args: str):
     from agentscope.message import Msg, TextBlock
 
     raw = args or ""
-    flags: dict[str, str] = {
-        m.group(1): m.group(2).lower()
-        for m in re.finditer(r"--(op|lang)\s+([A-Za-z-]+)", raw)
-    }
+    # Flags are parsed only from a trailing flag section (see _split_flags):
+    # the target text is untrusted data, so an option-looking fragment inside
+    # it must never be interpreted as command control data or deleted.
+    text, flags = _split_flags(raw)
     op = flags.get("op")
     if op is not None and op not in OPERATIONS:
         return Msg(
@@ -56,7 +101,7 @@ async def _slash_sepia(ctx, args: str):
             ))],
         )
 
-    text = re.sub(r"--(op|lang)\s+[A-Za-z-]+", "", raw).strip()
+    text = text.strip()
     if not text:
         return Msg(
             name="sepia",
