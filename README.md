@@ -36,7 +36,7 @@ The governing principle throughout: **calibrate to the human distribution, don't
 
 ## Operation entries
 
-The complete plugin package gives Claude Code, Codex, Grok Build, and Antigravity a general router plus five direct entries:
+The complete plugin package gives Claude Code, Codex, Grok Build, and Antigravity a general router plus five direct entries. QwenPaw gets the `/sepia` router only, so the table below does not apply there:
 
 | Operation | Claude Code | Codex | Grok Build | Antigravity | Meaning |
 |---|---|---|---|---|---|
@@ -46,7 +46,7 @@ The complete plugin package gives Claude Code, Codex, Grok Build, and Antigravit
 | recreate | `/sepia-recreate` | `$sepia-recreate` | `/sepia-recreate` | `/sepia-recreate` | Rewrite from the source facts and intent |
 | hemingway | `/sepia-hemingway` | `$sepia-hemingway` | `/sepia-hemingway` | `/sepia-hemingway` | Write or refactor fiction with the built-in Hemingway voice applied |
 
-The general `/sepia` (Claude Code, Grok Build, Antigravity, and QwenPaw) or `$sepia` (Codex) router remains available. On QwenPaw the package registers `/sepia` as the entry and installs the six skills into each workspace; it adds no separate slash commands for the operations. The operation wrappers depend on their sibling canonical skill, so standalone wrapper installation is unsupported; install the complete plugin package. What was verified on each platform is stated under Install.
+The general `/sepia` (Claude Code, Grok Build, Antigravity, and QwenPaw) or `$sepia` (Codex) router remains available; on QwenPaw the package installs the six skills into each workspace and registers no per-operation slash commands. The operation wrappers depend on their sibling canonical skill, so standalone wrapper installation is unsupported; install the complete plugin package. What was verified on each platform is stated under Install.
 
 ## Experimental: composing with voice skills
 

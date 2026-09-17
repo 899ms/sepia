@@ -36,7 +36,7 @@ sepia 将这些实测差距，连同 [`research/`](research/) 里梳理的相关
 
 ## 操作入口
 
-完整的插件包为 Claude Code、Codex、Grok Build 和 Antigravity 带来了一个通用路由以及五个直达入口。
+完整的插件包为 Claude Code、Codex、Grok Build 和 Antigravity 带来了一个通用路由以及五个直达入口；QwenPaw 只有 `/sepia` 这一个路由，下表不适用。
 
 | 操作 | Claude Code | Codex | Grok Build | Antigravity | 用途 |
 |---|---|---|---|---|---|
@@ -46,7 +46,7 @@ sepia 将这些实测差距，连同 [`research/`](research/) 里梳理的相关
 | recreate | `/sepia-recreate` | `$sepia-recreate` | `/sepia-recreate` | `/sepia-recreate` | 根据原始事实与意图重新撰写 |
 | hemingway | `/sepia-hemingway` | `$sepia-hemingway` | `/sepia-hemingway` | `/sepia-hemingway` | 应用内置海明威语气写作或改写小说 |
 
-通用的 `/sepia`（Claude Code、Grok Build、Antigravity 与 QwenPaw）或 `$sepia`（Codex）路由依旧可用。QwenPaw 的插件包只注册 `/sepia` 这一个入口，并把六个 skill 装进每个 workspace，不另设各操作的斜杠命令。各操作 wrapper 都依赖同级的规范 skill，不支持单独安装，请直接安装完整的插件包。各平台验证了什么，写在「安装」一节。
+通用的 `/sepia`（Claude Code、Grok Build、Antigravity 与 QwenPaw）或 `$sepia`（Codex）路由依旧可用；QwenPaw 的插件包会把六个 skill 装进每个 workspace，不另设各操作的斜杠命令。各操作 wrapper 都依赖同级的规范 skill，不支持单独安装，请直接安装完整的插件包。各平台验证了什么，写在「安装」一节。
 
 ## 实验性功能：叠加语气／风格 skill
 

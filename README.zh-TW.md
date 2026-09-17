@@ -36,7 +36,7 @@ sepia 把這些實測差距，連同 [`research/`](research/) 裡整理過的相
 
 ## 操作入口
 
-完整 plugin package 會在 Claude Code、Codex、Grok Build 與 Antigravity 提供通用 router，以及五個直接入口：
+完整 plugin package 會在 Claude Code、Codex、Grok Build 與 Antigravity 提供通用 router，以及五個直接入口；QwenPaw 只有 `/sepia` 這個 router，下表不適用：
 
 | 操作 | Claude Code | Codex | Grok Build | Antigravity | 用途 |
 |---|---|---|---|---|---|
@@ -46,7 +46,7 @@ sepia 把這些實測差距，連同 [`research/`](research/) 裡整理過的相
 | recreate | `/sepia-recreate` | `$sepia-recreate` | `/sepia-recreate` | `/sepia-recreate` | 依原始事實與意圖重新撰寫 |
 | hemingway | `/sepia-hemingway` | `$sepia-hemingway` | `/sepia-hemingway` | `/sepia-hemingway` | 套用內建海明威聲音寫或改小說 |
 
-通用 router 仍可透過 `/sepia`（Claude Code、Grok Build、Antigravity、QwenPaw）或 `$sepia`（Codex）使用。QwenPaw 的 package 只註冊 `/sepia` 這一個入口，並把六個 skill 裝進每個 workspace，不另設各操作的斜線指令。操作 wrapper 依賴同 package 裡的正典 skill，不支援單獨安裝；請安裝完整 plugin package。各平台驗證了什麼，寫在〈安裝〉一節。
+通用 router 仍可透過 `/sepia`（Claude Code、Grok Build、Antigravity、QwenPaw）或 `$sepia`（Codex）使用；QwenPaw 的 package 會把六個 skill 裝進每個 workspace，不另設各操作的斜線指令。操作 wrapper 依賴同 package 裡的正典 skill，不支援單獨安裝；請安裝完整 plugin package。各平台驗證了什麼，寫在〈安裝〉一節。
 
 ## 實驗性功能：疊加聲音 skill
 
