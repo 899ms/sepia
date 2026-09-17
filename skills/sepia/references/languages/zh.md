@@ -44,7 +44,7 @@ Rates in human prose. A near-zero rate means the form departs from this register
 | Suffix-bearing vocabulary 「○○性／○○化／○○感」 | 77 per 100k chars, mostly fixed legal-policy terms | A lexical count only; whether such nouns serve as subjects or wrap a verb (「自我的探索」) was not counted. Nominalized subjects stay unmeasured; §4 row |
 | Summary endings | 7 of 169 close-read articles (close-reading sample count) | Conclusion residue (`professional-pass.md` check 7) is the departure in this register |
 
-## 1c Machine side for the same register (M; three models, one base prompt with a Grok variant, one day)
+## 1c Machine side for the same register (M; three models, one base prompt with a Grok variant, two consecutive days)
 
 Design: 40 fictional zh-TW briefs (scene, profile, policy, data, investigation, breaking), one shared base prompt that fixed 1,000–1,400 characters and asked for at least three direct quotations, no style or anti-AI instruction; the Grok run added one line telling it not to read files or skills, after two earlier runs spent their single turn reading a bundled skill, so the Grok prompt is a variant of the base prompt, not identical to it. Each model ran headless with no installed skill or memory: Grok 4.6, GPT-6 (via its CLI), Gemini 3.8 Flash (39 pieces; one brief returned empty twice). Same metric tools as T. Every cell names its kind of quantity. A human number appears here only for forms §1b does not carry; for forms §1b carries, the Human column points to §1b. Nothing here is a per-passage cutoff, and no row below is a hunt row: the machine-high forms are register departures whose human side is not near zero, so the reading stays "cluster", as §4 already says. Limits in §6.
 
@@ -57,7 +57,7 @@ Robust across the three models (direction the same in all three, difference larg
 | Share of sentences of 60+ chars, per-article median | 42% | 23% | 5% | 8% | Same reading |
 | Arabic numerals / Chinese numerals, per 1k tokens | 18.7 / 5.1 | 0 / 16 | 0 / 16 | 0 / 24 | All three spell numbers out; human journalism uses Arabic digits for counts, dates and measures, the direction `EY-NUMERALS-2004` prescribes for those, with Chinese numerals kept for idioms and names |
 | First-sentence length, per-article median chars; first 80 characters contain an Arabic digit, median | 60; yes | 37; no | 31; no | 37; no | Machines open shorter and without an Arabic digit. Chinese numerals were not counted in this check, and the numerals row shows the machines write figures in Chinese, so this says nothing about whether the lead carries a figure |
-| Quotations: median length chars / multi-sentence share, per-article medians (prompt fixed length and asked for three quotations, which constrains these) | 8 / 6% | 46 / 38% | 27 / 25% | 30 / 41% | Machine quotations are three to six times longer and four to seven times more often multi-sentence; most human 「」 mark terms (§1b). Length is a proxy, not a speech classification |
+| Quotations: median length chars / multi-sentence share, per-article medians (prompt fixed length and asked for at least three quotations, which constrains these) | 8 / 6% | 46 / 38% | 27 / 25% | 30 / 41% | Machine quotations are three to six times longer and four to seven times more often multi-sentence; most human 「」 mark terms (§1b). Length is a proxy, not a speech classification |
 | 「不是…而是」, per 100k chars | §1b (6.3) | 47.0 | 18.5 | 37.1 | 2.9–7.5× the human rate in all three; the share of articles is mixed (weak table). One instance stays register-normal; the machine side is the cluster |
 | 「坦言」, per 100k chars | 4.6 | 30.2 | 20.4 | 10.6 | 2–7× per 100k in all three; the share of articles is mixed (weak table) |
 | Exclamation marks: share of articles; per 100k | 54%; 28 | 0; 0 | 0; 0 | 0; 0 | Machines produce none. The close reading notes that the human ones sit mostly inside quotations; placement is not measured |
@@ -80,7 +80,7 @@ Model-specific or weak (report, do not generalise):
 | Emotion words (jieba), per 1k tokens | 0.46 | 1.1 | 0 | 0 | Gemini only |
 | Suffix vocabulary 「○○性／○○化／○○感」 (jieba), per 1k tokens | 0.30 (§1b gives the regex count, 77 per 100k chars) | 0 | 0 | 0 | Per-article medians of 0 on 1,400-character pieces: an artifact of piece length; unmeasured |
 | Sentence-initial 「其實」, share of articles | §1b (15%) | 0% | 0% | 5% | Low counts on short pieces; weak |
-| Three-item 頓號 list, share of articles | §1b (59%) | 8% | 15% | 32% | Human higher, but the report marks it 相近 on rate; weak |
+| Three-item 頓號 list, share of articles | §1b (59%) | 8% | 15% | 32% | Human higher on share of articles; the private contrast report labels the per-100k rate, a statistic this table does not carry, as similar; weak |
 | Subhead-like paragraphs (≤25 chars, no sentence-final punctuation), share of paragraphs | 8% | 22% | 16% | 21% | A proxy: the prompt forbade Markdown, so whether these short lines are subheads is not determined |
 
 ## 2 What to hunt (Sepia inferences from §1, §1b and §1c; shapes of `style-pass.md` §2)
