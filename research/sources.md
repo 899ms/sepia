@@ -62,7 +62,7 @@ Sepia is tuned to pass no detector (`SKILL.md`, intro). These sources are kept f
 
 ## Syntax, rhythm, punctuation
 
-Sources for the sentence-rhythm check (`style-pass.md` §5), the punctuation and paragraph rows of its whitelist (§7), and the Chinese calibration file (`references/languages/zh.md`); digest in [rhythm-syntax.md](rhythm-syntax.md), and, for the Chinese file, one private human-side measurement of Traditional Chinese journalism (`ZH-NEWS-CORPUS-2026`; digest in [zh-news-corpus.md](zh-news-corpus.md)). Every number is bound to the corpus, model era, and language in its scope cell. The one direction these studies agree on is sentence-length dispersion (human > LLM); mean sentence length, punctuation density, and paragraph length disagree across corpora and are recorded here so that they are not turned into rules.
+Sources for the sentence-rhythm check (`style-pass.md` §5), the punctuation and paragraph rows of its whitelist (§7), and the Chinese calibration file (`references/languages/zh.md`); digest in [rhythm-syntax.md](rhythm-syntax.md), and, for the Chinese file, one private measurement of Traditional Chinese long-form journalism with a human side and a machine-side contrast group (`ZH-NEWS-CORPUS-2026`; digest in [zh-news-corpus.md](zh-news-corpus.md)). Every number is bound to the corpus, model era, and language in its scope cell. The one direction these studies agree on is sentence-length dispersion (human > LLM); mean sentence length, punctuation density, and paragraph length disagree across corpora and are recorded here so that they are not turned into rules.
 
 | ID | Exact title and author shorthand | Pinned location | Accessed | Evidence class | Study scope | Main repo consumers |
 |---|---|---|---|---|---|---|
