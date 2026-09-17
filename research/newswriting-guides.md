@@ -29,7 +29,7 @@
 | 來源 | 引語 | 歸因動詞 | 句子 | 收尾 | 反問 | 第一人稱 |
 |---|---|---|---|---|---|---|
 | AP Stylebook（quotations in the news 條） | 幾乎不可改；文法小錯不改；口誤極少才用刪節號 | 用 said；避免 claimed、admitted 等帶評價的動詞 | — | — | — | — |
-| Reuters Handbook of Journalism | 引語「神聖」，只能刪冗詞不改意思；窘迫口語改用轉述 | said 精神 | 句子宜短但要變化，避免機關槍節奏 | — | — | 意見不進新聞 |
+| Reuters（Journalistic Standards 頁，**核對**；其餘欄位出自調查所述的 Handbook of Journalism，未核對） | 引語「神聖」（頁面原句 Quotes are sacrosanct，核對）；只能刪冗詞不改意思；窘迫口語改用轉述（調查） | said 精神（調查） | 句子宜短但要變化，避免機關槍節奏（調查） | — | — | 意見不進新聞（調查） |
 | BBC News Style Guide | 選最好的幾句直接引，其餘轉述；不把文法錯誤端上螢幕 | admit 要小心，寧用 said；廣播體歸因放在斷言之前 | 早期版：短句短詞、S-V-O | — | 現行 A–Z 未查到禁令 | 消息不以 The BBC 自賣開頭 |
 | The Economist Style Guide | 少用直接引語，能改寫得更短就改寫 | — | 能刪就刪；one idea per sentence（轉述） | 不要清喉嚨、不先鋪場景 | rhetorical questions rarely（轉述） | — |
 | Roy Peter Clark, *Writing Tools* | 對話與引語分開看 | — | 不要怕長句；最有力的思想用最短句；複雜處反而要短 | — | — | — |
@@ -87,7 +87,7 @@
 | 來源 | 調查所報 URL／ISBN |
 |---|---|
 | AP Stylebook | https://www.apstylebook.com/ |
-| Reuters Handbook of Journalism | 調查未給 URL |
+| Reuters Handbook of Journalism | 調查未給 URL。2026-09-17 以 curl 核對：handbook.reuters.com 轉址到 https://reutersagency.com/about/standards-values/ （Reuters Journalistic Standards），頁面含「Quotes are sacrosanct」；本檔引自 Reuters 的其餘主張（said、句長、意見）不在該頁，維持調查等級 |
 | BBC News Style Guide | https://www.bbc.com/newsstyleguide/ ；A–Z https://www.bbc.com/newsstyleguide/all/ ；numbers https://www.bbc.com/newsstyleguide/numbers/ ；早期 PDF https://www.peteburns.com/downloads/BBC%20news%20styleguide.pdf |
 | The Economist Style Guide | 存檔 PDF https://web.archive.org/web/20160914130123if_/http://www.frzee.com/Education/The%20Economist%20Style%20Guide.pdf |
 | Roy Peter Clark, *Writing Tools* | ISBN 978-0-316-02840-0（十週年版）；Poynter 早期 30 tools http://www.poynter.org/uncategorized/716/thirty-tools-for-writers/ |
@@ -105,6 +105,6 @@
 | 劉明華等《新聞寫作教程》 | ISBN 978-7-300-03981-7 |
 | 中央社投稿流程 | https://www.cna.com.tw/postwrite/process |
 | 公視 PeoPo 使用規範 | https://www.peopo.org/events/about/P2-2.htm |
-| 環境資訊中心編輯原則 | 調查未給 URL |
+| 環境資訊中心編輯原則 | 調查未給 URL；本檔只在 §三 與 §四 5 引它做數字門檻的對照，不進 §五 公約數，維持未核對 |
 | 教育部《重訂標點符號手冊》、行政院數字原則 | 見 `sources.md`（已核對） |
 
