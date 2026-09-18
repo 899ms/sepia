@@ -1,0 +1,218 @@
+"""Unit tests for scripts/check_persona.py.
+
+Each test builds a minimal `skills/sepia/references/` tree in a temp directory
+and a persona body, runs the checker against them, and asserts on the exit
+code and the report text. The negative cases are the ways a persona could
+claim override rights it must not have, or drift from the template shape the
+executor depends on.
+
+Standard library only, like the script:  python3 -m unittest discover -s tests
+"""
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+
+import check_persona  # noqa: E402
+
+REFS = {
+    "style-pass.md": "# style\n",
+    "discourse-pass.md": "# discourse\n",
+    "narrative-pass.md": "# narrative\n",
+    "professional-pass.md": "# professional\n",
+    "languages/zh.md": "# zh\n",
+    "domains/journalism.md": "# j\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 9)),
+    "domains/tickets.md": "# t\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 6)),
+}
+
+SECTIONS = check_persona.SECTIONS
+
+
+def persona(overrides=None, prohibitions=None, status=None, drop=None, extra=None, order=None):
+    """Build a valid persona body, then apply the requested deviations."""
+    status = status or {
+        "Name": "sample",
+        "Routes": "professional",
+        "Opt-in phrase": "apply persona sample",
+        "Provenance": "12 pieces read in full",
+        "Consent": "own style",
+        "Tested": "untested",
+    }
+    overrides = overrides if overrides is not None else [
+        ("`style-pass.md §3`", "idioms in narration", "§3 idiom hits reported as Persona cost"),
+        ("`professional-pass.md check 4`", "a verdict sentence ends each section", "check 4 findings as Persona cost"),
+    ]
+    prohibitions = prohibitions if prohibitions is not None else [
+        "Do not reuse this file’s example phrases verbatim; they are shapes, not a word list.",
+        "Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO.",
+    ]
+    bodies = {
+        "Status": "\n".join(f"{k}: {v}" for k, v in status.items()),
+        "One sentence": "A writer who ends each section on the narrator's verdict and keeps a persona's idioms.",
+        "Beat and themes": "Labour and policy; the writer's concerns enter narration directly.",
+        "Metric fingerprint": "none measured; the close reading notes a long sentence mean.",
+        "Moves by frequency": "- Ending verdict sentence, 10/12 pieces\n- Idiom in narration, 9/12",
+        "Negatives": "No scene openings.",
+        "Meaning for sepia": "check 4 and style-pass §3 would remove the two signatures.",
+        "Every piece": "1. End each section on one verdict sentence (overrides: professional-pass.md check 4)\n2. Use three to six idioms (overrides: style-pass.md §3)\n3. Open on a number (overrides: none)",
+        "Only with facts": "- A dated document quoted with its time, when the material has one.",
+        "Sentence shape": "mean 50–60 characters, SD about 30; both ends present.",
+        "Rules this persona overrides": "| Rule | How the persona departs | Expected cost |\n|---|---|---|\n"
+        + "\n".join(f"| {a} | {b} | {c} |" for a, b, c in overrides),
+        "Prohibitions": "\n".join(f"- {p}" for p in prohibitions),
+        "Boundary": "Like the writer: the verdict follows the facts. Like a model: the verdict precedes them.",
+        "Blind-test record": "none yet",
+    }
+    if extra:
+        for k, v in extra.items():
+            bodies[k] = bodies[k] + "\n" + v
+    seq = list(order or SECTIONS)
+    if drop:
+        seq = [s for s in seq if s != drop]
+    out = ["# Persona — sample", ""]
+    for s in seq:
+        out += [f"## {s}", "", bodies[s], ""]
+    return "\n".join(out)
+
+
+class CheckPersonaCase(unittest.TestCase):
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+        for rel, content in REFS.items():
+            p = self.root / "skills" / "sepia" / "references" / rel
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text(content, encoding="utf-8")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def run_check(self, body):
+        f = self.root / "persona.md"
+        f.write_text(body, encoding="utf-8")
+        findings = check_persona.check_file(f, self.root)
+        errors = [x for x in findings if ": ERROR: " in x]
+        warns = [x for x in findings if ": WARN: " in x]
+        return errors, warns
+
+    # --- positive ---------------------------------------------------------
+
+    def test_valid_persona_passes_with_apostrophes_and_curly_fixed_lines(self):
+        errors, warns = self.run_check(persona())
+        self.assertEqual(errors, [])
+        self.assertEqual(warns, [])
+
+    def test_single_quoted_long_span_is_not_a_quotation(self):
+        body = persona(extra={"Negatives": "She never writes 'a very long single-quoted span of more than twenty characters' in narration."})
+        errors, _ = self.run_check(body)
+        self.assertEqual(errors, [])
+
+    def test_table_row_with_odd_straight_quotes_passes(self):
+        body = persona(extra={"Moves by frequency": '| a | a 12" print run | b |\n| c | another cell with one " mark | d |'})
+        errors, _ = self.run_check(body)
+        self.assertEqual(errors, [])
+
+    def test_nine_override_rows_warn_but_pass(self):
+        rows = [(f"`discourse-pass.md §{n}`", "x", "y") for n in (1, 2, 4, 5)]
+        rows += [(f"`narrative-pass.md §{n}`", "x", "y") for n in (1, 2, 4, 5, 6)]
+        errors, warns = self.run_check(persona(overrides=rows))
+        self.assertEqual(errors, [])
+        self.assertEqual(len(warns), 1)
+        self.assertIn("9 override rows", warns[0])
+
+    def test_domain_rule_within_range_passes(self):
+        errors, _ = self.run_check(persona(overrides=[("`domains/journalism.md rule 8`", "x", "y")]))
+        self.assertEqual(errors, [])
+
+    # --- quotes ---------------------------------------------------------
+
+    def test_long_corner_quote_fails(self):
+        body = persona(extra={"Negatives": "「這是一段超過二十個字的引文範例，用來測試驗證器會不會擋」"})
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("longer than 20" in e for e in errors), errors)
+
+    def test_long_double_quote_on_one_line_fails(self):
+        body = persona(extra={"Negatives": 'She wrote "a quoted example that runs well past the twenty character limit" once.'})
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("longer than 20" in e for e in errors), errors)
+
+    # --- structure ------------------------------------------------------
+
+    def test_missing_section_fails(self):
+        errors, _ = self.run_check(persona(drop="Boundary"))
+        self.assertTrue(any("missing section '## Boundary'" in e for e in errors), errors)
+
+    def test_wrong_order_fails(self):
+        order = list(SECTIONS)
+        order[1], order[2] = order[2], order[1]
+        errors, _ = self.run_check(persona(order=order))
+        self.assertTrue(any("not in template order" in e for e in errors), errors)
+
+    def test_missing_consent_fails(self):
+        status = {"Name": "s", "Routes": "any", "Opt-in phrase": "apply persona s", "Provenance": "p", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status=status))
+        self.assertTrue(any("'Consent:'" in e for e in errors), errors)
+
+    def test_unknown_route_fails(self):
+        status = {"Name": "s", "Routes": "newsletter", "Opt-in phrase": "apply persona s", "Provenance": "p", "Consent": "own style", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status=status))
+        self.assertTrue(any("Routes must be one of" in e for e in errors), errors)
+
+    def test_missing_fixed_prohibition_fails(self):
+        errors, _ = self.run_check(persona(prohibitions=["Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO."]))
+        self.assertTrue(any("missing the fixed line: Do not reuse" in e for e in errors), errors)
+
+    # --- override table -------------------------------------------------
+
+    def test_non_yielding_tokens_fail(self):
+        for tok in (
+            "`style-pass.md §5`",
+            "`professional-pass.md check 9`",
+            "`professional-pass.md check 5`",
+            "`languages/zh.md §2 flat-sentence-length`",
+            "`discourse-pass.md §3`",
+            "`narrative-pass.md §3`",
+        ):
+            with self.subTest(tok=tok):
+                errors, _ = self.run_check(persona(overrides=[(tok, "x", "y")]))
+                self.assertTrue(any("never yields" in e for e in errors), (tok, errors))
+
+    def test_free_text_rule_cells_fail(self):
+        for tok in ("professional-pass.md #9", "professional-pass.md Sameness of rhythm", "SKILL.md Hard guardrails", "domains/journalism.md tells row 3"):
+            with self.subTest(tok=tok):
+                errors, _ = self.run_check(persona(overrides=[(tok, "x", "y")]))
+                self.assertTrue(any("not a recognised rule token" in e for e in errors), (tok, errors))
+
+    def test_unknown_domain_file_fails(self):
+        errors, _ = self.run_check(persona(overrides=[("`domains/newsletters.md rule 1`", "x", "y")]))
+        self.assertTrue(any("not found under references/" in e for e in errors), errors)
+
+    def test_domain_rule_out_of_range_fails(self):
+        errors, _ = self.run_check(persona(overrides=[("`domains/tickets.md rule 6`", "x", "y")]))
+        self.assertTrue(any("no rule 6" in e for e in errors), errors)
+
+    def test_section_out_of_range_fails(self):
+        errors, _ = self.run_check(persona(overrides=[("`style-pass.md §8`", "x", "y")]))
+        self.assertTrue(any("has no §8" in e for e in errors), errors)
+
+    def test_zh_row_only_on_section_2(self):
+        errors, _ = self.run_check(persona(overrides=[("`languages/zh.md §3 manner-adverb`", "x", "y")]))
+        self.assertTrue(any("only on languages/zh.md §2" in e for e in errors), errors)
+
+    def test_empty_cost_cell_fails(self):
+        errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
+        self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
+
+    def test_main_exit_codes(self):
+        good = self.root / "good.md"
+        good.write_text(persona(), encoding="utf-8")
+        bad = self.root / "bad.md"
+        bad.write_text(persona(drop="Boundary"), encoding="utf-8")
+        self.assertEqual(check_persona.main(["--root", str(self.root), str(good)]), 0)
+        self.assertEqual(check_persona.main(["--root", str(self.root), str(bad)]), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()

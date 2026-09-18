@@ -1,0 +1,282 @@
+#!/usr/bin/env python3
+"""Validate a sepia persona profile against the template contract.
+
+A persona profile (`skills/sepia/references/voices/PERSONA-TEMPLATE.md`) is a
+Markdown file with a fixed sequence of H2 sections, a Status block of six
+keyed lines, a three-column table of the sepia rules the persona overrides,
+and a Prohibitions section carrying two fixed lines. The prose may be in any
+language; this script checks structure and contract, never style.
+
+What it enforces, and why each rule exists (`voice-skills.md`, persona
+section):
+
+- Section order: the executor reads the body top to bottom, and the
+  prescriptive sections ("Every piece", the override table, "Prohibitions")
+  must come after the descriptive ones, or the persona is read as a
+  description and its moves are eaten by sepia's rules.
+- Rule tokens: the override table names rules with a restricted grammar so
+  the body and the review's `Persona cost:` line use the same identifiers, and
+  so the non-yielding rules can be refused by identity rather than by guessing
+  at free text. Domain tells and SKILL.md guardrails are outside the grammar:
+  no persona overrides them.
+- Non-yielding rules: uniformity (`style-pass.md §5`, `professional-pass.md
+  check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3`,
+  `narrative-pass.md §3`) and never-invent (`professional-pass.md check 5`)
+  cannot be overridden by any persona.
+- Fixed prohibition lines: defined once here (ASCII apostrophes) and quoted
+  into the template and CONTRIBUTING; the comparison normalises curly quotes.
+- Quoted examples: no span inside 「」, 『』 or a paired double quote may exceed
+  20 characters, so a profile carries shapes, not reusable text. Single quotes
+  and apostrophes are not quotation marks for this purpose.
+
+Standard library only. Usage:
+
+    python3 scripts/check_persona.py [--root REPO_ROOT] FILE [FILE ...]
+
+Exit status 1 when any file has an ERROR; warnings do not fail.
+"""
+from __future__ import annotations
+
+import argparse
+import re
+import sys
+from pathlib import Path
+
+SECTIONS = (
+    "Status",
+    "One sentence",
+    "Beat and themes",
+    "Metric fingerprint",
+    "Moves by frequency",
+    "Negatives",
+    "Meaning for sepia",
+    "Every piece",
+    "Only with facts",
+    "Sentence shape",
+    "Rules this persona overrides",
+    "Prohibitions",
+    "Boundary",
+    "Blind-test record",
+)
+
+STATUS_KEYS = ("Name", "Routes", "Opt-in phrase", "Provenance", "Consent", "Tested")
+ROUTES = {"professional", "fiction", "any"}
+TESTED = {"tested", "untested"}
+
+PROHIBITION_LINES = (
+    "Do not reuse this file's example phrases verbatim; they are shapes, not a word list.",
+    "Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO.",
+)
+
+MAX_QUOTE = 20
+MAX_OVERRIDES_BEFORE_WARN = 8
+
+# Rule-token grammar. Each entry: (regex, file under skills/sepia/references/,
+# allowed identifiers or None for "any integer within range").
+ZH_SECTIONS = {"0", "1", "1b", "1c", "2", "3", "4", "5", "6"}
+ZH_ROWS = {
+    "connective-stacking",
+    "second-person",
+    "disyllabic-padding",
+    "flat-sentence-length",
+    "manner-adverb",
+}
+SECTION_RANGES = {
+    "style-pass.md": range(1, 8),
+    "discourse-pass.md": range(1, 6),
+    "narrative-pass.md": range(1, 8),
+}
+CHECK_RANGE = range(1, 11)
+
+NON_YIELDING = {
+    # uniformity: a persona never excuses a metronome
+    "style-pass.md §5",
+    "professional-pass.md check 9",
+    "languages/zh.md §2 flat-sentence-length",
+    "discourse-pass.md §3",
+    "narrative-pass.md §3",
+    # never invent: the "real" requirement
+    "professional-pass.md check 5",
+}
+
+_TOKEN_RES = (
+    ("section", re.compile(r"^(style-pass\.md|discourse-pass\.md|narrative-pass\.md) §(\d+)$")),
+    ("zh", re.compile(r"^languages/zh\.md §(0|1|1b|1c|2|3|4|5|6)(?: ([a-z-]+))?$")),
+    ("check", re.compile(r"^professional-pass\.md check (\d+)$")),
+    ("domain", re.compile(r"^domains/([a-z0-9-]+\.md) rule (\d+)$")),
+)
+
+
+def normalise(text: str) -> str:
+    return (
+        text.replace("’", "'")
+        .replace("‘", "'")
+        .replace("“", '"')
+        .replace("”", '"')
+    )
+
+
+def parse_token(cell: str, root: Path) -> tuple[str | None, str | None]:
+    """Return (canonical token, error). Exactly one of the two is None."""
+    cell = cell.strip().strip("`")
+    refs = root / "skills" / "sepia" / "references"
+    for kind, rx in _TOKEN_RES:
+        m = rx.match(cell)
+        if not m:
+            continue
+        if kind == "section":
+            fname, n = m.group(1), int(m.group(2))
+            if n not in SECTION_RANGES[fname]:
+                return None, f"{fname} has no §{n}"
+            if not (refs / fname).exists():
+                return None, f"{fname} not found under references/"
+            return f"{fname} §{n}", None
+        if kind == "zh":
+            sec, row = m.group(1), m.group(2)
+            if not (refs / "languages" / "zh.md").exists():
+                return None, "languages/zh.md not found under references/"
+            if row is not None:
+                if sec != "2":
+                    return None, "a row name is allowed only on languages/zh.md §2"
+                if row not in ZH_ROWS:
+                    return None, f"unknown zh.md §2 row '{row}'"
+                return f"languages/zh.md §2 {row}", None
+            return f"languages/zh.md §{sec}", None
+        if kind == "check":
+            n = int(m.group(1))
+            if n not in CHECK_RANGE:
+                return None, f"professional-pass.md has no check {n}"
+            if not (refs / "professional-pass.md").exists():
+                return None, "professional-pass.md not found under references/"
+            return f"professional-pass.md check {n}", None
+        if kind == "domain":
+            fname, n = m.group(1), int(m.group(2))
+            path = refs / "domains" / fname
+            if not path.exists():
+                return None, f"domains/{fname} not found under references/"
+            rules = len(re.findall(r"^\d+\. \*\*", path.read_text(encoding="utf-8"), re.M))
+            if not 1 <= n <= rules:
+                return None, f"domains/{fname} has {rules} numbered rules, no rule {n}"
+            return f"domains/{fname} rule {n}", None
+    return None, "rule cell is not a recognised rule token"
+
+
+def split_sections(text: str) -> tuple[list[str], dict[str, str]]:
+    """H2 headings in order, and body text per heading."""
+    order: list[str] = []
+    bodies: dict[str, list[str]] = {}
+    current = None
+    for line in text.splitlines():
+        m = re.match(r"^## (.+?)\s*$", line)
+        if m:
+            current = m.group(1).strip()
+            order.append(current)
+            bodies[current] = []
+        elif current is not None:
+            bodies[current].append(line)
+    return order, {k: "\n".join(v) for k, v in bodies.items()}
+
+
+def table_rows(body: str) -> list[list[str]]:
+    rows = []
+    for line in body.splitlines():
+        s = line.strip()
+        if not s.startswith("|"):
+            continue
+        cells = [c.strip() for c in s.strip("|").split("|")]
+        if all(re.fullmatch(r":?-{3,}:?", c) for c in cells):
+            continue
+        rows.append(cells)
+    return rows[1:] if rows else []  # drop the header row
+
+
+_QUOTE_RE = re.compile(r"「([^」]*)」|『([^』]*)』|\"([^\"]*)\"")
+
+
+def long_quotes(text: str) -> list[str]:
+    """Quoted spans over MAX_QUOTE characters, paired within one line only.
+
+    「」 and 『』 pair by their distinct delimiters; straight or curly double
+    quotes (normalised to straight) pair by alternation on the same line, so an
+    unmatched quote on a line is ignored rather than paired across lines or
+    table cells. Single quotes and apostrophes are not quotation marks here.
+    """
+    found = []
+    for line in normalise(text).splitlines():
+        for m in _QUOTE_RE.finditer(line):
+            span = next(g for g in m.groups() if g is not None)
+            if len(span) > MAX_QUOTE:
+                found.append(span)
+    return found
+
+
+def check_file(path: Path, root: Path) -> list[str]:
+    findings: list[str] = []
+    err = lambda msg: findings.append(f"{path}: ERROR: {msg}")
+    warn = lambda msg: findings.append(f"{path}: WARN: {msg}")
+    text = path.read_text(encoding="utf-8")
+
+    order, bodies = split_sections(text)
+    expected = [s for s in SECTIONS if s in order]
+    for s in SECTIONS:
+        if s not in order:
+            err(f"missing section '## {s}'")
+    if expected != [s for s in order if s in SECTIONS]:
+        err("sections are not in template order")
+
+    status = bodies.get("Status", "")
+    values = {}
+    for key in STATUS_KEYS:
+        m = re.search(rf"^{re.escape(key)}:\s*(.*)$", status, re.M)
+        if not m or not m.group(1).strip():
+            err(f"Status is missing a non-empty '{key}:' line")
+        else:
+            values[key] = m.group(1).strip()
+    if "Routes" in values and values["Routes"] not in ROUTES:
+        err(f"Routes must be one of {sorted(ROUTES)}, got '{values['Routes']}'")
+    if "Tested" in values and values["Tested"].lower() not in TESTED:
+        err(f"Tested must be 'tested' or 'untested', got '{values['Tested']}'")
+
+    rows = table_rows(bodies.get("Rules this persona overrides", ""))
+    if not rows:
+        err("override table has no rows")
+    for i, row in enumerate(rows, 1):
+        if len(row) != 3 or not all(row):
+            err(f"override row {i} must have three non-empty cells")
+            continue
+        token, terr = parse_token(row[0], root)
+        if terr:
+            err(f"override row {i}: {terr} ({row[0]})")
+        elif token in NON_YIELDING:
+            err(f"override row {i}: {token} never yields to a persona")
+    if len(rows) > MAX_OVERRIDES_BEFORE_WARN:
+        warn(f"{len(rows)} override rows; more than {MAX_OVERRIDES_BEFORE_WARN} reads as a house style")
+
+    prohibitions = normalise(bodies.get("Prohibitions", ""))
+    for line in PROHIBITION_LINES:
+        if line not in prohibitions:
+            err(f"Prohibitions is missing the fixed line: {line}")
+
+    for span in long_quotes(text):
+        err(f"quoted example longer than {MAX_QUOTE} characters: {span[:30]}…")
+
+    return findings
+
+
+def main(argv=None) -> int:
+    ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
+    ap.add_argument("files", nargs="+", type=Path)
+    args = ap.parse_args(argv)
+    all_findings: list[str] = []
+    for f in args.files:
+        all_findings.extend(check_file(f, args.root))
+    for line in all_findings:
+        print(line)
+    errors = sum(1 for l in all_findings if ": ERROR: " in l)
+    print(f"persona check: {'FAIL' if errors else 'OK'}, {len(args.files)} file(s), {errors} error(s)")
+    return 1 if errors else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
