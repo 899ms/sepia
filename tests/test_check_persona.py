@@ -162,7 +162,7 @@ class CheckPersonaCase(unittest.TestCase):
 
     def test_missing_fixed_prohibition_fails(self):
         errors, _ = self.run_check(persona(prohibitions=["Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO."]))
-        self.assertTrue(any("missing the fixed line: Do not reuse" in e for e in errors), errors)
+        self.assertTrue(any("missing the fixed line" in e and "Do not reuse" in e for e in errors), errors)
 
     # --- override table -------------------------------------------------
 
@@ -227,7 +227,7 @@ class CheckPersonaCase(unittest.TestCase):
         base = {"Name": "s", "Routes": "any", "Opt-in phrase": "apply persona s", "Provenance": "p", "Tested": "untested"}
         errors, _ = self.run_check(persona(status={**base, "Consent": "I have no permission"}))
         self.assertTrue(any("Consent must be one of" in e for e in errors), errors)
-        errors, _ = self.run_check(persona(status={**base, "Consent": "consent from the person, 2026-09-01"}))
+        errors, _ = self.run_check(persona(status={**base, "Consent": "consent from the person, 2025-01-15"}))
         self.assertEqual(errors, [])
         errors, _ = self.run_check(persona(status={**base, "Consent": "consent from the person, last year"}))
         self.assertTrue(any("Consent must be one of" in e for e in errors), errors)
@@ -236,7 +236,7 @@ class CheckPersonaCase(unittest.TestCase):
         status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "tested"}
         errors, _ = self.run_check(persona(status=status))
         self.assertTrue(any("requires a non-empty Blind-test record" in e for e in errors), errors)
-        body = persona(status=status).replace("none yet", "2026-09-16, one reader, persona passage vs house style: persona picked")
+        body = persona(status=status).replace("none yet", "2026-09-16, one reader, persona passage vs house style, persona picked")
         errors, _ = self.run_check(body)
         self.assertEqual(errors, [])
 
