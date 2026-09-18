@@ -26,6 +26,7 @@ REFS = {
     "domains/journalism.md": "# j\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 9)),
     "domains/tickets.md": "# t\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 6)),
     "domains/tech-articles.md": "# ta\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 7)),
+    "domains/postmortems.md": "# pm\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 7)),
 }
 
 SECTIONS = check_persona.SECTIONS
@@ -185,6 +186,7 @@ class CheckPersonaCase(unittest.TestCase):
             "`discourse-pass.md §3`",
             "`domains/journalism.md rule 1`",
             "`domains/tech-articles.md rule 1`",
+            "`domains/postmortems.md rule 2`",
         ):
             with self.subTest(tok=tok):
                 errors, _ = self.run_check(persona(overrides=[(tok, "x", "y")]))
@@ -216,6 +218,16 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
         self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
 
+    # --- round-4 review cases -------------------------------------------
+
+    def test_multi_word_name_passes(self):
+        status = {"Name": "Virginia Woolf", "Routes": "fiction", "Opt-in phrase": "apply persona Virginia Woolf / 「套用 persona Virginia Woolf」", "Provenance": "p", "Consent": "public-domain author", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status=status))
+        self.assertEqual(errors, [])
+        status["Opt-in phrase"] = "apply persona Virginia Woolf / 「套用 persona Virginia」"
+        errors, _ = self.run_check(persona(status=status))
+        self.assertTrue(any("Opt-in phrase" in e for e in errors), errors)
+
     # --- round-3 review cases -------------------------------------------
 
     def test_narrative_endings_section_is_overridable(self):
@@ -239,10 +251,10 @@ class CheckPersonaCase(unittest.TestCase):
 
     def test_tested_with_placeholder_record_fails(self):
         status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "tested"}
-        for rec in ("TODO", "not run", "one reader picked the persona passage"):
+        for rec in ("TODO", "not run", "one reader picked the persona passage", "2026-09-16", "2026-09-16 — judge: — compared: x — outcome: y"):
             with self.subTest(rec=rec):
                 errors, _ = self.run_check(persona(status=status).replace("none yet", rec))
-                self.assertTrue(any("not a placeholder" in e for e in errors), (rec, errors))
+                self.assertTrue(any("requires at least one Blind-test record line" in e for e in errors), (rec, errors))
 
     # --- round-2 review cases -------------------------------------------
 
@@ -256,7 +268,7 @@ class CheckPersonaCase(unittest.TestCase):
         for phrase in ("do not apply persona sample", "apply persona sample please", "套用 persona sample"):
             with self.subTest(phrase=phrase):
                 errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": phrase}))
-                self.assertTrue(any("Opt-in phrase must be exactly" in e for e in errors), (phrase, errors))
+                self.assertTrue(any("Opt-in phrase" in e for e in errors), (phrase, errors))
         errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": "apply persona sample / 「套用 persona sample」"}))
         self.assertEqual(errors, [])
 
@@ -323,8 +335,8 @@ class CheckPersonaCase(unittest.TestCase):
     def test_tested_requires_a_record(self):
         status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "tested"}
         errors, _ = self.run_check(persona(status=status))
-        self.assertTrue(any("requires a Blind-test record with a date" in e for e in errors), errors)
-        body = persona(status=status).replace("none yet", "2026-09-16, one reader, persona passage vs house style, persona picked")
+        self.assertTrue(any("requires at least one Blind-test record line" in e for e in errors), errors)
+        body = persona(status=status).replace("none yet", "2026-09-16 — judge: one reader — compared: persona passage vs house style — outcome: persona picked")
         errors, _ = self.run_check(body)
         self.assertEqual(errors, [])
 

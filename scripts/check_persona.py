@@ -23,7 +23,8 @@ section):
   check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3`)
   and never-invent (`professional-pass.md check 5`, and the domain rules that
   restate the guardrail: `domains/journalism.md rule 1`,
-  `domains/tech-articles.md rule 1`) cannot be overridden by any persona.
+  `domains/tech-articles.md rule 1`, `domains/postmortems.md rule 2`) cannot
+  be overridden by any persona.
 - Fixed prohibition lines: defined once here (ASCII apostrophes) and quoted
   into the template and CONTRIBUTING; the comparison normalises curly quotes.
 - Quoted examples: no span inside 「」, 『』 or a paired double quote may exceed
@@ -72,7 +73,9 @@ CONSENT_RE = re.compile(
 )
 # The whole Opt-in phrase field: the English form, optionally followed by the
 # Chinese form for the same name. Nothing else is an affirmative opt-in.
-OPTIN_RE = re.compile(r"apply persona (\S+)(?: / 「套用 persona \1」)?")
+OPTIN_RE = re.compile(r"apply persona ([^/「」]+?)(?: / 「套用 persona \1」)?")
+# One blind-test entry per line: date — judge — compared — outcome.
+RECORD_RE = re.compile(r"^\s*(?:[-*]\s+)?(\d{4}-\d{2}-\d{2}) — judge: \S.* — compared: \S.* — outcome: \S.*$", re.M)
 MOVE_RE = re.compile(r"^\s*\d+\.\s+(\S.*?)\s*\(overrides: ([^)]+)\)\s*$")
 ISO_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
 STATUS_LINE_RE = re.compile(r"^([A-Za-z -]+):\s*(.*)$")
@@ -120,6 +123,7 @@ NON_YIELDING = {
     "professional-pass.md check 5",
     "domains/journalism.md rule 1",
     "domains/tech-articles.md rule 1",
+    "domains/postmortems.md rule 2",
 }
 
 _TOKEN_RES = (
@@ -298,8 +302,15 @@ def check_file(path: Path, root: Path) -> list[str]:
             err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
     if values.get("Tested", "").lower() == "tested":
         record = bodies.get("Blind-test record", "").strip()
-        if not ISO_DATE_RE.search(record) or re.search(r"\b(TODO|none|not run|pending|n/a)\b", record, re.I):
-            err("Tested: tested requires a Blind-test record with a date (YYYY-MM-DD), judge, comparison and outcome, not a placeholder")
+        entries = RECORD_RE.findall(record)
+        if not entries or re.search(r"\b(TODO|none|not run|pending|n/a)\b", record, re.I):
+            err("Tested: tested requires at least one Blind-test record line of the form "
+                "'YYYY-MM-DD — judge: … — compared: … — outcome: …' and no placeholder")
+        for d in entries:
+            try:
+                datetime.date.fromisoformat(d)
+            except ValueError:
+                err(f"Blind-test record date is not a calendar date: {d}")
 
     rows, terr = table_rows(bodies.get("Rules this persona overrides", ""))
     if terr:

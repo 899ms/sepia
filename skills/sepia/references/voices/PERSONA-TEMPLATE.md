@@ -4,9 +4,9 @@ Template for a persona profile: one writer's style as prescriptive moves plus th
 
 ## Status
 
-Name: <name>
+Name: <name, spaces allowed>
 Routes: <professional | fiction | any>
-Opt-in phrase: apply persona <name> / 「套用 persona <name>」
+Opt-in phrase: apply persona <name, spaces allowed> / 「套用 persona <name, spaces allowed>」
 Provenance: <what was read: how many pieces, which years or kinds, full readings or not>
 Consent: <own style | public-domain author | fictional persona | brand persona | consent from the person, YYYY-MM-DD>
 Tested: <tested | untested>
@@ -53,7 +53,7 @@ Targets for the narration as a distribution (a mean and a spread, a share of lon
 |---|---|---|
 | <rule token, for example `style-pass.md §3`> | <what the persona does instead> | <what review will report as `Persona cost:`> |
 
-Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.md §<n>`, `languages/zh.md §<s>` (`languages/zh.md §2 <row>` for one of connective-stacking, second-person, disyllabic-padding, flat-sentence-length, manner-adverb), `professional-pass.md check <n>`, `domains/<name>.md rule <n>`. The validator refuses `style-pass.md §5`, `professional-pass.md check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3` (uniformity) and `professional-pass.md check 5`, `domains/journalism.md rule 1`, `domains/tech-articles.md rule 1` (never invent).
+Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.md §<n>`, `languages/zh.md §<s>` (`languages/zh.md §2 <row>` for one of connective-stacking, second-person, disyllabic-padding, flat-sentence-length, manner-adverb), `professional-pass.md check <n>`, `domains/<name>.md rule <n>`. The validator refuses `style-pass.md §5`, `professional-pass.md check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3` (uniformity) and `professional-pass.md check 5`, `domains/journalism.md rule 1`, `domains/tech-articles.md rule 1`, `domains/postmortems.md rule 2` (never invent).
 
 ## Prohibitions
 
@@ -68,4 +68,4 @@ Three to five lines: what reads like the writer versus what reads like a model i
 
 ## Blind-test record
 
-Date (YYYY-MM-DD), judge, what was compared, outcome; or "none yet" with `Tested: untested` above. A placeholder such as TODO does not count as a record.
+One line per test, in this shape: `YYYY-MM-DD — judge: <who> — compared: <what against what> — outcome: <result>`; or "none yet" with `Tested: untested` above. A placeholder such as TODO does not count as a record.
