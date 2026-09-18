@@ -20,9 +20,10 @@ section):
   at free text. Domain tells and SKILL.md guardrails are outside the grammar:
   no persona overrides them.
 - Non-yielding rules: uniformity (`style-pass.md §5`, `professional-pass.md
-  check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3`,
-  `narrative-pass.md §3`) and never-invent (`professional-pass.md check 5`)
-  cannot be overridden by any persona.
+  check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3`)
+  and never-invent (`professional-pass.md check 5`, and the domain rules that
+  restate the guardrail: `domains/journalism.md rule 1`,
+  `domains/tech-articles.md rule 1`) cannot be overridden by any persona.
 - Fixed prohibition lines: defined once here (ASCII apostrophes) and quoted
   into the template and CONTRIBUTING; the comparison normalises curly quotes.
 - Quoted examples: no span inside 「」, 『』 or a paired double quote may exceed
@@ -39,6 +40,7 @@ Exit status 1 when any file has an ERROR; warnings do not fail.
 from __future__ import annotations
 
 import argparse
+import datetime
 import re
 import sys
 from pathlib import Path
@@ -71,7 +73,9 @@ CONSENT_RE = re.compile(
 # The whole Opt-in phrase field: the English form, optionally followed by the
 # Chinese form for the same name. Nothing else is an affirmative opt-in.
 OPTIN_RE = re.compile(r"apply persona (\S+)(?: / 「套用 persona \1」)?")
-MOVE_RE = re.compile(r"^\s*\d+\.\s+.*\(overrides: ([^)]+)\)\s*$")
+MOVE_RE = re.compile(r"^\s*\d+\.\s+(\S.*?)\s*\(overrides: ([^)]+)\)\s*$")
+ISO_DATE_RE = re.compile(r"\d{4}-\d{2}-\d{2}")
+STATUS_LINE_RE = re.compile(r"^([A-Za-z -]+):\s*(.*)$")
 MIN_MOVES, MAX_MOVES = 3, 8
 TABLE_HEADER = ("Rule", "How the persona departs", "Expected cost")
 # Sections whose quoted text is metadata (a source title, a compared passage),
@@ -104,14 +108,18 @@ SECTION_RANGES = {
 CHECK_RANGE = range(1, 11)
 
 NON_YIELDING = {
-    # uniformity: a persona never excuses a metronome
+    # uniformity: sections whose whole content is uniformity. The Reviewing
+    # table's uniformity row stays at full strength regardless of any token
+    # (a formula ending named under narrative-pass.md §3 is still reported).
     "style-pass.md §5",
     "professional-pass.md check 9",
     "languages/zh.md §2 flat-sentence-length",
     "discourse-pass.md §3",
-    "narrative-pass.md §3",
-    # never invent: the "real" requirement
+    # never invent: the "real" requirement and the domain rules that restate
+    # the guardrail for their venue
     "professional-pass.md check 5",
+    "domains/journalism.md rule 1",
+    "domains/tech-articles.md rule 1",
 }
 
 _TOKEN_RES = (
@@ -253,6 +261,12 @@ def check_file(path: Path, root: Path) -> list[str]:
         err("sections are not in template order")
 
     status = bodies.get("Status", "")
+    for l in status.splitlines():
+        if not l.strip():
+            continue
+        m = STATUS_LINE_RE.match(l)
+        if not m or m.group(1).strip() not in STATUS_KEYS:
+            err(f"Status may contain only the six 'Key: value' lines; found: {l.strip()[:60]}")
     values = {}
     for key in STATUS_KEYS:
         ms = re.findall(rf"^{re.escape(key)}:\s*(.*)$", status, re.M)
@@ -266,9 +280,16 @@ def check_file(path: Path, root: Path) -> list[str]:
         err(f"Routes must be one of {sorted(ROUTES)}, got '{values['Routes']}'")
     if "Tested" in values and values["Tested"].lower() not in TESTED:
         err(f"Tested must be 'tested' or 'untested', got '{values['Tested']}'")
-    if "Consent" in values and not CONSENT_RE.fullmatch(normalise(values["Consent"])):
-        err("Consent must be one of: own style | public-domain author | fictional persona | "
-            "brand persona | consent from the person, YYYY-MM-DD")
+    if "Consent" in values:
+        cm = CONSENT_RE.fullmatch(normalise(values["Consent"]))
+        if not cm:
+            err("Consent must be one of: own style | public-domain author | fictional persona | "
+                "brand persona | consent from the person, YYYY-MM-DD")
+        elif cm.group(1).startswith("consent from the person"):
+            try:
+                datetime.date.fromisoformat(cm.group(1)[-10:])
+            except ValueError:
+                err(f"Consent date is not a calendar date: {cm.group(1)[-10:]}")
     if "Opt-in phrase" in values:
         m = OPTIN_RE.fullmatch(values["Opt-in phrase"])
         if not m:
@@ -277,8 +298,8 @@ def check_file(path: Path, root: Path) -> list[str]:
             err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
     if values.get("Tested", "").lower() == "tested":
         record = bodies.get("Blind-test record", "").strip()
-        if not record or record.lower().startswith("none"):
-            err("Tested: tested requires a non-empty Blind-test record")
+        if not ISO_DATE_RE.search(record) or re.search(r"\b(TODO|none|not run|pending|n/a)\b", record, re.I):
+            err("Tested: tested requires a Blind-test record with a date (YYYY-MM-DD), judge, comparison and outcome, not a placeholder")
 
     rows, terr = table_rows(bodies.get("Rules this persona overrides", ""))
     if terr:
@@ -306,9 +327,9 @@ def check_file(path: Path, root: Path) -> list[str]:
     for l in moves:
         m = MOVE_RE.match(l)
         if not m:
-            err(f"Every piece move lacks a trailing '(overrides: <rule token>|none)': {l.strip()[:60]}")
+            err(f"Every piece move needs move text and a trailing '(overrides: <rule token>|none)': {l.strip()[:60]}")
             continue
-        ref = m.group(1).strip().strip("`")
+        ref = m.group(2).strip().strip("`")
         if ref == "none":
             continue
         token, terr = parse_token(ref, root)

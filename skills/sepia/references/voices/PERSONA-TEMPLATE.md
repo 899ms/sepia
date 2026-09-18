@@ -1,10 +1,8 @@
 # Persona — <name>
 
-Template for a persona profile: one writer's style as prescriptive moves plus the sepia rules it overrides. The contract is in `voice-skills.md` (persona section); `scripts/check_persona.py` checks a body against this template. Keep the H2 headings below verbatim and in this order; the prose under them may be in any language. No quoted example may exceed 20 characters inside 「」, 『』 or a paired double quote (Status and Blind-test record are exempt: their quotes are metadata); single quotes and apostrophes are not counted. No H2 sections other than the fourteen below. Examples are shapes, not text to reuse.
+Template for a persona profile: one writer's style as prescriptive moves plus the sepia rules it overrides. The contract is in `voice-skills.md` (persona section); `scripts/check_persona.py` checks a body against this template. Keep the H2 headings below verbatim and in this order; the prose under them may be in any language. Status holds exactly its six `Key: value` lines and nothing else. No quoted example may exceed 20 characters inside 「」, 『』 or a paired double quote (Status and Blind-test record are exempt: their quotes are metadata); single quotes and apostrophes are not counted. No H2 sections other than the fourteen below. Examples are shapes, not text to reuse.
 
 ## Status
-
-One line per key, all six required:
 
 Name: <name>
 Routes: <professional | fiction | any>
@@ -39,7 +37,7 @@ Which of the moves above a current sepia rule would remove, and what a model imi
 
 ## Every piece
 
-Prescriptive, 3–8 numbered moves. Each ends with `(overrides: <rule token>)`, naming a token from the table below, or `(overrides: none)`; the validator checks the count, the suffix and the table membership.
+Prescriptive, 3–8 numbered moves. Each has move text and ends with `(overrides: <rule token>)`, naming a token from the table below, or `(overrides: none)`; the validator checks the count, the text, the suffix and the table membership.
 
 ## Only with facts
 
@@ -55,7 +53,7 @@ Targets for the narration as a distribution (a mean and a spread, a share of lon
 |---|---|---|
 | <rule token, for example `style-pass.md §3`> | <what the persona does instead> | <what review will report as `Persona cost:`> |
 
-Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.md §<n>`, `languages/zh.md §<s>` (`languages/zh.md §2 <row>` for one of connective-stacking, second-person, disyllabic-padding, flat-sentence-length, manner-adverb), `professional-pass.md check <n>`, `domains/<name>.md rule <n>`. The validator refuses `style-pass.md §5`, `professional-pass.md check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3`, `narrative-pass.md §3` (uniformity) and `professional-pass.md check 5` (never invent).
+Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.md §<n>`, `languages/zh.md §<s>` (`languages/zh.md §2 <row>` for one of connective-stacking, second-person, disyllabic-padding, flat-sentence-length, manner-adverb), `professional-pass.md check <n>`, `domains/<name>.md rule <n>`. The validator refuses `style-pass.md §5`, `professional-pass.md check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3` (uniformity) and `professional-pass.md check 5`, `domains/journalism.md rule 1`, `domains/tech-articles.md rule 1` (never invent).
 
 ## Prohibitions
 
@@ -70,4 +68,4 @@ Three to five lines: what reads like the writer versus what reads like a model i
 
 ## Blind-test record
 
-Date, judge, what was compared, outcome; or "none yet" with `Tested: untested` above.
+Date (YYYY-MM-DD), judge, what was compared, outcome; or "none yet" with `Tested: untested` above. A placeholder such as TODO does not count as a record.

@@ -25,6 +25,7 @@ REFS = {
     "languages/zh.md": "# zh\n",
     "domains/journalism.md": "# j\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 9)),
     "domains/tickets.md": "# t\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 6)),
+    "domains/tech-articles.md": "# ta\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 7)),
 }
 
 SECTIONS = check_persona.SECTIONS
@@ -182,7 +183,8 @@ class CheckPersonaCase(unittest.TestCase):
             "`professional-pass.md check 5`",
             "`languages/zh.md §2 flat-sentence-length`",
             "`discourse-pass.md §3`",
-            "`narrative-pass.md §3`",
+            "`domains/journalism.md rule 1`",
+            "`domains/tech-articles.md rule 1`",
         ):
             with self.subTest(tok=tok):
                 errors, _ = self.run_check(persona(overrides=[(tok, "x", "y")]))
@@ -214,6 +216,34 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
         self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
 
+    # --- round-3 review cases -------------------------------------------
+
+    def test_narrative_endings_section_is_overridable(self):
+        errors, _ = self.run_check(persona(overrides=[("`narrative-pass.md §3`", "ends on the narrator's verdict", "endings findings as Persona cost")]))
+        self.assertEqual(errors, [])
+
+    def test_empty_move_text_fails(self):
+        body = persona().replace("3. Open on a number (overrides: none)", "3. (overrides: none)")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("needs move text" in e for e in errors), errors)
+
+    def test_consent_date_must_be_a_calendar_date(self):
+        base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status={**base, "Consent": "consent from the person, 2025-99-99"}))
+        self.assertTrue(any("not a calendar date" in e for e in errors), errors)
+
+    def test_unknown_status_line_fails(self):
+        body = persona().replace("Tested: untested", "Tested: untested\nReviewer: someone")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("only the six 'Key: value' lines" in e for e in errors), errors)
+
+    def test_tested_with_placeholder_record_fails(self):
+        status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "tested"}
+        for rec in ("TODO", "not run", "one reader picked the persona passage"):
+            with self.subTest(rec=rec):
+                errors, _ = self.run_check(persona(status=status).replace("none yet", rec))
+                self.assertTrue(any("not a placeholder" in e for e in errors), (rec, errors))
+
     # --- round-2 review cases -------------------------------------------
 
     def test_duplicate_status_key_fails(self):
@@ -243,7 +273,7 @@ class CheckPersonaCase(unittest.TestCase):
         self.assertTrue(any("must list 3–8 numbered moves, found 1" in e for e in errors), errors)
         body = persona().replace("3. Open on a number (overrides: none)", "3. Open on a number")
         errors, _ = self.run_check(body)
-        self.assertTrue(any("lacks a trailing" in e for e in errors), errors)
+        self.assertTrue(any("needs move text and a trailing" in e for e in errors), errors)
         body = persona().replace("3. Open on a number (overrides: none)", "3. Open on a number (overrides: discourse-pass.md §1)")
         errors, _ = self.run_check(body)
         self.assertTrue(any("not in the override table" in e for e in errors), errors)
@@ -293,7 +323,7 @@ class CheckPersonaCase(unittest.TestCase):
     def test_tested_requires_a_record(self):
         status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "tested"}
         errors, _ = self.run_check(persona(status=status))
-        self.assertTrue(any("requires a non-empty Blind-test record" in e for e in errors), errors)
+        self.assertTrue(any("requires a Blind-test record with a date" in e for e in errors), errors)
         body = persona(status=status).replace("none yet", "2026-09-16, one reader, persona passage vs house style, persona picked")
         errors, _ = self.run_check(body)
         self.assertEqual(errors, [])
