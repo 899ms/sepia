@@ -38,3 +38,13 @@ Fiction anti-signal (recorded → `Voice fit: none`):
 | a | An over-correction advisory on "Depth of interior access" or "Thematic explicitness" (the two costs the profile documents) |
 
 Dialogue share is not an anti-signal here; the profile's own dialogue row carries the calibration caution (a measured Gemini fingerprint) and applies it when the voice is used.
+
+## tw-journalism
+
+- Body: `references/voices/tw-journalism.md`
+- Opt-in phrase: `apply the Taiwan journalism voice` / 「套用台灣深度報導 voice」, optionally followed by a shape name from the body's tables (「，場景導入」 and so on).
+- Intent triggers: none. The exact phrase is the only way in; no announcement is owed for it (the announcement rule above applies to triggers other than the exact phrase).
+- Entry: none.
+- Routes: professional only; never loaded on the fiction route.
+- Fiction signature / anti-signal: none.
+- Voice fit: not produced in this version. This file is not loaded on professional routes (see the first paragraph; issue #227); the section documents the opt-in so that the phrase→body map in `voice-skills.md` has a registry counterpart, nothing more.
