@@ -229,6 +229,14 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(overrides=[("`languages/zh.md §4`", "x", "y")]))
         self.assertEqual(errors, [])
 
+    def test_tilde_line_inside_a_backtick_fence_does_not_close_it(self):
+        body = persona()
+        pro = "- Do not reuse this file\u2019s example phrases verbatim; they are shapes, not a word list.\n- Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO."
+        # the fixed lines sit inside a ``` block that quotes a ~~~ line: the
+        # block must stay open, so the lines are sample text and not list items
+        errors, _ = self.run_check(body.replace(pro, "```\n~~~\n" + pro + "\n```"))
+        self.assertTrue(any("missing the fixed line" in e for e in errors), errors)
+
     def test_fenced_code_does_not_count_as_structure(self):
         body = persona()
         table = "| Rule | How the persona departs | Expected cost |\n|---|---|---|\n| `style-pass.md §3` | idioms in narration | §3 idiom hits reported as Persona cost |\n| `professional-pass.md check 4` | a verdict sentence ends each section | check 4 findings as Persona cost |"

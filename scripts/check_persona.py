@@ -213,17 +213,25 @@ def split_sections(text: str) -> tuple[list[str], dict[str, str]]:
 
     Lines inside fenced code blocks are dropped from the bodies: a table, a
     numbered list or a list item inside ``` is sample text, not structure,
-    and must not satisfy the structural checks.
+    and must not satisfy the structural checks. A block closes only on a
+    marker of the same character and at least the opener's length, so a
+    ``` block quoting a ~~~ line does not end early and leak its sample
+    text back into the structure.
     """
     order: list[str] = []
     bodies: dict[str, list[str]] = {}
     current = None
-    fenced = False
+    fence: str | None = None
     for line in text.splitlines():
-        if re.match(r"^\s*(```|~~~)", line):
-            fenced = not fenced
+        mf = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line)
+        if mf:
+            marker, rest = mf.group(1), mf.group(2)
+            if fence is None:
+                fence = marker
+            elif marker[0] == fence[0] and len(marker) >= len(fence) and not rest.strip():
+                fence = None
             continue
-        if fenced:
+        if fence is not None:
             continue
         m = re.match(r"^## (.+?)\s*$", line)
         if m:
