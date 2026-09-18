@@ -181,11 +181,22 @@ def parse_token(cell: str, root: Path) -> tuple[str | None, str | None]:
             path = refs / "domains" / fname
             if not path.exists():
                 return None, f"domains/{fname} not found under references/"
-            rules = len(re.findall(r"^\d+\. \*\*", path.read_text(encoding="utf-8"), re.M))
+            rules = _numbered_rules(path.read_text(encoding="utf-8"))
             if not 1 <= n <= rules:
                 return None, f"domains/{fname} has {rules} numbered rules, no rule {n}"
             return f"domains/{fname} rule {n}", None
     return None, "rule cell is not a recognised rule token"
+
+
+def _numbered_rules(text: str) -> int:
+    """Count the numbered items under a domain file's Rules heading.
+
+    Only the first rule is bolded in most domain files, so the count takes
+    every `<n>. ` line in that section, not only the bolded ones.
+    """
+    m = re.search(r"^## Rules[^\n]*\n(.*?)(?=^## |\Z)", text, re.S | re.M)
+    body = m.group(1) if m else text
+    return len(re.findall(r"^\d+\. ", body, re.M))
 
 
 def split_sections(text: str) -> tuple[list[str], dict[str, str]]:
@@ -215,7 +226,10 @@ def table_rows(body: str) -> tuple[list[list[str]], str | None]:
     for line in body.splitlines():
         s = line.strip()
         if s.startswith("|"):
-            pipe_rows.append([c.strip() for c in s.strip("|").split("|")])
+            # remove exactly one outer delimiter on each side; a doubled edge
+            # pipe leaves an empty cell and fails the width checks below
+            inner = s[1:-1] if s.endswith("|") else s[1:]
+            pipe_rows.append([c.strip() for c in inner.split("|")])
     if not pipe_rows:
         return [], "override table has no rows"
     if tuple(pipe_rows[0]) != TABLE_HEADER:
@@ -282,7 +296,7 @@ def check_file(path: Path, root: Path) -> list[str]:
             values[key] = ms[0].strip()
     if "Routes" in values and values["Routes"] not in ROUTES:
         err(f"Routes must be one of {sorted(ROUTES)}, got '{values['Routes']}'")
-    if "Tested" in values and values["Tested"].lower() not in TESTED:
+    if "Tested" in values and values["Tested"] not in TESTED:
         err(f"Tested must be 'tested' or 'untested', got '{values['Tested']}'")
     if "Consent" in values:
         cm = CONSENT_RE.fullmatch(normalise(values["Consent"]))
@@ -300,17 +314,24 @@ def check_file(path: Path, root: Path) -> list[str]:
             err("Opt-in phrase must be exactly 'apply persona <name>' optionally followed by ' / 「套用 persona <name>」'")
         elif "Name" in values and m.group(1) != values["Name"]:
             err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
-    if values.get("Tested", "").lower() == "tested":
-        record = bodies.get("Blind-test record", "").strip()
-        entries = RECORD_RE.findall(record)
-        if not entries or re.search(r"\b(TODO|none|not run|pending|n/a)\b", record, re.I):
+    if values.get("Tested") == "tested":
+        lines = [l for l in bodies.get("Blind-test record", "").splitlines() if l.strip()]
+        if not lines:
             err("Tested: tested requires at least one Blind-test record line of the form "
-                "'YYYY-MM-DD — judge: … — compared: … — outcome: …' and no placeholder")
-        for d in entries:
+                "'YYYY-MM-DD — judge: … — compared: … — outcome: …'")
+        for l in lines:
+            m = RECORD_RE.match(l)
+            if not m:
+                err("Blind-test record line is not of the form 'YYYY-MM-DD — judge: … — compared: … — outcome: …': "
+                    + l.strip()[:60])
+                continue
+            fields = [f.strip() for f in re.split(r" — (?:judge|compared|outcome): ", l)[1:]]
+            if any(re.fullmatch(r"(TODO|none|not run|pending|n/a)", f, re.I) for f in fields):
+                err(f"Blind-test record field is a placeholder: {l.strip()[:60]}")
             try:
-                datetime.date.fromisoformat(d)
+                datetime.date.fromisoformat(m.group(1))
             except ValueError:
-                err(f"Blind-test record date is not a calendar date: {d}")
+                err(f"Blind-test record date is not a calendar date: {m.group(1)}")
 
     rows, terr = table_rows(bodies.get("Rules this persona overrides", ""))
     if terr:

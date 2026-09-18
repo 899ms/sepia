@@ -25,6 +25,8 @@ REFS = {
     "languages/zh.md": "# zh\n",
     "domains/journalism.md": "# j\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 9)),
     "domains/tickets.md": "# t\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 6)),
+    # only the first rule bolded, as most real domain files do
+    "domains/release-notes.md": "# r\n\n## Rules\n\n1. **Rule 1.** text\n2. Rule 2 plain\n3. Rule 3 plain\n\n## After\n\n4. not a rule\n",
     "domains/tech-articles.md": "# ta\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 7)),
     "domains/postmortems.md": "# pm\n" + "".join(f"{i}. **Rule {i}.** text\n" for i in range(1, 7)),
 }
@@ -218,6 +220,24 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
         self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
 
+    # --- round-5 (final-report) cases ------------------------------------
+
+    def test_unbolded_domain_rule_within_range_passes(self):
+        errors, _ = self.run_check(persona(overrides=[("`domains/release-notes.md rule 3`", "x", "y")]))
+        self.assertEqual(errors, [])
+        errors, _ = self.run_check(persona(overrides=[("`domains/release-notes.md rule 4`", "x", "y")]))
+        self.assertTrue(any("no rule 4" in e for e in errors), errors)
+
+    def test_tested_value_is_case_sensitive(self):
+        body = persona().replace("Tested: untested", "Tested: UnTested")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("Tested must be" in e for e in errors), errors)
+
+    def test_doubled_edge_pipes_fail(self):
+        body = persona().replace("| Rule | How the persona departs | Expected cost |", "|| Rule | How the persona departs | Expected cost ||")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("header must be exactly" in e for e in errors), errors)
+
     # --- round-4 review cases -------------------------------------------
 
     def test_multi_word_name_passes(self):
@@ -254,7 +274,16 @@ class CheckPersonaCase(unittest.TestCase):
         for rec in ("TODO", "not run", "one reader picked the persona passage", "2026-09-16", "2026-09-16 — judge: — compared: x — outcome: y"):
             with self.subTest(rec=rec):
                 errors, _ = self.run_check(persona(status=status).replace("none yet", rec))
-                self.assertTrue(any("requires at least one Blind-test record line" in e for e in errors), (rec, errors))
+                self.assertTrue(any("Blind-test record" in e for e in errors), (rec, errors))
+        rec = "2026-09-16 — judge: one reader — compared: a vs b — outcome: TODO"
+        errors, _ = self.run_check(persona(status=status).replace("none yet", rec))
+        self.assertTrue(any("field is a placeholder" in e for e in errors), errors)
+        rec = "2026-09-16 — judge: one reader — compared: a vs b — outcome: none preferred"
+        errors, _ = self.run_check(persona(status=status).replace("none yet", rec))
+        self.assertEqual(errors, [])
+        rec = "2026-09-16 — judge: one reader — compared: a vs b — outcome: a\nfree text line"
+        errors, _ = self.run_check(persona(status=status).replace("none yet", rec))
+        self.assertTrue(any("is not of the form" in e for e in errors), errors)
 
     # --- round-2 review cases -------------------------------------------
 
@@ -335,7 +364,7 @@ class CheckPersonaCase(unittest.TestCase):
     def test_tested_requires_a_record(self):
         status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "tested"}
         errors, _ = self.run_check(persona(status=status))
-        self.assertTrue(any("requires at least one Blind-test record line" in e for e in errors), errors)
+        self.assertTrue(any("Blind-test record" in e for e in errors), errors)
         body = persona(status=status).replace("none yet", "2026-09-16 — judge: one reader — compared: persona passage vs house style — outcome: persona picked")
         errors, _ = self.run_check(body)
         self.assertEqual(errors, [])
