@@ -65,10 +65,14 @@ ROUTES = {"professional", "fiction", "any"}
 TESTED = {"tested", "untested"}
 # Consent takes one of these forms; the dated form needs an ISO date.
 CONSENT_RE = re.compile(
-    r"^(own style|public-domain author|fictional persona|brand persona|"
-    r"consent from the person, \d{4}-\d{2}-\d{2})(\b|$)"
+    r"(own style|public-domain author|fictional persona|brand persona|"
+    r"consent from the person, \d{4}-\d{2}-\d{2})"
 )
-OPTIN_NAME_RE = re.compile(r"persona (\S+?)(?=[」\s/]|$)")
+# The whole Opt-in phrase field: the English form, optionally followed by the
+# Chinese form for the same name. Nothing else is an affirmative opt-in.
+OPTIN_RE = re.compile(r"apply persona (\S+)(?: / 「套用 persona \1」)?")
+MOVE_RE = re.compile(r"^\s*\d+\.\s+.*\(overrides: ([^)]+)\)\s*$")
+MIN_MOVES, MAX_MOVES = 3, 8
 TABLE_HEADER = ("Rule", "How the persona departs", "Expected cost")
 # Sections whose quoted text is metadata (a source title, a compared passage),
 # not example phrases; the 20-character rule does not apply there.
@@ -204,8 +208,8 @@ def table_rows(body: str) -> tuple[list[list[str]], str | None]:
         return [], "override table has no rows"
     if tuple(pipe_rows[0]) != TABLE_HEADER:
         return [], "override table header must be exactly | Rule | How the persona departs | Expected cost |"
-    if len(pipe_rows) < 2 or not all(re.fullmatch(r":?-{3,}:?", c) for c in pipe_rows[1]):
-        return [], "override table header must be followed by a separator row"
+    if len(pipe_rows) < 2 or len(pipe_rows[1]) != len(TABLE_HEADER) or not all(re.fullmatch(r":?-{3,}:?", c) for c in pipe_rows[1]):
+        return [], "override table header must be followed by a three-column separator row"
     return pipe_rows[2:], None
 
 
@@ -236,36 +240,41 @@ def check_file(path: Path, root: Path) -> list[str]:
     text = path.read_text(encoding="utf-8")
 
     order, bodies = split_sections(text)
-    for s in SECTIONS:
-        if s not in order:
-            err(f"missing section '## {s}'")
-    for s in order:
-        if s not in SECTIONS:
-            err(f"unexpected section '## {s}' (the template's H2 sequence is fixed)")
-    if tuple(order) != SECTIONS and not any(s not in order for s in SECTIONS) and not any(s not in SECTIONS for s in order):
+    missing = [s for s in SECTIONS if s not in order]
+    unexpected = [s for s in order if s not in SECTIONS]
+    dups = sorted({s for s in order if order.count(s) > 1})
+    for s in missing:
+        err(f"missing section '## {s}'")
+    for s in unexpected:
+        err(f"unexpected section '## {s}' (the template's H2 sequence is fixed)")
+    for s in dups:
+        err(f"duplicate section '## {s}'")
+    if not (missing or unexpected or dups) and tuple(order) != SECTIONS:
         err("sections are not in template order")
 
     status = bodies.get("Status", "")
     values = {}
     for key in STATUS_KEYS:
-        m = re.search(rf"^{re.escape(key)}:\s*(.*)$", status, re.M)
-        if not m or not m.group(1).strip():
+        ms = re.findall(rf"^{re.escape(key)}:\s*(.*)$", status, re.M)
+        if len(ms) > 1:
+            err(f"Status has {len(ms)} '{key}:' lines; exactly one is allowed")
+        elif not ms or not ms[0].strip():
             err(f"Status is missing a non-empty '{key}:' line")
         else:
-            values[key] = m.group(1).strip()
+            values[key] = ms[0].strip()
     if "Routes" in values and values["Routes"] not in ROUTES:
         err(f"Routes must be one of {sorted(ROUTES)}, got '{values['Routes']}'")
     if "Tested" in values and values["Tested"].lower() not in TESTED:
         err(f"Tested must be 'tested' or 'untested', got '{values['Tested']}'")
-    if "Consent" in values and not CONSENT_RE.match(normalise(values["Consent"])):
+    if "Consent" in values and not CONSENT_RE.fullmatch(normalise(values["Consent"])):
         err("Consent must be one of: own style | public-domain author | fictional persona | "
             "brand persona | consent from the person, YYYY-MM-DD")
-    if "Name" in values and "Opt-in phrase" in values:
-        names = set(OPTIN_NAME_RE.findall(values["Opt-in phrase"]))
-        if not names:
-            err("Opt-in phrase must contain 'persona <name>'")
-        elif names != {values["Name"]}:
-            err(f"Opt-in phrase names {sorted(names)} but Name is '{values['Name']}'")
+    if "Opt-in phrase" in values:
+        m = OPTIN_RE.fullmatch(values["Opt-in phrase"])
+        if not m:
+            err("Opt-in phrase must be exactly 'apply persona <name>' optionally followed by ' / 「套用 persona <name>」'")
+        elif "Name" in values and m.group(1) != values["Name"]:
+            err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
     if values.get("Tested", "").lower() == "tested":
         record = bodies.get("Blind-test record", "").strip()
         if not record or record.lower().startswith("none"):
@@ -276,6 +285,7 @@ def check_file(path: Path, root: Path) -> list[str]:
         err(terr)
     elif not rows:
         err("override table has no data rows")
+    declared: set[str] = set()
     for i, row in enumerate(rows, 1):
         if len(row) != 3 or not all(row):
             err(f"override row {i} must have three non-empty cells")
@@ -285,12 +295,35 @@ def check_file(path: Path, root: Path) -> list[str]:
             err(f"override row {i}: {terr} ({row[0]})")
         elif token in NON_YIELDING:
             err(f"override row {i}: {token} never yields to a persona")
+        else:
+            declared.add(token)
+
+    # Every piece: 3–8 numbered moves, each ending in "(overrides: <token>)" or
+    # "(overrides: none)", and a named token must be in the table above.
+    moves = [l for l in bodies.get("Every piece", "").splitlines() if re.match(r"^\s*\d+\.\s", l)]
+    if not MIN_MOVES <= len(moves) <= MAX_MOVES:
+        err(f"Every piece must list {MIN_MOVES}–{MAX_MOVES} numbered moves, found {len(moves)}")
+    for l in moves:
+        m = MOVE_RE.match(l)
+        if not m:
+            err(f"Every piece move lacks a trailing '(overrides: <rule token>|none)': {l.strip()[:60]}")
+            continue
+        ref = m.group(1).strip().strip("`")
+        if ref == "none":
+            continue
+        token, terr = parse_token(ref, root)
+        if terr:
+            err(f"Every piece move overrides an unrecognised token: {ref}")
+        elif token not in declared:
+            err(f"Every piece move overrides {token}, which is not in the override table")
     if len(rows) > MAX_OVERRIDES_BEFORE_WARN:
         warn(f"{len(rows)} override rows; more than {MAX_OVERRIDES_BEFORE_WARN} reads as a house style")
 
     prohibition_lines = {
-        re.sub(r"^\s*(?:[-*]|\d+\.)\s*", "", normalise(l)).strip()
+        m.group(1).strip()
         for l in bodies.get("Prohibitions", "").splitlines()
+        for m in [re.match(r"^\s*(?:[-*]|\d+\.)\s+(.*)$", normalise(l))]
+        if m
     }
     for line in PROHIBITION_LINES:
         if line not in prohibition_lines:

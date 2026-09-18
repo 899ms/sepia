@@ -6,7 +6,7 @@ Template for a persona profile: one writer's style as prescriptive moves plus th
 
 One line per key, all six required:
 
-Name: <persona name used in the opt-in phrase>
+Name: <name>
 Routes: <professional | fiction | any>
 Opt-in phrase: apply persona <name> / 「套用 persona <name>」
 Provenance: <what was read: how many pieces, which years or kinds, full readings or not>
@@ -39,7 +39,7 @@ Which of the moves above a current sepia rule would remove, and what a model imi
 
 ## Every piece
 
-Prescriptive, 3–8 numbered moves. Each names the rule token it overrides from the table below, or `overrides: none`.
+Prescriptive, 3–8 numbered moves. Each ends with `(overrides: <rule token>)`, naming a token from the table below, or `(overrides: none)`; the validator checks the count, the suffix and the table membership.
 
 ## Only with facts
 
@@ -59,7 +59,7 @@ Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.m
 
 ## Prohibitions
 
-Both fixed lines verbatim, each as its own list item, then the persona's own:
+Both fixed lines verbatim, each as its own list item (a paragraph does not count), then the persona's own:
 
 - Do not reuse this file's example phrases verbatim; they are shapes, not a word list.
 - Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO.

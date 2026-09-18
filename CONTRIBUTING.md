@@ -9,7 +9,7 @@ Sepia keeps one canonical writing skill and packages it for several agent hosts.
 | Writing behavior | `skills/sepia/SKILL.md` and its `references/` | Change shared rules here. Keep evidence and Sepia's editorial inferences distinguishable. |
 | Operation entries | `skills/sepia-{write,review,refactor,recreate}/SKILL.md` | Keep wrappers thin. Do not copy routing tables, domain rules, or guardrails out of the canonical skill. |
 | Platform packaging | `plugin.json`, `.claude-plugin/`, `.codex-plugin/`, `.qwenpaw-plugin/`, `.agents/` | Use native host features. Do not add adapters for behavior the current host already provides. |
-| Persona profiles | `skills/sepia/references/voices/PERSONA-TEMPLATE.md`; built-in bodies under `references/voices/personas/` (none yet) | Follow the template; `python3 scripts/check_persona.py <file>` must pass; consent and provenance rules under Pull requests. |
+| Persona profiles | `skills/sepia/references/voices/PERSONA-TEMPLATE.md`; built-in bodies under `skills/sepia/references/voices/personas/` (none yet) | Follow the template; `python3 scripts/check_persona.py <file>` must pass; consent and provenance rules under Pull requests. |
 | Documentation | `README.md` | Treat English as canonical. Keep every maintained translation aligned with it. |
 | Behavioral evals | `evals/` and `.github/workflows/behavioral-eval.yml` | Keep prompts, graders, thresholds, model pins, and credential boundaries explicit. |
 

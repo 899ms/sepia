@@ -30,6 +30,15 @@ REFS = {
 SECTIONS = check_persona.SECTIONS
 
 
+def every_piece(overrides):
+    """3–8 numbered moves: one per override token (up to seven), then one with no override."""
+    lines = [f"{i}. Move {i} (overrides: {tok.strip('`')})" for i, (tok, _, _) in enumerate(overrides[:7], 1)]
+    lines.append(f"{len(lines) + 1}. Open on a number (overrides: none)")
+    while len(lines) < 3:
+        lines.append(f"{len(lines) + 1}. Another plain move (overrides: none)")
+    return "\n".join(lines)
+
+
 def persona(overrides=None, prohibitions=None, status=None, drop=None, extra=None, order=None):
     """Build a valid persona body, then apply the requested deviations."""
     status = status or {
@@ -56,7 +65,7 @@ def persona(overrides=None, prohibitions=None, status=None, drop=None, extra=Non
         "Moves by frequency": "- Ending verdict sentence, 10/12 pieces\n- Idiom in narration, 9/12",
         "Negatives": "No scene openings.",
         "Meaning for sepia": "check 4 and style-pass §3 would remove the two signatures.",
-        "Every piece": "1. End each section on one verdict sentence (overrides: professional-pass.md check 4)\n2. Use three to six idioms (overrides: style-pass.md §3)\n3. Open on a number (overrides: none)",
+        "Every piece": every_piece(overrides),
         "Only with facts": "- A dated document quoted with its time, when the material has one.",
         "Sentence shape": "mean 50–60 characters, SD about 30; both ends present.",
         "Rules this persona overrides": "| Rule | How the persona departs | Expected cost |\n|---|---|---|\n"
@@ -204,6 +213,55 @@ class CheckPersonaCase(unittest.TestCase):
     def test_empty_cost_cell_fails(self):
         errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
         self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
+
+    # --- round-2 review cases -------------------------------------------
+
+    def test_duplicate_status_key_fails(self):
+        body = persona().replace("Routes: professional", "Routes: professional\nRoutes: fiction")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("2 'Routes:' lines" in e for e in errors), errors)
+
+    def test_negated_or_padded_optin_phrase_fails(self):
+        base = {"Name": "sample", "Routes": "any", "Provenance": "p", "Consent": "own style", "Tested": "untested"}
+        for phrase in ("do not apply persona sample", "apply persona sample please", "套用 persona sample"):
+            with self.subTest(phrase=phrase):
+                errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": phrase}))
+                self.assertTrue(any("Opt-in phrase must be exactly" in e for e in errors), (phrase, errors))
+        errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": "apply persona sample / 「套用 persona sample」"}))
+        self.assertEqual(errors, [])
+
+    def test_consent_with_trailing_text_fails(self):
+        base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
+        for c in ("own style, no permission", "consent from the person, 2025-01-15 (not recorded)"):
+            with self.subTest(c=c):
+                errors, _ = self.run_check(persona(status={**base, "Consent": c}))
+                self.assertTrue(any("Consent must be one of" in e for e in errors), (c, errors))
+
+    def test_every_piece_count_and_annotations(self):
+        body = persona().replace(every_piece([("`style-pass.md §3`", "", ""), ("`professional-pass.md check 4`", "", "")]), "1. Only one move (overrides: none)")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("must list 3–8 numbered moves, found 1" in e for e in errors), errors)
+        body = persona().replace("3. Open on a number (overrides: none)", "3. Open on a number")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("lacks a trailing" in e for e in errors), errors)
+        body = persona().replace("3. Open on a number (overrides: none)", "3. Open on a number (overrides: discourse-pass.md §1)")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("not in the override table" in e for e in errors), errors)
+
+    def test_duplicate_heading_fails(self):
+        body = persona() + "\n## Boundary\n\nagain\n"
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("duplicate section '## Boundary'" in e for e in errors), errors)
+
+    def test_four_column_separator_fails(self):
+        body = persona().replace("|---|---|---|", "|---|---|---|---|")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("three-column separator" in e for e in errors), errors)
+
+    def test_prohibition_as_paragraph_fails(self):
+        body = persona().replace("- Do not reuse this file\u2019s example phrases verbatim; they are shapes, not a word list.", "Do not reuse this file\u2019s example phrases verbatim; they are shapes, not a word list.")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("missing the fixed line" in e and "Do not reuse" in e for e in errors), errors)
 
     # --- round-1 review cases -------------------------------------------
 
