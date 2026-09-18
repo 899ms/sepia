@@ -142,6 +142,12 @@ _TOKEN_RES = (
 
 
 def normalise(text: str) -> str:
+    """Fold curly quotes and apostrophes to their ASCII forms.
+
+    The fixed prohibition lines and the consent forms are compared after
+    this, so a body written with typographic punctuation passes the same
+    checks as one written with ASCII.
+    """
     return (
         text.replace("’", "'")
         .replace("‘", "'")
@@ -288,6 +294,14 @@ def long_quotes(text: str) -> list[str]:
 
 
 def check_file(path: Path, root: Path) -> list[str]:
+    """Check one persona body against the template contract.
+
+    Returns one ``<path>: ERROR|WARN: <message>`` line per finding, in the
+    order the contract is read: section sequence, Status block, override
+    table, Every piece moves, Prohibitions, quoted examples. ``root`` is the
+    repository whose ``skills/sepia/references/`` the rule tokens resolve
+    against.
+    """
     findings: list[str] = []
     err = lambda msg: findings.append(f"{path}: ERROR: {msg}")
     warn = lambda msg: findings.append(f"{path}: WARN: {msg}")
@@ -420,6 +434,7 @@ def check_file(path: Path, root: Path) -> list[str]:
 
 
 def main(argv=None) -> int:
+    """Check every file named on the command line; exit 1 if any has an ERROR."""
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     ap.add_argument("files", nargs="+", type=Path)
