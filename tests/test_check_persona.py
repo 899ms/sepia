@@ -205,6 +205,53 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
         self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
 
+    # --- round-1 review cases -------------------------------------------
+
+    def test_malformed_table_header_fails_and_hides_nothing(self):
+        body = persona(overrides=[("`style-pass.md §5`", "x", "y")])
+        body = body.replace("| Rule | How the persona departs | Expected cost |\n|---|---|---|\n", "")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("header must be exactly" in e for e in errors), errors)
+
+    def test_extra_heading_fails(self):
+        body = persona() + "\n## Notes\n\nextra\n"
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("unexpected section '## Notes'" in e for e in errors), errors)
+
+    def test_optin_name_must_match_name(self):
+        status = {"Name": "alice", "Routes": "any", "Opt-in phrase": "apply persona bob / 「套用 persona bob」", "Provenance": "p", "Consent": "own style", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status=status))
+        self.assertTrue(any("but Name is 'alice'" in e for e in errors), errors)
+
+    def test_bad_consent_fails_and_dated_consent_passes(self):
+        base = {"Name": "s", "Routes": "any", "Opt-in phrase": "apply persona s", "Provenance": "p", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status={**base, "Consent": "I have no permission"}))
+        self.assertTrue(any("Consent must be one of" in e for e in errors), errors)
+        errors, _ = self.run_check(persona(status={**base, "Consent": "consent from the person, 2026-09-01"}))
+        self.assertEqual(errors, [])
+        errors, _ = self.run_check(persona(status={**base, "Consent": "consent from the person, last year"}))
+        self.assertTrue(any("Consent must be one of" in e for e in errors), errors)
+
+    def test_tested_requires_a_record(self):
+        status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "tested"}
+        errors, _ = self.run_check(persona(status=status))
+        self.assertTrue(any("requires a non-empty Blind-test record" in e for e in errors), errors)
+        body = persona(status=status).replace("none yet", "2026-09-16, one reader, persona passage vs house style: persona picked")
+        errors, _ = self.run_check(body)
+        self.assertEqual(errors, [])
+
+    def test_prohibition_embedded_in_a_longer_line_fails(self):
+        errors, _ = self.run_check(persona(prohibitions=[
+            "Note: Do not reuse this file's example phrases verbatim; they are shapes, not a word list.",
+            "Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO.",
+        ]))
+        self.assertTrue(any("missing the fixed line" in e for e in errors), errors)
+
+    def test_long_quote_in_provenance_is_metadata_and_passes(self):
+        status = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": 'read "A Very Long Source Title That Exceeds Twenty Characters" in full', "Consent": "own style", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status=status))
+        self.assertEqual(errors, [])
+
     def test_main_exit_codes(self):
         good = self.root / "good.md"
         good.write_text(persona(), encoding="utf-8")

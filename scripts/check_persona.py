@@ -27,7 +27,8 @@ section):
   into the template and CONTRIBUTING; the comparison normalises curly quotes.
 - Quoted examples: no span inside 「」, 『』 or a paired double quote may exceed
   20 characters, so a profile carries shapes, not reusable text. Single quotes
-  and apostrophes are not quotation marks for this purpose.
+  and apostrophes are not quotation marks for this purpose; the Status and
+  Blind-test record sections are exempt because their quotes are metadata.
 
 Standard library only. Usage:
 
@@ -62,6 +63,16 @@ SECTIONS = (
 STATUS_KEYS = ("Name", "Routes", "Opt-in phrase", "Provenance", "Consent", "Tested")
 ROUTES = {"professional", "fiction", "any"}
 TESTED = {"tested", "untested"}
+# Consent takes one of these forms; the dated form needs an ISO date.
+CONSENT_RE = re.compile(
+    r"^(own style|public-domain author|fictional persona|brand persona|"
+    r"consent from the person, \d{4}-\d{2}-\d{2})(\b|$)"
+)
+OPTIN_NAME_RE = re.compile(r"persona (\S+?)(?=[」\s/]|$)")
+TABLE_HEADER = ("Rule", "How the persona departs", "Expected cost")
+# Sections whose quoted text is metadata (a source title, a compared passage),
+# not example phrases; the 20-character rule does not apply there.
+QUOTE_SCAN_EXEMPT = {"Status", "Blind-test record"}
 
 PROHIBITION_LINES = (
     "Do not reuse this file's example phrases verbatim; they are shapes, not a word list.",
@@ -177,17 +188,25 @@ def split_sections(text: str) -> tuple[list[str], dict[str, str]]:
     return order, {k: "\n".join(v) for k, v in bodies.items()}
 
 
-def table_rows(body: str) -> list[list[str]]:
-    rows = []
+def table_rows(body: str) -> tuple[list[list[str]], str | None]:
+    """Data rows of the override table, or (rows, error).
+
+    The first pipe row must be the exact three-column header and the second the
+    separator; otherwise a malformed table could hide a forbidden token in a row
+    that a naive "drop the first row" would discard.
+    """
+    pipe_rows = []
     for line in body.splitlines():
         s = line.strip()
-        if not s.startswith("|"):
-            continue
-        cells = [c.strip() for c in s.strip("|").split("|")]
-        if all(re.fullmatch(r":?-{3,}:?", c) for c in cells):
-            continue
-        rows.append(cells)
-    return rows[1:] if rows else []  # drop the header row
+        if s.startswith("|"):
+            pipe_rows.append([c.strip() for c in s.strip("|").split("|")])
+    if not pipe_rows:
+        return [], "override table has no rows"
+    if tuple(pipe_rows[0]) != TABLE_HEADER:
+        return [], "override table header must be exactly | Rule | How the persona departs | Expected cost |"
+    if len(pipe_rows) < 2 or not all(re.fullmatch(r":?-{3,}:?", c) for c in pipe_rows[1]):
+        return [], "override table header must be followed by a separator row"
+    return pipe_rows[2:], None
 
 
 _QUOTE_RE = re.compile(r"「([^」]*)」|『([^』]*)』|\"([^\"]*)\"")
@@ -217,11 +236,13 @@ def check_file(path: Path, root: Path) -> list[str]:
     text = path.read_text(encoding="utf-8")
 
     order, bodies = split_sections(text)
-    expected = [s for s in SECTIONS if s in order]
     for s in SECTIONS:
         if s not in order:
             err(f"missing section '## {s}'")
-    if expected != [s for s in order if s in SECTIONS]:
+    for s in order:
+        if s not in SECTIONS:
+            err(f"unexpected section '## {s}' (the template's H2 sequence is fixed)")
+    if tuple(order) != SECTIONS and not any(s not in order for s in SECTIONS) and not any(s not in SECTIONS for s in order):
         err("sections are not in template order")
 
     status = bodies.get("Status", "")
@@ -236,10 +257,25 @@ def check_file(path: Path, root: Path) -> list[str]:
         err(f"Routes must be one of {sorted(ROUTES)}, got '{values['Routes']}'")
     if "Tested" in values and values["Tested"].lower() not in TESTED:
         err(f"Tested must be 'tested' or 'untested', got '{values['Tested']}'")
+    if "Consent" in values and not CONSENT_RE.match(normalise(values["Consent"])):
+        err("Consent must be one of: own style | public-domain author | fictional persona | "
+            "brand persona | consent from the person, YYYY-MM-DD")
+    if "Name" in values and "Opt-in phrase" in values:
+        names = set(OPTIN_NAME_RE.findall(values["Opt-in phrase"]))
+        if not names:
+            err("Opt-in phrase must contain 'persona <name>'")
+        elif names != {values["Name"]}:
+            err(f"Opt-in phrase names {sorted(names)} but Name is '{values['Name']}'")
+    if values.get("Tested", "").lower() == "tested":
+        record = bodies.get("Blind-test record", "").strip()
+        if not record or record.lower().startswith("none"):
+            err("Tested: tested requires a non-empty Blind-test record")
 
-    rows = table_rows(bodies.get("Rules this persona overrides", ""))
-    if not rows:
-        err("override table has no rows")
+    rows, terr = table_rows(bodies.get("Rules this persona overrides", ""))
+    if terr:
+        err(terr)
+    elif not rows:
+        err("override table has no data rows")
     for i, row in enumerate(rows, 1):
         if len(row) != 3 or not all(row):
             err(f"override row {i} must have three non-empty cells")
@@ -252,13 +288,19 @@ def check_file(path: Path, root: Path) -> list[str]:
     if len(rows) > MAX_OVERRIDES_BEFORE_WARN:
         warn(f"{len(rows)} override rows; more than {MAX_OVERRIDES_BEFORE_WARN} reads as a house style")
 
-    prohibitions = normalise(bodies.get("Prohibitions", ""))
+    prohibition_lines = {
+        re.sub(r"^\s*(?:[-*]|\d+\.)\s*", "", normalise(l)).strip()
+        for l in bodies.get("Prohibitions", "").splitlines()
+    }
     for line in PROHIBITION_LINES:
-        if line not in prohibitions:
-            err(f"Prohibitions is missing the fixed line: {line}")
+        if line not in prohibition_lines:
+            err(f"Prohibitions is missing the fixed line (as its own list item, verbatim): {line}")
 
-    for span in long_quotes(text):
-        err(f"quoted example longer than {MAX_QUOTE} characters: {span[:30]}…")
+    for section, body in bodies.items():
+        if section in QUOTE_SCAN_EXEMPT:
+            continue
+        for span in long_quotes(body):
+            err(f"quoted example longer than {MAX_QUOTE} characters in '{section}': {span[:30]}…")
 
     return findings
 

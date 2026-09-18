@@ -66,13 +66,6 @@ Every proposal issue must be decision-ready.
 
 Issues missing required information may be closed. Never include secrets, raw credentials, or unredacted logs.
 
-### PR contract
-
-Every non-trivial PR must link an approved issue with `Closes #N` (or `Refs #N` when the issue's own plan lists later steps and the PR body names the step it delivers), stay within its accepted scope, branch from the current `main`, and use a concise Conventional Commit-style title when it fits.
-
-Every PR body must contain both sections below. An empty body or a summary without reproducible checks is not ready for review.
-
-```markdown
 ### Persona profiles
 
 A persona profile describes one writer's style as prescriptive moves plus a table of the sepia rules it overrides (`skills/sepia/references/voice-skills.md`, persona section). Rules for contributing one:
@@ -83,6 +76,13 @@ A persona profile describes one writer's style as prescriptive moves plus a tabl
 - `Tested:` is `tested` only with a blind-test record in the body; otherwise `untested`.
 - `python3 scripts/check_persona.py <file>` must pass; the validator refuses the uniformity and never-invent rules, which no persona may override.
 
+### PR contract
+
+Every non-trivial PR must link an approved issue with `Closes #N` (or `Refs #N` when the issue's own plan lists later steps and the PR body names the step it delivers), stay within its accepted scope, branch from the current `main`, and use a concise Conventional Commit-style title when it fits.
+
+Every PR body must contain both sections below. An empty body or a summary without reproducible checks is not ready for review.
+
+```markdown
 ## Summary
 
 - What changed

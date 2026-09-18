@@ -1,6 +1,6 @@
 # Persona — <name>
 
-Template for a persona profile: one writer's style as prescriptive moves plus the sepia rules it overrides. The contract is in `voice-skills.md` (persona section); `scripts/check_persona.py` checks a body against this template. Keep the H2 headings below verbatim and in this order; the prose under them may be in any language. No quoted example may exceed 20 characters inside 「」, 『』 or a paired double quote; single quotes and apostrophes are not counted. Examples are shapes, not text to reuse.
+Template for a persona profile: one writer's style as prescriptive moves plus the sepia rules it overrides. The contract is in `voice-skills.md` (persona section); `scripts/check_persona.py` checks a body against this template. Keep the H2 headings below verbatim and in this order; the prose under them may be in any language. No quoted example may exceed 20 characters inside 「」, 『』 or a paired double quote (Status and Blind-test record are exempt: their quotes are metadata); single quotes and apostrophes are not counted. No H2 sections other than the fourteen below. Examples are shapes, not text to reuse.
 
 ## Status
 
@@ -10,7 +10,7 @@ Name: <persona name used in the opt-in phrase>
 Routes: <professional | fiction | any>
 Opt-in phrase: apply persona <name> / 「套用 persona <name>」
 Provenance: <what was read: how many pieces, which years or kinds, full readings or not>
-Consent: <own style | consent from the person, dated | public-domain author | fictional or brand persona>
+Consent: <own style | public-domain author | fictional persona | brand persona | consent from the person, YYYY-MM-DD>
 Tested: <tested | untested>
 
 ## One sentence
@@ -59,7 +59,7 @@ Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.m
 
 ## Prohibitions
 
-Both fixed lines verbatim, then the persona's own:
+Both fixed lines verbatim, each as its own list item, then the persona's own:
 
 - Do not reuse this file's example phrases verbatim; they are shapes, not a word list.
 - Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO.
