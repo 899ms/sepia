@@ -189,6 +189,7 @@ class CheckPersonaCase(unittest.TestCase):
             "`domains/journalism.md rule 1`",
             "`domains/tech-articles.md rule 1`",
             "`domains/postmortems.md rule 2`",
+            "`domains/journalism.md rule 3`",
         ):
             with self.subTest(tok=tok):
                 errors, _ = self.run_check(persona(overrides=[(tok, "x", "y")]))
@@ -219,6 +220,27 @@ class CheckPersonaCase(unittest.TestCase):
     def test_empty_cost_cell_fails(self):
         errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
         self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
+
+    # --- follow-up after the final report --------------------------------
+
+    def test_bare_zh_section_2_fails_but_other_sections_pass(self):
+        errors, _ = self.run_check(persona(overrides=[("`languages/zh.md §2`", "x", "y")]))
+        self.assertTrue(any("§2 must name a row" in e for e in errors), errors)
+        errors, _ = self.run_check(persona(overrides=[("`languages/zh.md §4`", "x", "y")]))
+        self.assertEqual(errors, [])
+
+    def test_fenced_code_does_not_count_as_structure(self):
+        body = persona()
+        table = "| Rule | How the persona departs | Expected cost |\n|---|---|---|\n| `style-pass.md §3` | idioms in narration | §3 idiom hits reported as Persona cost |\n| `professional-pass.md check 4` | a verdict sentence ends each section | check 4 findings as Persona cost |"
+        self.assertIn(table, body)
+        errors, _ = self.run_check(body.replace(table, "```\n" + table + "\n```"))
+        self.assertTrue(any("override table has no rows" in e for e in errors), errors)
+        moves = every_piece([("`style-pass.md §3`", "", ""), ("`professional-pass.md check 4`", "", "")])
+        errors, _ = self.run_check(body.replace(moves, "```\n" + moves + "\n```"))
+        self.assertTrue(any("found 0" in e for e in errors), errors)
+        pro = "- Do not reuse this file\u2019s example phrases verbatim; they are shapes, not a word list.\n- Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO."
+        errors, _ = self.run_check(body.replace(pro, "```\n" + pro + "\n```"))
+        self.assertTrue(any("missing the fixed line" in e for e in errors), errors)
 
     # --- round-5 (final-report) cases ------------------------------------
 

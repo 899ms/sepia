@@ -53,7 +53,7 @@ Targets for the narration as a distribution (a mean and a spread, a share of lon
 |---|---|---|
 | <rule token, for example `style-pass.md §3`> | <what the persona does instead> | <what review will report as `Persona cost:`> |
 
-Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.md §<n>`, `languages/zh.md §<s>` (`languages/zh.md §2 <row>` for one of connective-stacking, second-person, disyllabic-padding, flat-sentence-length, manner-adverb), `professional-pass.md check <n>`, `domains/<name>.md rule <n>`. The validator refuses `style-pass.md §5`, `professional-pass.md check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3` (uniformity) and `professional-pass.md check 5`, `domains/journalism.md rule 1`, `domains/tech-articles.md rule 1`, `domains/postmortems.md rule 2` (never invent).
+Rule tokens: `style-pass.md §<n>`, `discourse-pass.md §<n>`, `narrative-pass.md §<n>`, `languages/zh.md §<s>` (§2 only as `languages/zh.md §2 <row>` for one of connective-stacking, second-person, disyllabic-padding, manner-adverb; the whole section cannot be named), `professional-pass.md check <n>`, `domains/<name>.md rule <n>`. The validator refuses `style-pass.md §5`, `professional-pass.md check 9`, `languages/zh.md §2 flat-sentence-length`, `discourse-pass.md §3` (uniformity) and `professional-pass.md check 5`, `domains/journalism.md rule 1`, `domains/tech-articles.md rule 1`, `domains/postmortems.md rule 2` (never invent) and `domains/journalism.md rule 3` (quoted material). Fenced code blocks do not count as structure.
 
 ## Prohibitions
 

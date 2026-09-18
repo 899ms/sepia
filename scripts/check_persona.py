@@ -24,7 +24,12 @@ section):
   and never-invent (`professional-pass.md check 5`, and the domain rules that
   restate the guardrail: `domains/journalism.md rule 1`,
   `domains/tech-articles.md rule 1`, `domains/postmortems.md rule 2`) cannot
-  be overridden by any persona.
+  be overridden by any persona; nor can `domains/journalism.md rule 3`, which
+  restates the quoted-material guardrail. `languages/zh.md §2` must name a
+  row, so the whole section cannot be listed around its uniformity row.
+- Fenced code blocks are ignored when reading sections, so sample text in
+  ``` cannot stand in for the override table, the Every piece list or the
+  Prohibitions list items.
 - Fixed prohibition lines: defined once here (ASCII apostrophes) and quoted
   into the template and CONTRIBUTING; the comparison normalises curly quotes.
 - Quoted examples: no span inside 「」, 『』 or a paired double quote may exceed
@@ -124,6 +129,8 @@ NON_YIELDING = {
     "domains/journalism.md rule 1",
     "domains/tech-articles.md rule 1",
     "domains/postmortems.md rule 2",
+    # quoted material is load-bearing (SKILL.md guardrail restated for the venue)
+    "domains/journalism.md rule 3",
 }
 
 _TOKEN_RES = (
@@ -168,6 +175,8 @@ def parse_token(cell: str, root: Path) -> tuple[str | None, str | None]:
                 if row not in ZH_ROWS:
                     return None, f"unknown zh.md §2 row '{row}'"
                 return f"languages/zh.md §2 {row}", None
+            if sec == "2":
+                return None, "languages/zh.md §2 must name a row (one of " + ", ".join(sorted(ZH_ROWS)) + ")"
             return f"languages/zh.md §{sec}", None
         if kind == "check":
             n = int(m.group(1))
@@ -200,11 +209,22 @@ def _numbered_rules(text: str) -> int:
 
 
 def split_sections(text: str) -> tuple[list[str], dict[str, str]]:
-    """H2 headings in order, and body text per heading."""
+    """H2 headings in order, and body text per heading.
+
+    Lines inside fenced code blocks are dropped from the bodies: a table, a
+    numbered list or a list item inside ``` is sample text, not structure,
+    and must not satisfy the structural checks.
+    """
     order: list[str] = []
     bodies: dict[str, list[str]] = {}
     current = None
+    fenced = False
     for line in text.splitlines():
+        if re.match(r"^\s*(```|~~~)", line):
+            fenced = not fenced
+            continue
+        if fenced:
+            continue
         m = re.match(r"^## (.+?)\s*$", line)
         if m:
             current = m.group(1).strip()
