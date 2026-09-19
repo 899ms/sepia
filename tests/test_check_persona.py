@@ -239,6 +239,25 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": "apply persona someone-else"}))
         self.assertTrue(any("but Name is" in e for e in errors), errors)
 
+    def test_bilingual_optin_halves_match_ignoring_case(self):
+        base = {"Name": "Nyaneko", "Routes": "professional", "Provenance": "p", "Consent": "brand persona", "Tested": "untested"}
+        for phrase in ("apply persona Nyaneko / 「套用 persona Nyaneko」",
+                       "apply persona nyaneko / 「套用 persona Nyaneko」",
+                       "apply persona Nyaneko / 「套用 persona nyaneko」"):
+            with self.subTest(phrase=phrase):
+                errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": phrase}))
+                self.assertEqual(errors, [], phrase)
+        errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": "apply persona Nyaneko / 「套用 persona someone-else」"}))
+        self.assertTrue(any("in the Chinese form" in e for e in errors), errors)
+
+    def test_consent_error_names_every_accepted_value(self):
+        base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status={**base, "Consent": "no idea"}))
+        msg = next(e for e in errors if "Consent must be one of" in e)
+        for value in ("own style", "public-domain author", "fictional persona", "brand persona",
+                      "private study, not for distribution", "consent from the person"):
+            self.assertIn(value, msg)
+
     # --- follow-up after the final report --------------------------------
 
     def test_bare_zh_section_2_fails_but_other_sections_pass(self):

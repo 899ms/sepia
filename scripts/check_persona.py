@@ -82,8 +82,11 @@ CONSENT_RE = re.compile(
     r"consent from the person, \d{4}-\d{2}-\d{2})"
 )
 # The whole Opt-in phrase field: the English form, optionally followed by the
-# Chinese form for the same name. Nothing else is an affirmative opt-in.
-OPTIN_RE = re.compile(r"apply persona ([^/「」]+?)(?: / 「套用 persona \1」)?")
+# Chinese form for the same name. Nothing else is an affirmative opt-in. The
+# two names are captured separately rather than matched with a backreference,
+# because a backreference is case-sensitive and the phrase is not: the halves
+# are compared below with the same case-insensitive test the Name check uses.
+OPTIN_RE = re.compile(r"apply persona ([^/「」]+?)(?: / 「套用 persona ([^「」]+)」)?")
 # One blind-test entry per line: date — judge — compared — outcome.
 RECORD_RE = re.compile(r"^\s*(?:[-*]\s+)?(\d{4}-\d{2}-\d{2}) — judge: \S.* — compared: \S.* — outcome: \S.*$", re.M)
 MOVE_RE = re.compile(r"^\s*\d+\.\s+(\S.*?)\s*\(overrides: ([^)]+)\)\s*$")
@@ -349,7 +352,8 @@ def check_file(path: Path, root: Path) -> list[str]:
         cm = CONSENT_RE.fullmatch(normalise(values["Consent"]))
         if not cm:
             err("Consent must be one of: own style | public-domain author | fictional persona | "
-                "brand persona | consent from the person, YYYY-MM-DD")
+                "brand persona | private study, not for distribution | "
+                "consent from the person, YYYY-MM-DD")
         elif cm.group(1).startswith("consent from the person"):
             try:
                 datetime.date.fromisoformat(cm.group(1)[-10:])
@@ -359,6 +363,8 @@ def check_file(path: Path, root: Path) -> list[str]:
         m = OPTIN_RE.fullmatch(values["Opt-in phrase"])
         if not m:
             err("Opt-in phrase must be exactly 'apply persona <name>' optionally followed by ' / 「套用 persona <name>」'")
+        elif m.group(2) is not None and m.group(2).lower() != m.group(1).lower():
+            err(f"Opt-in phrase names '{m.group(1)}' in the English form but '{m.group(2)}' in the Chinese form")
         elif "Name" in values and m.group(1).lower() != values["Name"].lower():
             err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
     if values.get("Tested") == "tested":
