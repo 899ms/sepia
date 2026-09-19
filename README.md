@@ -22,7 +22,7 @@ sepia turns those measured gaps, together with the related studies digested in [
 
 Plus a 30-feature diagnosis rubric and per-model fingerprints in two layers: narrative tells measured by StoryScope (Claude, GPT, Gemini, DeepSeek, Kimi) and sentence-level tells taken from the vendors' own prompting guides (Claude Fable 5.1 and Mythos 5.1, Fable 5 and Mythos 5, Opus 5, Opus 4.8; GPT-5.6, GPT-6 Astra; Gemini 3 series), applied when the writing or executing model is known. Vendors that publish no such guidance are recorded as consulted, not guessed.
 
-Professional prose fails differently. The studies digested in [`research/`](research/) point at filler that carries no information, hedging where a judgment was needed, chatbot leftovers, register that ignores the venue, and formatting that looks stamped out. Each document type gets a thin rule file on top of one shared checklist:
+Professional prose fails differently, and the structure-level finding holds there too: a 2026 replication of StoryScope on 2,250 company blog posts against 11,250 AI mirrors separated them at 98.0 macro-F1 from structural features alone, with the AI shape described as tidy and self-announcing (arXiv:2609.15369, a preprint whose features are LLM-scored; it tested detection, not editing). The studies digested in [`research/`](research/) point at filler that carries no information, hedging where a judgment was needed, chatbot leftovers, register that ignores the venue, and formatting that looks stamped out. Each document type gets a thin rule file on top of one shared checklist:
 
 | Domain | The gist |
 |---|---|

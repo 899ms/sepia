@@ -22,7 +22,7 @@ sepia 把這些實測差距，連同 [`research/`](research/) 裡整理過的相
 
 另附 30 項特徵的診斷 rubric，以及分成兩層的各模型指紋：StoryScope 量測到的敘事層特徵（Claude、GPT、Gemini、DeepSeek、Kimi），加上取自各廠商官方 prompting 指南的字句層特徵（Claude Fable 5.1 與 Mythos 5.1、Fable 5 與 Mythos 5、Opus 5、Opus 4.8；GPT-5.6、GPT-6 Astra；Gemini 3 系列），在知道是哪個模型在寫或在執行時套用。沒有發佈這類指南的廠商只記錄「已查閱」，不臆測。
 
-專業文字露餡的方式不同。[`research/`](research/) 裡整理的研究指出的問題是：沒有資訊量的填充文字、該下判斷時還在閃躲、chatbot 殘留語氣、無視 venue 的語域、像同一個模子印出的排版。每種文件都共用檢查表，再各配精簡規則檔：
+專業文字露餡的方式不同，而結構層的結論在這裡同樣成立：2026 年一份研究把 StoryScope 複製到商業部落格文上，2,250 篇真人文對上 11,250 篇 AI 鏡像，只用結構特徵就以 98.0 macro-F1 分開兩者，AI 那一側被描述為「整齊、自我預告」（arXiv:2609.15369，preprint，特徵由 LLM 評分；它量的是偵測，不是編輯）。[`research/`](research/) 裡整理的研究指出的問題是：沒有資訊量的填充文字、該下判斷時還在閃躲、chatbot 殘留語氣、無視 venue 的語域、像同一個模子印出的排版。每種文件都共用檢查表，再各配精簡規則檔：
 
 | 領域 | 要點 |
 |---|---|
