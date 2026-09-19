@@ -85,7 +85,7 @@ CONSENT_RE = re.compile(
 # Chinese form for the same name. Nothing else is an affirmative opt-in. The
 # two names are captured separately rather than matched with a backreference,
 # because a backreference is case-sensitive and the phrase is not: the halves
-# are compared below with the same case-insensitive test the Name check uses.
+# are compared below with the same caseless test the Name check uses.
 OPTIN_RE = re.compile(r"apply persona ([^/「」]+?)(?: / 「套用 persona ([^「」]+)」)?")
 # One blind-test entry per line: date — judge — compared — outcome.
 RECORD_RE = re.compile(r"^\s*(?:[-*]\s+)?(\d{4}-\d{2}-\d{2}) — judge: \S.* — compared: \S.* — outcome: \S.*$", re.M)
@@ -363,9 +363,9 @@ def check_file(path: Path, root: Path) -> list[str]:
         m = OPTIN_RE.fullmatch(values["Opt-in phrase"])
         if not m:
             err("Opt-in phrase must be exactly 'apply persona <name>' optionally followed by ' / 「套用 persona <name>」'")
-        elif m.group(2) is not None and m.group(2).lower() != m.group(1).lower():
+        elif m.group(2) is not None and m.group(2).casefold() != m.group(1).casefold():
             err(f"Opt-in phrase names '{m.group(1)}' in the English form but '{m.group(2)}' in the Chinese form")
-        elif "Name" in values and m.group(1).lower() != values["Name"].lower():
+        elif "Name" in values and m.group(1).casefold() != values["Name"].casefold():
             err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
     if values.get("Tested") == "tested":
         lines = [l for l in bodies.get("Blind-test record", "").splitlines() if l.strip()]

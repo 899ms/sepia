@@ -250,6 +250,16 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": "apply persona Nyaneko / 「套用 persona someone-else」"}))
         self.assertTrue(any("in the Chinese form" in e for e in errors), errors)
 
+    def test_optin_name_match_is_caseless_not_just_lowercased(self):
+        # casefold(), unlike lower(), folds ß to ss, so these three are one name.
+        base = {"Routes": "any", "Provenance": "p", "Consent": "own style", "Tested": "untested"}
+        for name, phrase in (("Straße", "apply persona STRASSE"),
+                             ("STRASSE", "apply persona Straße"),
+                             ("Straße", "apply persona Straße / 「套用 persona STRASSE」")):
+            with self.subTest(name=name, phrase=phrase):
+                errors, _ = self.run_check(persona(status={**base, "Name": name, "Opt-in phrase": phrase}))
+                self.assertEqual(errors, [], (name, phrase))
+
     def test_consent_error_names_every_accepted_value(self):
         base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
         errors, _ = self.run_check(persona(status={**base, "Consent": "no idea"}))
