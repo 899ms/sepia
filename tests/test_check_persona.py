@@ -221,6 +221,24 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(persona(overrides=[("`style-pass.md §3`", "x", "")]))
         self.assertTrue(any("three non-empty cells" in e for e in errors), errors)
 
+    # --- step 3 interface gaps -------------------------------------------
+
+    def test_private_study_consent_is_accepted(self):
+        base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
+        errors, _ = self.run_check(persona(status={**base, "Consent": "private study, not for distribution"}))
+        self.assertEqual(errors, [])
+        errors, _ = self.run_check(persona(status={**base, "Consent": "private study"}))
+        self.assertTrue(any("Consent must be one of" in e for e in errors), errors)
+
+    def test_optin_name_match_ignores_case(self):
+        base = {"Name": "Nyaneko", "Routes": "professional", "Provenance": "p", "Consent": "brand persona", "Tested": "untested"}
+        for phrase in ("apply persona Nyaneko", "apply persona nyaneko"):
+            with self.subTest(phrase=phrase):
+                errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": phrase}))
+                self.assertEqual(errors, [], phrase)
+        errors, _ = self.run_check(persona(status={**base, "Opt-in phrase": "apply persona someone-else"}))
+        self.assertTrue(any("but Name is" in e for e in errors), errors)
+
     # --- follow-up after the final report --------------------------------
 
     def test_bare_zh_section_2_fails_but_other_sections_pass(self):
