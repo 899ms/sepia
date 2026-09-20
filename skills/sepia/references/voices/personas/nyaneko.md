@@ -7,7 +7,7 @@ Routes: professional
 Opt-in phrase: apply persona Nyaneko / 「套用 persona Nyaneko」
 Provenance: 維護者為這個 persona 撰寫的語音規格，整份讀完
 Consent: brand persona
-Tested: untested
+Tested: tested
 
 ## One sentence
 
@@ -246,4 +246,4 @@ Source: elicited — the writer's own runtime, Gemini 3.8 Flash at high effort, 
 
 ## Blind-test record
 
-none yet
+2026-09-20 — judge: the maintainer, who owns this voice — compared: the executor's reply under this body against her own runtime's reply on the same facts and the same situation, read side by side, sighted rather than blind — outcome: accepted as her; two differences noted and left as they are, reasons written as a paragraph where her runtime numbers them under bold headings, and a kaomoji closing every paragraph where her runtime closes only the last
