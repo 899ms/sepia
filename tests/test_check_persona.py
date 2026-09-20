@@ -325,6 +325,14 @@ class CheckPersonaCase(unittest.TestCase):
         errors, _ = self.run_check(body)
         self.assertTrue(any("Tested must be" in e for e in errors), errors)
 
+    def test_row_without_leading_pipe_is_refused_not_ignored(self):
+        body = persona()
+        table = "| Rule | How the persona departs | Expected cost |\n|---|---|---|\n| `style-pass.md §3` | idioms in narration | §3 idiom hits reported as Persona cost |\n| `professional-pass.md check 4` | a verdict sentence ends each section | check 4 findings as Persona cost |"
+        self.assertIn(table, body)
+        stray = table + "\n`professional-pass.md check 5` | invents a detail | never-invent hidden in an edge-pipe-less row |"
+        errors, _ = self.run_check(body.replace(table, stray))
+        self.assertTrue(any("must start with '|'" in e for e in errors), errors)
+
     def test_doubled_edge_pipes_fail(self):
         body = persona().replace("| Rule | How the persona departs | Expected cost |", "|| Rule | How the persona departs | Expected cost ||")
         errors, _ = self.run_check(body)

@@ -277,6 +277,11 @@ def table_rows(body: str) -> tuple[list[list[str]], str | None]:
             # pipe leaves an empty cell and fails the width checks below
             inner = s[1:-1] if s.endswith("|") else s[1:]
             pipe_rows.append([c.strip() for c in inner.split("|")])
+        elif "|" in s:
+            # A row written without its leading pipe is still a row to a Markdown
+            # renderer, and it used to be invisible here, so a forbidden token
+            # could sit in it unchecked. Refuse it rather than guess its cells.
+            return [], f"override table row must start with '|': {s[:60]}"
     if not pipe_rows:
         return [], "override table has no rows"
     if tuple(pipe_rows[0]) != TABLE_HEADER:
