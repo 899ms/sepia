@@ -98,7 +98,7 @@ sepia 将这些实测差距，连同 [`research/`](research/) 里梳理的相关
 
 | Profile | 适用路径 | 来源与特征 | Opt-in 与调用方式 |
 |---|---|---|---|
-| 海明威（`references/voices/hemingway.md`） | 小说与专业散文 | 小说采用冰山式省略，专业文体遵循堪萨斯城星报规则；每项手法均标明出处 | 直达入口 `/sepia-hemingway`（或 `$sepia-hemingway`）。在小说路径上，要求强力去除故事里的 AI 味才算 opt-in（sepia 会说明正在套用哪个 profile 以及如何关闭）。小说 review 发现文本符合该 profile 时仅做提示，不加载任何内容。 |
+| 海明威（`references/voices/hemingway.md`） | 小说与专业散文 | 小说采用冰山式省略，专业文体遵循堪萨斯城星报规则；每项手法均标明出处 | 直达入口 `/sepia-hemingway`（或 `$sepia-hemingway`）。在小说路径上，要求强力去除故事里的 AI 味才算 opt-in（sepia 会说明正在套用哪个 profile 以及如何关闭）。未 opt-in 时，小说 review 发现文本符合该 profile 时仅做提示，不加载任何内容。 |
 | 台湾深度报道（`references/voices/tw-journalism.md`） | 仅限专业路径 | 九种叙事形态各自的手法，来自私下测量的繁体中文新闻语料及其细读 | opt-in 短语：「套用台灣深度報導 voice」或 `"apply the Taiwan journalism voice"`。遵守与海明威相同的规则。 |
 | Persona 模板（`references/voices/PERSONA-TEMPLATE.md`） | 作者自定义 | 单一写作者的风格，带声明式覆盖权；由 `scripts/check_persona.py` 校验 | 由作者创建 profile。模板位于 `references/voices/PERSONA-TEMPLATE.md`。 |
 | Nyaneko（`references/voices/personas/nyaneko.md`） | 仅限专业路径 | 内置的伙伴声线，依维护者撰写的语音规格与示范句编写 | opt-in 短语：`"apply persona Nyaneko"` 或 `「套用 persona Nyaneko」`。 |

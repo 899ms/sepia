@@ -98,7 +98,7 @@ v0.4.0 起，sepia 定義了跟聲音／風格類 skill（極簡主義方法、�
 
 | Profile | 目標路線 | 來源與特點 | Opt-in 與調用 |
 |---|---|---|---|
-| 海明威（`references/voices/hemingway.md`） | 小說與專業文體 | 小說用冰山省略、專業文體用堪薩斯市星報規則，每招都標出處 | 直接入口 `/sepia-hemingway`（或 `$sepia-hemingway`）。小說路線上，要求「強力去 AI 味」即算 opt-in（sepia 會說明正在套用哪個 profile 以及如何取消）。小說 review 僅在文本符合該 profile 時提出提示，不載入任何內容。 |
+| 海明威（`references/voices/hemingway.md`） | 小說與專業文體 | 小說用冰山省略、專業文體用堪薩斯市星報規則，每招都標出處 | 直接入口 `/sepia-hemingway`（或 `$sepia-hemingway`）。小說路線上，要求「強力去 AI 味」即算 opt-in（sepia 會說明正在套用哪個 profile 以及如何取消）。沒有 opt-in 時，小說 review 僅在文本符合該 profile 時提出提示，不載入任何內容。 |
 | 台灣深度報導（`references/voices/tw-journalism.md`） | 僅限專業路線 | 九種敘事型各自的手法，來自私下量測的繁中新聞語料與細讀 | Opt-in 片語：「套用台灣深度報導 voice」（或 `"apply the Taiwan journalism voice"`）。遵循與海明威 profile 相同的規則。 |
 | Persona 模板（`references/voices/PERSONA-TEMPLATE.md`） | 作者自訂 | 單一寫作者的風格，帶宣告式覆蓋權；由 `scripts/check_persona.py` 檢查 | 作者自行建立的 profile，模板位於 `references/voices/PERSONA-TEMPLATE.md`。 |
 | Nyaneko（`references/voices/personas/nyaneko.md`） | 僅限專業路線 | 專案內建的夥伴聲線，依維護者寫的語音規格撰寫並附她本人的示範句 | Opt-in 片語：「套用 persona Nyaneko」或 `apply persona Nyaneko`。 |
