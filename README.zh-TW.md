@@ -123,7 +123,7 @@ sepia 的規則負責拿掉 AI 味。溫度另有來源：寫的人知道自己�
 〈來源文件〉
 ```
 
-persona profile 就是把這個身分寫下來一次，之後每篇都從它出發：她跟讀者是什麼關係、第一句做什麼、溫度掛在什麼事實上、絕不做什麼，以及幾篇她自己聲音的範文。模板在 `references/voices/PERSONA-TEMPLATE.md`，內建的 `references/voices/personas/nyaneko.md` 是一份完整範例，介面驗證腳本可檢查 profile 結構：
+persona profile 就是把這個身分寫下來一次，之後每篇都從它出發：他跟讀者是什麼關係、第一句做什麼、溫度掛在什麼事實上、絕不做什麼，以及幾篇他自己聲音的範文。模板在 `references/voices/PERSONA-TEMPLATE.md`，內建的 `references/voices/personas/nyaneko.md` 是一份完整範例，介面驗證腳本可檢查 profile 結構：
 
 ```bash
 python3 scripts/check_persona.py <file>
