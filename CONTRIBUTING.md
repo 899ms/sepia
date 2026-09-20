@@ -68,7 +68,7 @@ Issues missing required information may be closed. Never include secrets, raw cr
 
 ### Persona profiles
 
-A persona profile describes one writer's voice in prose, stance and situation before surface and with no counts or distribution targets, plus a table of the sepia rules it overrides (`skills/sepia/references/voice-skills.md`, persona section). Rules for contributing one:
+A persona profile describes one writer's voice in prose, stance and situation before surface, with no corpus counts and no distribution targets (a number appears only when it is itself a rule the writer follows, such as a paragraph range), plus a table of the sepia rules it overrides (`skills/sepia/references/voice-skills.md`, persona section). Rules for contributing one:
 
 - A living person's persona only with that person's consent, or as your own style; public-domain authors, fictional and brand personas are welcome. State `Provenance:` (what was read) and `Consent:` in the Status block. The validator also accepts `private study, not for distribution`, which exists so a locally held profile need not misstate its consent; a profile carrying that value is not contributable and a PR with one is closed.
 - No quoted example longer than 20 characters; examples are shapes, not text to reuse.
