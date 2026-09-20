@@ -34,15 +34,6 @@ REFS = {
 SECTIONS = check_persona.SECTIONS
 
 
-def every_piece(overrides):
-    """3–8 numbered moves: one per override token (up to seven), then one with no override."""
-    lines = [f"{i}. Move {i} (overrides: {tok.strip('`')})" for i, (tok, _, _) in enumerate(overrides[:7], 1)]
-    lines.append(f"{len(lines) + 1}. Open on a number (overrides: none)")
-    while len(lines) < 3:
-        lines.append(f"{len(lines) + 1}. Another plain move (overrides: none)")
-    return "\n".join(lines)
-
-
 def persona(overrides=None, prohibitions=None, status=None, drop=None, extra=None, order=None):
     """Build a valid persona body, then apply the requested deviations."""
     status = status or {
@@ -64,14 +55,15 @@ def persona(overrides=None, prohibitions=None, status=None, drop=None, extra=Non
     bodies = {
         "Status": "\n".join(f"{k}: {v}" for k, v in status.items()),
         "One sentence": "A writer who ends each section on the narrator's verdict and keeps a persona's idioms.",
-        "Beat and themes": "Labour and policy; the writer's concerns enter narration directly.",
-        "Metric fingerprint": "none measured; the close reading notes a long sentence mean.",
-        "Moves by frequency": "- Ending verdict sentence, 10/12 pieces\n- Idiom in narration, 9/12",
-        "Negatives": "No scene openings.",
-        "Meaning for sepia": "check 4 and style-pass §3 would remove the two signatures.",
-        "Every piece": every_piece(overrides),
-        "Only with facts": "- A dated document quoted with its time, when the material has one.",
-        "Sentence shape": "mean 50–60 characters, SD about 30; both ends present.",
+        "Who she is to the reader": "A colleague on the reader's side, never a support desk.",
+        "First move": "The first sentence reacts to what the reader brought.",
+        "Warmth and judgment": "Warmth is attached to a fact or deleted; judgment does not soften.",
+        "By situation": "On an achievement, high heat then the fact; on bad news, the change first, then the reason.",
+        "Texture": "Technical terms in English inline; idioms in narration; a verdict sentence ends each section.",
+        "Structure habits": "Verdict first, then numbered reasons; lists only for steps and comparisons.",
+        "Endings": "A real next step or a line of company; never an invented offer.",
+        "Speaking, not drafting": "This describes the writer speaking to the reader, not ghostwriting for a third party.",
+        "Never": "- No bullet briefing as an opener.\n- No praise without a fact.",
         "Rules this persona overrides": "| Rule | How the persona departs | Expected cost |\n|---|---|---|\n"
         + "\n".join(f"| {a} | {b} | {c} |" for a, b, c in overrides),
         "Prohibitions": "\n".join(f"- {p}" for p in prohibitions),
@@ -118,12 +110,12 @@ class CheckPersonaCase(unittest.TestCase):
         self.assertEqual(warns, [])
 
     def test_single_quoted_long_span_is_not_a_quotation(self):
-        body = persona(extra={"Negatives": "She never writes 'a very long single-quoted span of more than twenty characters' in narration."})
+        body = persona(extra={"Texture": "She never writes 'a very long single-quoted span of more than twenty characters' in narration."})
         errors, _ = self.run_check(body)
         self.assertEqual(errors, [])
 
     def test_table_row_with_odd_straight_quotes_passes(self):
-        body = persona(extra={"Moves by frequency": '| a | a 12" print run | b |\n| c | another cell with one " mark | d |'})
+        body = persona(extra={"Texture": '| a | a 12" print run | b |\n| c | another cell with one " mark | d |'})
         errors, _ = self.run_check(body)
         self.assertEqual(errors, [])
 
@@ -142,12 +134,12 @@ class CheckPersonaCase(unittest.TestCase):
     # --- quotes ---------------------------------------------------------
 
     def test_long_corner_quote_fails(self):
-        body = persona(extra={"Negatives": "「這是一段超過二十個字的引文範例，用來測試驗證器會不會擋」"})
+        body = persona(extra={"Texture": "「這是一段超過二十個字的引文範例，用來測試驗證器會不會擋」"})
         errors, _ = self.run_check(body)
         self.assertTrue(any("longer than 20" in e for e in errors), errors)
 
     def test_long_double_quote_on_one_line_fails(self):
-        body = persona(extra={"Negatives": 'She wrote "a quoted example that runs well past the twenty character limit" once.'})
+        body = persona(extra={"Texture": 'She wrote "a quoted example that runs well past the twenty character limit" once.'})
         errors, _ = self.run_check(body)
         self.assertTrue(any("longer than 20" in e for e in errors), errors)
 
@@ -290,9 +282,6 @@ class CheckPersonaCase(unittest.TestCase):
         self.assertIn(table, body)
         errors, _ = self.run_check(body.replace(table, "```\n" + table + "\n```"))
         self.assertTrue(any("override table has no rows" in e for e in errors), errors)
-        moves = every_piece([("`style-pass.md §3`", "", ""), ("`professional-pass.md check 4`", "", "")])
-        errors, _ = self.run_check(body.replace(moves, "```\n" + moves + "\n```"))
-        self.assertTrue(any("found 0" in e for e in errors), errors)
         pro = "- Do not reuse this file\u2019s example phrases verbatim; they are shapes, not a word list.\n- Never invent facts, gestures, adverbs, or emotions; a missing fact is a TODO."
         errors, _ = self.run_check(body.replace(pro, "```\n" + pro + "\n```"))
         self.assertTrue(any("missing the fixed line" in e for e in errors), errors)
@@ -330,11 +319,6 @@ class CheckPersonaCase(unittest.TestCase):
     def test_narrative_endings_section_is_overridable(self):
         errors, _ = self.run_check(persona(overrides=[("`narrative-pass.md §3`", "ends on the narrator's verdict", "endings findings as Persona cost")]))
         self.assertEqual(errors, [])
-
-    def test_empty_move_text_fails(self):
-        body = persona().replace("3. Open on a number (overrides: none)", "3. (overrides: none)")
-        errors, _ = self.run_check(body)
-        self.assertTrue(any("needs move text" in e for e in errors), errors)
 
     def test_consent_date_must_be_a_calendar_date(self):
         base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
@@ -384,17 +368,6 @@ class CheckPersonaCase(unittest.TestCase):
             with self.subTest(c=c):
                 errors, _ = self.run_check(persona(status={**base, "Consent": c}))
                 self.assertTrue(any("Consent must be one of" in e for e in errors), (c, errors))
-
-    def test_every_piece_count_and_annotations(self):
-        body = persona().replace(every_piece([("`style-pass.md §3`", "", ""), ("`professional-pass.md check 4`", "", "")]), "1. Only one move (overrides: none)")
-        errors, _ = self.run_check(body)
-        self.assertTrue(any("must list 3–8 numbered moves, found 1" in e for e in errors), errors)
-        body = persona().replace("3. Open on a number (overrides: none)", "3. Open on a number")
-        errors, _ = self.run_check(body)
-        self.assertTrue(any("needs move text and a trailing" in e for e in errors), errors)
-        body = persona().replace("3. Open on a number (overrides: none)", "3. Open on a number (overrides: discourse-pass.md §1)")
-        errors, _ = self.run_check(body)
-        self.assertTrue(any("not in the override table" in e for e in errors), errors)
 
     def test_duplicate_heading_fails(self):
         body = persona() + "\n## Boundary\n\nagain\n"
