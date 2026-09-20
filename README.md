@@ -123,7 +123,7 @@ Facts come only from the notes below; numbers and identifiers must match them.
 <the source document>
 ```
 
-A persona profile is that identity written down once so every piece starts from it: what she is to the reader, what her first sentence does, how warmth attaches to a fact, what she never does, and pieces in her own voice as exemplars. The template is `references/voices/PERSONA-TEMPLATE.md`, the built-in `references/voices/personas/nyaneko.md` is a worked example, and the interface validator checks the profile structure:
+A persona profile is that identity written down once so every piece starts from it: what they are to the reader, what their first sentence does, how warmth attaches to a fact, what they never do, and pieces in their own voice as exemplars. The template is `references/voices/PERSONA-TEMPLATE.md`, the built-in `references/voices/personas/nyaneko.md` is a worked example, and the interface validator checks the profile structure:
 
 ```bash
 python3 scripts/check_persona.py <file>
