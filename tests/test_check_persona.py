@@ -252,6 +252,17 @@ class CheckPersonaCase(unittest.TestCase):
                 errors, _ = self.run_check(persona(status={**base, "Name": name, "Opt-in phrase": phrase}))
                 self.assertEqual(errors, [], (name, phrase))
 
+    def test_untested_requires_none_yet_record(self):
+        base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Consent": "own style", "Tested": "untested"}
+        body = persona(status=base).replace("none yet", "2025-01-15 — judge: measurement script — compared: a against b — outcome: close")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("exactly 'none yet'" in e for e in errors), errors)
+        body = persona(status=base).replace("none yet", "")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("exactly 'none yet'" in e for e in errors), errors)
+        errors, _ = self.run_check(persona(status=base))
+        self.assertEqual(errors, [])
+
     def test_consent_error_names_every_accepted_value(self):
         base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
         errors, _ = self.run_check(persona(status={**base, "Consent": "no idea"}))

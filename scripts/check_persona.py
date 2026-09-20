@@ -366,8 +366,15 @@ def check_file(path: Path, root: Path) -> list[str]:
             err(f"Opt-in phrase names '{m.group(1)}' in the English form but '{m.group(2)}' in the Chinese form")
         elif "Name" in values and m.group(1).casefold() != values["Name"].casefold():
             err(f"Opt-in phrase names '{m.group(1)}' but Name is '{values['Name']}'")
+    record_lines = [l for l in bodies.get("Blind-test record", "").splitlines() if l.strip()]
+    if values.get("Tested") == "untested":
+        # An untested profile says so in one fixed phrase. Anything else here is a
+        # record that has not been through a person, and it does not get to sit
+        # under "untested" looking like one.
+        if [l.strip() for l in record_lines] != ["none yet"]:
+            err("Tested: untested requires the Blind-test record to be exactly 'none yet'")
     if values.get("Tested") == "tested":
-        lines = [l for l in bodies.get("Blind-test record", "").splitlines() if l.strip()]
+        lines = record_lines
         if not lines:
             err("Tested: tested requires at least one Blind-test record line of the form "
                 "'YYYY-MM-DD — judge: … — compared: … — outcome: …'")
