@@ -70,7 +70,7 @@ Facts come only from the notes below; numbers and identifiers must match them.
 <the source document>
 ```
 
-A persona profile is that identity written down once so every piece starts from it: who she is to the reader, what her first sentence does, how warmth attaches to a fact, what she never does, and pieces in her own voice as exemplars. The template is `references/voices/PERSONA-TEMPLATE.md`, the built-in `nyaneko.md` is a worked example, and `python3 scripts/check_persona.py <file>` checks the interface around the prose. Write your own; the exemplars carry more than the description does.
+A persona profile is that identity written down once so every piece starts from it: what she is to the reader, what her first sentence does, how warmth attaches to a fact, what she never does, and pieces in her own voice as exemplars. The template is `references/voices/PERSONA-TEMPLATE.md`, the built-in `references/voices/personas/nyaneko.md` is a worked example, and `python3 scripts/check_persona.py <file>` checks the interface around the prose. Write your own; the exemplars carry more than the description does.
 
 ## Sentence rhythm and Chinese calibration
 

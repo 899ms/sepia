@@ -70,7 +70,7 @@ sepia 的规则负责去掉 AI 味。温度另有来源：写的人知道自己�
 〈来源文件〉
 ```
 
-persona profile 就是把这个身份写下来一次，之后每篇都从它出发：她对读者是谁、第一句做什么、温度挂在什么事实上、绝不做什么，以及几篇她自己声音的范文。模板在 `references/voices/PERSONA-TEMPLATE.md`，内置的 `nyaneko.md` 是一份完整示例，`python3 scripts/check_persona.py <file>` 检查散文外围的接口。鼓励你写自己的一套；范文承载的东西比描述多。
+persona profile 就是把这个身份写下来一次，之后每篇都从它出发：她和读者是什么关系、第一句做什么、温度挂在什么事实上、绝不做什么，以及几篇她自己声音的范文。模板在 `references/voices/PERSONA-TEMPLATE.md`，内置的 `references/voices/personas/nyaneko.md` 是一份完整示例，`python3 scripts/check_persona.py <file>` 检查散文外围的接口。鼓励你写自己的一套；范文承载的东西比描述多。
 
 ## 句长节奏与中文校准
 
