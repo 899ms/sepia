@@ -70,8 +70,14 @@ SECTIONS = (
     "Rules this persona overrides",
     "Prohibitions",
     "Boundary",
+    "Exemplars",
     "Blind-test record",
 )
+# The one section a body may leave out: a third-party writer's text cannot be
+# shown, so a persona of a public-domain author or a studied writer has none.
+OPTIONAL_SECTIONS = {"Exemplars"}
+# An Exemplars section opens by saying where its pieces came from.
+EXEMPLAR_SOURCE_RE = re.compile(r"^Source: (captured|elicited) — \S.+$")
 
 STATUS_KEYS = ("Name", "Routes", "Opt-in phrase", "Provenance", "Consent", "Tested")
 ROUTES = {"professional", "fiction", "any"}
@@ -95,7 +101,7 @@ STATUS_LINE_RE = re.compile(r"^([A-Za-z -]+):\s*(.*)$")
 TABLE_HEADER = ("Rule", "How the persona departs", "Expected cost")
 # Sections whose quoted text is metadata (a source title, a compared passage),
 # not example phrases; the 20-character rule does not apply there.
-QUOTE_SCAN_EXEMPT = {"Status", "Blind-test record"}
+QUOTE_SCAN_EXEMPT = {"Status", "Blind-test record", "Exemplars"}
 
 PROHIBITION_LINES = (
     "Do not reuse this file's example phrases verbatim; they are shapes, not a word list.",
@@ -315,7 +321,7 @@ def check_file(path: Path, root: Path) -> list[str]:
     text = path.read_text(encoding="utf-8")
 
     order, bodies = split_sections(text)
-    missing = [s for s in SECTIONS if s not in order]
+    missing = [s for s in SECTIONS if s not in order and s not in OPTIONAL_SECTIONS]
     unexpected = [s for s in order if s not in SECTIONS]
     dups = sorted({s for s in order if order.count(s) > 1})
     for s in missing:
@@ -324,8 +330,13 @@ def check_file(path: Path, root: Path) -> list[str]:
         err(f"unexpected section '## {s}' (the template's H2 sequence is fixed)")
     for s in dups:
         err(f"duplicate section '## {s}'")
-    if not (missing or unexpected or dups) and tuple(order) != SECTIONS:
+    expected = tuple(s for s in SECTIONS if s in order)
+    if not (missing or unexpected or dups) and tuple(order) != expected:
         err("sections are not in template order")
+    if "Exemplars" in bodies:
+        first = next((l.strip() for l in bodies["Exemplars"].splitlines() if l.strip()), "")
+        if not EXEMPLAR_SOURCE_RE.match(first):
+            err("Exemplars must open with 'Source: captured — …' or 'Source: elicited — …'")
 
     status = bodies.get("Status", "")
     for l in status.splitlines():

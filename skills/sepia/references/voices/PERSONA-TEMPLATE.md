@@ -2,7 +2,7 @@
 
 Template for a persona profile: one writer's voice, described in prose, plus the sepia rules it overrides. A persona is what lies outside measurement: stance toward the reader, what the writer does first, how warmth and judgment travel together, how the voice shifts with the situation, what the writer never does. Describe those. Do not count them. There are no distribution targets and no `k/n` figures in a persona; a number appears only when it is itself a rule the writer follows (a paragraph range, a cap).
 
-Keep the H2 headings below verbatim and in this order; the prose under them may be in any language, and a voice is best described in the language it speaks. Status holds exactly its six `Key: value` lines. No quoted example may exceed 20 characters inside 「」, 『』 or a paired double quote (Status and Blind-test record are exempt). Examples are shapes, not text to reuse. No H2 sections other than the fifteen below.
+Keep the H2 headings below verbatim and in this order; the prose under them may be in any language, and a voice is best described in the language it speaks. Status holds exactly its six `Key: value` lines. No quoted example may exceed 20 characters inside 「」, 『』 or a paired double quote (Status and Blind-test record are exempt). Examples are shapes, not text to reuse. No H2 sections other than the sixteen below; `## Exemplars` is the one optional section, present only when the writer's own output can be shown.
 
 ## Status
 
@@ -71,6 +71,10 @@ Both fixed lines verbatim, each as its own list item, then the persona's own:
 ## Boundary
 
 Three to five lines: what reads like the writer versus what reads like a model imitating the writer. If a habit is positional (the same thing at the end of every paragraph), say here that doing it without variation draws a uniformity finding the override table cannot waive.
+
+## Exemplars
+
+Optional. Whole pieces in the writer's own voice, unedited, one per situation where possible, each under a bold label naming the situation. Exemplars teach force, order, where warmth attaches and what an ending is made of; they are never copied into output, and the fixed Prohibitions line above covers them. The section opens with one line `Source: captured — <where, when>` for pieces the writer produced unprompted, or `Source: elicited — <runtime, model, date>` for pieces the writer's own runtime produced on prompts written for this file; an elicited set also states the prompt frame and the situations given, so a reader can judge how much the prompt shaped the shape. A third party's text does not go here: this section exists for a writer who owns the voice (own style, brand persona, fictional persona). The 20-character quote cap does not apply inside this section. Venue-specific emoji are written as their names in angle brackets, never as platform identifiers.
 
 ## Blind-test record
 

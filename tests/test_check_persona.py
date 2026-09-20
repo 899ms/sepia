@@ -76,6 +76,7 @@ def persona(overrides=None, prohibitions=None, status=None, drop=None, extra=Non
     seq = list(order or SECTIONS)
     if drop:
         seq = [s for s in seq if s != drop]
+    seq = [s for s in seq if s in bodies]  # optional sections appear only when a body is given
     out = ["# Persona — sample", ""]
     for s in seq:
         out += [f"## {s}", "", bodies[s], ""]
@@ -262,6 +263,20 @@ class CheckPersonaCase(unittest.TestCase):
         self.assertTrue(any("exactly 'none yet'" in e for e in errors), errors)
         errors, _ = self.run_check(persona(status=base))
         self.assertEqual(errors, [])
+
+    def test_exemplars_section_is_optional_but_needs_a_source_line(self):
+        errors, _ = self.run_check(persona())
+        self.assertEqual(errors, [])
+        ex = "Source: elicited — a runtime, a model, 2025-01-15\n\n**Situation.** 「這是一段超過二十個字、在別的節會被擋下來的引文範例」"
+        body = persona().replace("## Blind-test record", "## Exemplars\n\n" + ex + "\n\n## Blind-test record")
+        errors, _ = self.run_check(body)
+        self.assertEqual(errors, [], errors)
+        body = persona().replace("## Blind-test record", "## Exemplars\n\nno source line here\n\n## Blind-test record")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("Exemplars must open with" in e for e in errors), errors)
+        body = persona().replace("## Boundary", "## Exemplars\n\n" + ex + "\n\n## Boundary")
+        errors, _ = self.run_check(body)
+        self.assertTrue(any("not in template order" in e for e in errors), errors)
 
     def test_consent_error_names_every_accepted_value(self):
         base = {"Name": "sample", "Routes": "any", "Opt-in phrase": "apply persona sample", "Provenance": "p", "Tested": "untested"}
