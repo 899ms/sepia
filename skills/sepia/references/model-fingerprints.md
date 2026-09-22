@@ -126,13 +126,13 @@ Consulted with no prose-layer statement (2026-09-23): the GPT-6 family now also 
 | Protagonist's social circle always expands | Allow shrinking or static trajectories |
 | Direct speech dominates exchanges | Mix in indirect and summarized speech |
 
-### Prose layer (V; Gemini 3 series, `GOOGLE-GEMINI-3-DEV-GUIDE`)
+### Prose layer (V; Gemini 3 and 3.1, `GOOGLE-GEMINI-3-DEV-GUIDE`)
 
-The vendor scopes its statements to the series (Gemini 3 Flash through Gemini 3.8 Flash), so any Gemini 3.x release matches this table.
+The vendor's own wording scopes the statement to Gemini 3 and 3.1, so those releases match this table and it is operative for them. Re-read 2026-09-23 (pages updated 2026-09-17): the developer guide says "Gemini 3 is less verbose" and lists models only up to 3.1; *What's new in Gemini 3.5* writes "By default, Gemini 3 and 3.1 is less verbose", leaving 3.5 out on its own page; *Prompt design strategies* says "Gemini 3 models" and names neither 3.5 nor 3.8 in its text. No page names Gemini 3.5 or 3.8 Flash as covered, so for those releases this table is a prior, not operative. An earlier version of this line said the scope ran through Gemini 3.8 Flash; the current pages do not support that.
 
 | Vendor-stated default | Handling |
 |---|---|
-| "By default, Gemini 3 is less verbose and prefers providing direct, efficient answers"; a conversational or "chatty" persona appears only when explicitly prompted | Terse and unadorned is this series' default, so brevity is not evidence of a human here. In non-narrative text, check density in the other direction (professional-pass check 2): required caveats and next steps dropped for efficiency |
+| "By default, Gemini 3 is less verbose and prefers providing direct, efficient answers"; a conversational or "chatty" persona appears only when explicitly prompted | Terse and unadorned is these releases' stated default, so brevity is not evidence of a human here. In non-narrative text, check density in the other direction (professional-pass check 2): required caveats and next steps dropped for efficiency |
 
 ## DeepSeek
 
