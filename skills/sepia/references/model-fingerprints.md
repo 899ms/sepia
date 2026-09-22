@@ -75,6 +75,8 @@ Keep responses focused, brief, and concise. Keep disclaimers and caveats short, 
 
 Consulted with no prose-layer statement (2026-09-03): the Claude Sonnet 5 page says only that "prose style on long-form writing may shift"; Claude Opus 4.7, Opus 4.6, and Sonnet 4.6 have no model-specific prompting page. Those releases have no operative row; per the rule in `SKILL.md`, the Claude prose tables above apply to them as priors.
 
+Consulted with no prose-layer statement (2026-09-23): *Prompting Claude Opus 5.5* covers effort calibration, always-on thinking, progress updates between tool calls, unattended runs, pasted-content marking and frontend defaults. On writing it says only that the model "tends to finish the same task with fewer tokens", that its reports "say plainly what it did, what it found, and what it needs from you", and that "existing Claude Opus 5 prompts should perform well without changes"; *What's new in Claude Opus 5.5* adds nothing on prose. No release-anchored default, so Opus 5.5 has no operative row and the Claude tables, the Opus 5 one first among them, apply as priors.
+
 ## GPT
 
 ### Narrative layer (S; GPT-5.4) — the gossip and the long lens
@@ -109,6 +111,8 @@ Avoid using slop words or phrases like "Bottom Line:" in conclusions, "delve," "
 
 State the intended action directly. Avoid adding what you won't do, what will remain unchanged, or how you'll separate or categorize results. Do not use contrastive framing such as "X, not Y" or "X—not Y" that introduces an unprompted alternative that the user didn't ask about. Avoid invented compound labels like "exact-head checks" and "editorial-row layouts", vague qualifiers, and canned transitions; use plain verbs and prepositions to state the actual relationship directly.
 ```
+
+Consulted with no prose-layer statement (2026-09-23): the GPT-6 family now also names GPT-6 Sol and GPT-6 Luna on OpenAI's *Model guidance* page, but its "Personality and writing style" section is scoped to GPT-6 Astra ("GPT-6 Astra tends to use lists, tables and Markdown"), neither model has a pinned guidance page (both `latest-model/gpt-6-sol.md` and `gpt-6-luna.md` return 404), and their model pages say nothing about writing. They have no operative row; the GPT tables above apply to them as priors. The GPT-6 Astra verbatim block was re-compared against its pinned page the same day and still matches.
 
 ## Gemini
 
